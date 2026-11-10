@@ -19,3 +19,6 @@
 *.brf
 *.toc
 *.idx
+
+# Exportações das bases (RIS/BibTeX/CSV): ficam só no computador local
+docs/exportacoes/

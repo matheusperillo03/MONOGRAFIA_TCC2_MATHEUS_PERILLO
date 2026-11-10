@@ -1,0 +1,1075 @@
+% ---------------------------------------------------------------------------
+% Capítulo de Metodologia (rascunho)
+% Base: docs/rsl1-protocolo.md (v0.12), docs/rsl2-protocolo.md (v0.7),
+% docs/buscas/rsl1-definitivas-2026-11-10.md, docs/rsl1-calibracao.md,
+% docs/requisitos-app.md e docs/referencias-verificadas.md.
+% Situação descrita: 10/11/2026.
+% ---------------------------------------------------------------------------
+
+% As citações longas (por exemplo, KITCHENHAM; MADEYSKI; BUDGEN) não quebram
+% entre linhas; o espaço de emergência evita que saiam da margem. O grupo
+% limita o ajuste a este capítulo.
+\begingroup
+\setlength{\emergencystretch}{3em}
+
+\chapter{Metodologia}
+\label{cap:metodologia}
+
+Este capítulo descreve como o trabalho é conduzido: a classificação da
+pesquisa, as etapas do trabalho, o método das duas revisões sistemáticas da
+literatura (RSLs), a forma de registro que torna as revisões verificáveis e o
+levantamento de requisitos do buscador. As etapas ainda não executadas são
+descritas como procedimento.
+
+% ===========================================================================
+\section{Classificação da pesquisa}
+\label{sec:metodologia-classificacao}
+
+% PENDENTE: classificar a pesquisa quanto à natureza, à abordagem, aos
+% objetivos e aos procedimentos. Nenhuma referência de
+% docs/referencias-verificadas.md trata de classificação de pesquisa.
+% É preciso escolher uma obra de metodologia científica revisada por pares,
+% conferi-la e registrá-la antes de escrever esta seção.
+
+O trabalho reúne dois tipos de estudo. O primeiro são duas revisões
+sistemáticas da literatura, que são estudos secundários e seguem diretrizes de
+relato próprias para esse tipo de estudo
+\cite{page2021prisma,kitchenham2023segress}. O segundo é o desenvolvimento de
+um protótipo de buscador de inteligência de fontes abertas (OSINT) para órgãos
+policiais e de inteligência, cujos requisitos partem de um levantamento com
+especialista e da evidência reunida na primeira revisão.
+
+% ===========================================================================
+\section{Etapas do trabalho}
+\label{sec:metodologia-etapas}
+
+O trabalho tem quatro etapas, ligadas entre si:
+
+\begin{enumerate}
+	\item \textbf{Revisões sistemáticas da literatura.} A RSL 1 trata de
+	ferramentas OSINT para órgãos policiais e de inteligência. Cada achado
+	relevante dela vira um requisito candidato do buscador. A RSL 2 trata do
+	desenvolvimento de software com modelos de linguagem de grande porte
+	(LLMs) e agentes de IA. Cada achado relevante dela vira uma prática ou um
+	requisito candidato para o processo de desenvolvimento do buscador.
+	\item \textbf{Levantamento de requisitos com especialista.} Uma lista
+	inicial de requisitos funcionais e não funcionais, recebida do orientador,
+	é confrontada com a evidência da RSL 1 e com a legislação
+	(Seção~\ref{sec:metodologia-requisitos}).
+	\item \textbf{Desenvolvimento do protótipo.} O protótipo implementa o
+	recorte dos requisitos definido na etapa anterior.
+	\item \textbf{Avaliação.} Os critérios de avaliação do protótipo partem da
+	QP5 da RSL 1, que trata de como as ferramentas são avaliadas e de como
+	garantem a validade e a preservação da evidência coletada.
+\end{enumerate}
+
+% PENDENTE: descrever o processo de desenvolvimento do protótipo (ciclo,
+% práticas, ferramentas e uso de assistentes de IA, ligado à RSL 2). O
+% recorte do protótipo e a stack ainda não foram definidos
+% (docs/requisitos-app.md, "Pendências"). Não há referência verificada sobre
+% processo de desenvolvimento.
+
+% PENDENTE: definir o método de avaliação do protótipo (critérios, métricas,
+% participantes, procedimento). Depende dos resultados da QP5 da RSL 1 e de
+% uma referência verificada sobre avaliação.
+
+% ===========================================================================
+\section{Método das revisões sistemáticas}
+\label{sec:metodologia-rsl}
+
+As duas revisões são revisões sistemáticas completas e seguem o mesmo método.
+Esta seção apresenta o método comum e aponta as diferenças entre elas.
+
+% ---------------------------------------------------------------------------
+\subsection{Referenciais metodológicos}
+
+As revisões seguem quatro referenciais:
+
+\begin{itemize}
+	\item \textbf{Relato:} a declaração PRISMA 2020 \cite{page2021prisma} e,
+	para a estratégia de busca, a extensão PRISMA-S \cite{rethlefsen2021}.
+	\item \textbf{Condução:} o documento de explicação e elaboração do PRISMA
+	2020 \cite{page2021ee}, que descreve, item a item, as formas de conduzir
+	cada etapa.
+	\item \textbf{Relato em engenharia de software:} a diretriz SEGRESS,
+	que estende os itens do PRISMA 2020 a estudos secundários da área,
+	inclusive estudos de mapeamento e revisões qualitativas
+	\cite{kitchenham2023segress}.
+	\item \textbf{Busca complementar:} o \textit{snowballing}
+	\cite{wohlin2014}.
+\end{itemize}
+
+% ---------------------------------------------------------------------------
+\subsection{Objetivos e escopo}
+
+O objetivo da RSL 1 é identificar e caracterizar, na literatura revisada por
+pares, as ferramentas, técnicas e requisitos de sistemas de busca OSINT
+voltados a órgãos policiais e de inteligência, incluindo o uso de inteligência
+artificial e os desafios legais, éticos e de segurança associados.
+\citeonline{ghioni2024} tratam das implicações de governança, ética, direito e
+sociedade da OSINT com IA, e \citeonline{browne2024}, das aplicações de IA à
+OSINT em geral. O trabalho de \citeonline{ghioni2024} é uma revisão de
+literatura com análise bibliométrica, montada com busca por título no Google
+Scholar e no Scopus, e não uma revisão no formato PRISMA. Nenhuma das duas
+revisões restringe o escopo ao uso por órgãos policiais e de inteligência, que
+é o recorte da RSL 1.
+
+O objetivo da RSL 2 é identificar e sintetizar as evidências empíricas,
+publicadas em veículos revisados por pares, sobre os efeitos do uso de
+assistentes e agentes baseados em LLMs no desenvolvimento de software, nas
+dimensões de produtividade, qualidade, segurança, custo e processo. Três
+revisões têm recortes próprios: \citeonline{hou2024} analisaram 395 artigos,
+de janeiro de 2017 a janeiro de 2024, sobre a aplicação de LLMs a tarefas de
+engenharia de software; \citeonline{liu2026} reuniram 124 artigos sobre
+agentes baseados em LLMs na engenharia de software; e \citeonline{mohamed2026}
+revisaram 39 estudos, de janeiro de 2014 a dezembro de 2024, sobre o impacto
+de assistentes baseados em LLMs na produtividade dos desenvolvedores. A RSL 2
+junta as dimensões das suas questões de pesquisa num mesmo corpus e inclui
+estudos publicados depois de 2024.
+% PENDENTE: os números e os períodos de Hou et al., Liu et al. e Mohamed et
+% al. foram conferidos só no resumo, na página do editor
+% (referencias-verificadas.md, "Recortes das revisões e lacuna").
+
+\textbf{Terminologia da RSL 2.} O trabalho chama de desenvolvimento
+\textit{AI-First} o desenvolvimento de software em que assistentes e agentes
+baseados em LLMs são o meio principal de produzir artefatos (código, testes,
+documentação), sob supervisão humana. Essa é uma definição operacional deste
+trabalho. Numa busca exploratória por título na Crossref, em 06/11/2026, o
+termo apareceu em 12 registros, e nenhum artigo de periódico entre eles o usa
+para o processo de desenvolvimento. Por isso o termo \textit{AI-First} não
+entra na string de busca, que usa os termos das três revisões citadas acima:
+LLMs \cite{hou2024}, agentes baseados em LLMs \cite{liu2026} e assistentes
+baseados em LLMs \cite{mohamed2026}, além de IA generativa.
+
+O escopo das duas revisões segue a estrutura PICO, que o PRISMA 2020 indica
+para formular os objetivos de uma revisão \cite[item 4]{page2021ee}, acrescida
+do contexto (C). A Tabela~\ref{tab:picoc} resume o escopo de cada revisão.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Escopo das revisões (PICOC)}
+	\label{tab:picoc}
+	\small
+	\begin{tabular}{p{2.1cm}>{\raggedright\arraybackslash}p{6.1cm}>{\raggedright\arraybackslash}p{6.1cm}}
+		\hline
+		\textbf{Elemento} & \textbf{RSL 1} & \textbf{RSL 2} \\
+		\hline
+		População & Órgãos policiais, de investigação criminal e de
+		inteligência; analistas e investigadores &
+		Desenvolvimento de software e quem o faz: desenvolvedores, equipes e
+		projetos (industriais, de código aberto ou acadêmicos) \\
+		\hline
+		Intervenção & Ferramentas, sistemas, plataformas, arquiteturas e
+		métodos de coleta e análise OSINT, com ou sem IA &
+		Uso de assistentes e agentes baseados em LLMs em atividades de
+		desenvolvimento, em qualquer nível de autonomia \\
+		\hline
+		Comparação & Não se aplica &
+		Desenvolvimento sem IA, ou com outra ferramenta, modelo ou nível de
+		autonomia, quando o estudo fizer essa comparação \\
+		\hline
+		Resultados & Funcionalidades, arquiteturas, técnicas de IA,
+		requisitos, desafios, ameaças e formas de avaliação &
+		Produtividade, qualidade do software, segurança, custo e mudanças no
+		processo e na governança \\
+		\hline
+		Contexto & Investigação criminal, segurança pública e atividade de
+		inteligência &
+		Indústria, código aberto e academia \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base nos protocolos das revisões.}
+\end{table}
+
+% ---------------------------------------------------------------------------
+\subsection{Questões de pesquisa}
+
+As Tabelas~\ref{tab:qp-rsl1} e~\ref{tab:qp-rsl2} apresentam as questões de
+pesquisa (QP) de cada revisão e a parte do trabalho que cada uma alimenta.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Questões de pesquisa da RSL 1}
+	\label{tab:qp-rsl1}
+	\small
+	\begin{tabular}{p{0.9cm}p{9.2cm}>{\raggedright\arraybackslash}p{4.2cm}}
+		\hline
+		\textbf{ID} & \textbf{Questão} & \textbf{Uso no trabalho} \\
+		\hline
+		QP1 & Quais ferramentas, sistemas e arquiteturas de busca OSINT foram
+		propostos ou avaliados para uso policial e de inteligência? &
+		Estado da arte e referência para a arquitetura do buscador \\
+		\hline
+		QP2 & Quais técnicas de IA (incluindo modelos de linguagem) são
+		usadas, e em quais fases do ciclo de inteligência? &
+		Onde a IA agrega valor no buscador \\
+		\hline
+		QP3 & Quais requisitos e desafios legais, éticos, de privacidade e de
+		soberania de dados são relatados? &
+		Requisitos não funcionais \\
+		\hline
+		QP4 & Quais ameaças de segurança e riscos são identificados
+		(inclusive contra a ferramenta e contra o investigador), e como são
+		mitigados? &
+		Modelo de ameaças \\
+		\hline
+		QP5 & Como as ferramentas são avaliadas, e como garantem a validade e
+		a preservação da evidência coletada? &
+		Critérios de avaliação e cadeia de custódia \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base no protocolo da RSL 1.}
+\end{table}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Questões de pesquisa da RSL 2}
+	\label{tab:qp-rsl2}
+	\small
+	\begin{tabular}{p{0.9cm}p{9.2cm}>{\raggedright\arraybackslash}p{4.2cm}}
+		\hline
+		\textbf{ID} & \textbf{Questão} & \textbf{Uso no trabalho} \\
+		\hline
+		QP1 & Quais efeitos sobre a produtividade dos desenvolvedores são
+		relatados, e com quais métricas? &
+		Expectativa de ganho no desenvolvimento do buscador \\
+		\hline
+		QP2 & Quais efeitos sobre a qualidade do software (defeitos,
+		manutenibilidade, testes, legibilidade) são relatados? &
+		Práticas de qualidade no desenvolvimento \\
+		\hline
+		QP3 & Quais vulnerabilidades e riscos de segurança o código gerado e
+		os agentes introduzem, e quais mitigações foram avaliadas? &
+		Requisitos de segurança e revisão de código \\
+		\hline
+		QP4 & Quais custos (financeiros, computacionais, de \textit{tokens},
+		de energia) são relatados, e como são medidos? &
+		Custo de desenvolver com IA \\
+		\hline
+		QP5 & Como o processo de engenharia e a governança mudam (papéis,
+		revisão humana, etapas do ciclo de vida, políticas de uso)? &
+		Processo de desenvolvimento do buscador \\
+		\hline
+		QP6 & Quais ferramentas, modelos e níveis de autonomia (completar
+		código, assistente conversacional, agente autônomo) foram estudados,
+		e em quais contextos? &
+		Mapeamento do corpus; contextualiza as QP1 a QP5 \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base no protocolo da RSL 2.}
+\end{table}
+
+% ---------------------------------------------------------------------------
+\subsection{Fontes de busca}
+
+\textbf{Bases internacionais.} As duas revisões buscam em quatro bases:
+Scopus, IEEE Xplore, ACM Digital Library (ACM DL) e Web of Science. O acesso é
+pelo Portal de Periódicos CAPES, com a identificação institucional da UnB
+(CAFe). No Web of Science, a busca usa só a \textit{Core Collection}. Na ACM
+DL, a busca avançada, aberta pelo Portal CAPES, pesquisa a coleção
+\textit{ACM Guide to Computing Literature}.
+% PENDENTE: justificar a escolha de cada base. Os protocolos usam a descrição
+% que cada empresa faz da própria base (Elsevier, IEEE, ACM, Clarivate). Essas
+% páginas estão registradas em referencias-verificadas.md, mas não são
+% referências revisadas por pares. Decidir se entram como nota de rodapé.
+
+\textbf{Fontes nacionais.} As revisões também buscam em veículos brasileiros
+que declaram revisão por pares na página oficial e que têm artigos publicados
+sobre o tema da revisão. A Tabela~\ref{tab:fontes-nacionais} lista essas
+fontes. Na RSL 1, a busca no SciELO é feita diretamente no site do SciELO.
+Dois periódicos da Sociedade Brasileira de Computação, o \textit{Journal of
+the Brazilian Computer Society} (JBCS) e o \textit{Journal of Internet Services
+and Applications} (JISA), não têm busca separada, porque estão cobertos pelo
+Scopus. Só os volumes do JBCS de 1997 a 1999 ficam fora do Scopus. Na RSL 2, os anais do SBES entram só a partir de 2024, porque os de
+2017 a 2023 foram publicados pela ACM e já entram na busca da ACM DL. O JSERD
+tem busca separada, porque não está no Scopus.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Fontes nacionais das revisões}
+	\label{tab:fontes-nacionais}
+	\small
+	\begin{tabular}{p{1.1cm}>{\raggedright\arraybackslash}p{5.6cm}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{4.6cm}}
+		\hline
+		\textbf{RSL} & \textbf{Fonte} & \textbf{Editora} &
+		\textbf{Revisão por pares declarada} \\
+		\hline
+		1 & Revista Brasileira de Inteligência (RBI) & ABIN &
+		Duplo-cega, exceto para artigos depositados em servidor de
+		\textit{preprints} \\
+		1 & Anais do SBSeg (Simpósio Brasileiro de Cibersegurança) & SBC &
+		Duplo-cega, em duas fases (revisão e meta-revisão) \\
+		1 & Revista Brasileira de Segurança Pública (RBSP) & Fórum Brasileiro
+		de Segurança Pública & Duplo-cega \\
+		1 & Revista Brasileira de Direito Processual Penal (RBDPP) & IBRASPP &
+		Duplo-cega \\
+		1 & Revista Brasileira de Criminalística (RBC) & Associação Brasileira
+		de Criminalística & Duplo-cega, com pelo menos dois pareceristas
+		\textit{ad hoc} \\
+		1 & SciELO (todas as coleções) & Não se aplica & Depende do periódico \\
+		\hline
+		2 & Anais do SBES (Simpósio Brasileiro de Engenharia de Software),
+		de 2024 em diante & SBC & Duplo-anônima, com pelo menos três membros
+		do comitê de programa por artigo \\
+		2 & \textit{Journal of Software Engineering Research and Development}
+		(JSERD) & SBC & \textit{Single-anonymous}, com pelo menos dois
+		revisores \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base nos protocolos das revisões.}
+\end{table}
+% PENDENTE: as evidências de revisão por pares e de indexação de cada fonte
+% nacional (páginas das revistas, DOAJ, SciELO, Qualis na Plataforma
+% Sucupira) estão em referencias-verificadas.md e nos protocolos, mas não são
+% referências bibliográficas. Decidir se entram como notas de rodapé ou como
+% apêndice. A RBC entra pelo Qualis A2 (quadriênio 2021-2024), porque não
+% está no DOAJ e não declara Scopus, Web of Science ou SciELO.
+
+\textbf{Busca complementar.} As duas revisões fazem \textit{snowballing}
+\textit{backward} e \textit{forward} a partir dos estudos incluídos, repetido
+até que uma iteração não traga nenhum estudo novo \cite[seção 3.3 e
+Figura~1]{wohlin2014}. O \textit{forward} usa o Google Scholar
+\cite[seção 3.2.2]{wohlin2014}. Na RSL 2, os estudos incluídos nas três
+revisões citadas acima também são conferidos e passam pela mesma triagem, e o
+relatório explica como essas revisões contribuíram para a busca, como pede o
+SEGRESS \cite[item 7]{kitchenham2023segress}.
+
+% ---------------------------------------------------------------------------
+\subsection{Estratégia de busca}
+
+\textbf{RSL 1.} A string combina dois blocos de termos. O bloco A reúne os
+termos de OSINT:
+
+{\footnotesize
+\begin{verbatim}
+"open source intelligence" OR "open-source intelligence" OR OSINT OR SOCMINT
+OR "social media intelligence"
+\end{verbatim}
+}
+
+\noindent O bloco B reúne os termos do contexto policial e de inteligência:
+
+{\footnotesize
+\begin{verbatim}
+police OR policing OR "law enforcement" OR "criminal investigation*"
+OR "digital investigation*" OR "cyber investigation*" OR "intelligence agenc*"
+OR "intelligence analys*" OR "public security" OR crime OR forensic*
+OR "national security" OR "intelligence communit*" OR "intelligence service*"
+OR "security communit*" OR "national intelligence" OR counterintelligence
+OR "counter-intelligence"
+\end{verbatim}
+}
+
+\noindent A string busca \texttt{A AND B} em título, resumo e palavras-chave,
+ou o bloco A só no título. No Scopus, ela foi executada assim:
+
+{\footnotesize
+\begin{verbatim}
+TITLE-ABS-KEY ( ( "open source intelligence" OR "open-source intelligence"
+  OR osint OR socmint OR "social media intelligence" )
+AND ( police OR policing OR "law enforcement" OR "criminal investigation*"
+  OR "digital investigation*" OR "cyber investigation*"
+  OR "intelligence agenc*" OR "intelligence analys*" OR "public security"
+  OR crime OR forensic* OR "national security" OR "intelligence communit*"
+  OR "intelligence service*" OR "security communit*"
+  OR "national intelligence" OR counterintelligence
+  OR "counter-intelligence" ) )
+OR TITLE ( "open source intelligence" OR "open-source intelligence"
+  OR osint OR socmint OR "social media intelligence" )
+\end{verbatim}
+}
+
+% PENDENTE: o PRISMA-S (item 8) pede a estratégia de cada base exatamente como
+% foi executada. Incluir em apêndice as strings do Web of Science, as 4
+% sub-buscas do IEEE Xplore e a string da ACM DL (docs/rsl1-protocolo.md,
+% seção 7.2; docs/buscas/ieee-xplore-2026-11-09.md;
+% docs/buscas/acm-dl-2026-11-09.md). A string do Scopus acima foi quebrada em
+% linhas para caber na página; conferir se o autor prefere a forma original.
+
+O piloto, em 09/11/2026, mudou a string. A versão anterior, só com
+\texttt{A AND B} e sem os termos de segurança nacional e de comunidade de
+inteligência, não recuperava dois dos quatro estudos primários de controle:
+um deles usa termos que não estavam no bloco B, e o outro não tem resumo no
+Scopus. O bloco B foi ampliado, e entrou o ramo com o bloco A no título.
+
+\textbf{RSL 2.} A string combina os blocos abaixo. O bloco A1 reúne os termos
+de assistentes e agentes de código:
+
+{\footnotesize
+\begin{verbatim}
+"coding assistant*" OR "programming assistant*" OR "AI pair programm*"
+OR "AI-assisted programming" OR "AI-assisted software development"
+OR "AI-assisted coding" OR "coding agent*" OR "software engineering agent*"
+OR "LLM-based agent*" OR "LLM-based assistant*" OR "LLM assistant*"
+OR Copilot OR "AI coding"
+\end{verbatim}
+}
+
+\noindent O bloco A2 reúne os termos gerais de LLMs, e o bloco B, os de
+desenvolvimento:
+
+{\footnotesize
+\begin{verbatim}
+A2: "large language model*" OR LLM OR LLMs OR ChatGPT OR "generative AI"
+B:  "software development" OR "software engineering" OR programming
+    OR programmer* OR developer* OR "code generation" OR "generated code"
+\end{verbatim}
+}
+
+\noindent O bloco C reúne os termos das dimensões estudadas:
+
+{\footnotesize
+\begin{verbatim}
+produtividade: productiv* OR efficien*
+qualidade:     "code quality" OR "software quality" OR defect* OR bug*
+               OR maintainab*
+segurança:     secur* OR vulnerab*
+custo:         cost* OR token* OR economic* OR energy
+processo:      "software process" OR "development process" OR workflow*
+               OR governance OR "human oversight" OR "code review"
+\end{verbatim}
+}
+
+\noindent Dois blocos só se aplicam ao título. O bloco T reúne os termos de
+desenvolvedor, e o bloco K, os de código:
+
+{\footnotesize
+\begin{verbatim}
+T: developer* OR programmer* OR "software development" OR "software engineer*"
+K: code OR software
+\end{verbatim}
+}
+
+\noindent A string tem três ramos, ligados por \texttt{OR}:
+\texttt{A1 AND B} em título, resumo e palavras-chave; \texttt{A2 AND C} em
+título, resumo e palavras-chave, com o bloco T no título; e o ramo de custo,
+com \texttt{A2} e os termos de custo em título, resumo e palavras-chave e o
+bloco K no título. A busca fica restrita a artigos de periódico e de evento.
+
+% PENDENTE: incluir em apêndice as strings da RSL 2 por base, como foram
+% executadas (docs/rsl2-protocolo.md, seção 8.2; sub-buscas do IEEE Xplore em
+% docs/buscas/ieee-xplore-2026-11-09.md e ieee-xplore-2026-11-10.md; ACM DL em
+% docs/buscas/acm-dl-2026-11-09.md e acm-dl-2026-11-10.md), depois das buscas
+% definitivas.
+
+O piloto também mudou a string da RSL 2. A versão anterior retornou 11.236
+registros no Scopus. Restringir a busca aos termos de assistente e agente
+(A1), mantendo o bloco C, reduziu o volume, mas perdeu dois estudos de
+controle, que tratam de usabilidade e de interação, e não de produtividade ou
+qualidade. Por isso o ramo A1 dispensa o bloco C. O ramo de custo entrou
+porque a string anterior não recuperava o estudo de controle sobre custo, cujo
+título fala de código, e não de desenvolvedores. Entre as duas revisões da
+string medidas no IEEE Xplore, o autor escolheu o ramo de custo, que acrescenta
+menos registros que ampliar o bloco T.
+
+\textbf{Adaptações por base.} No IEEE Xplore, cada termo é buscado nos campos
+de título, resumo e termos de indexação, porque, no piloto, aplicar um campo a
+um grupo de termos retornou zero resultados. Com isso, a string passa do
+limite de 10 curingas por busca do
+IEEE Xplore\footnote{\url{https://ieeexplore.ieee.org/Xplorehelp/searching-ieee-xplore/search-tips}}.
+Ela foi dividida em sub-buscas de no máximo 9 curingas (4 na RSL 1 e 21 na
+RSL 2), e o resultado é a união delas, sem duplicados. Na ACM DL, o curinga
+não funciona dentro de frase entre aspas, o que o piloto confirmou. Por isso
+as frases com curinga são escritas com as variantes por extenso. Na RSL 2, os
+três ramos foram executados separadamente na ACM DL, porque a string inteira
+voltou com a página de resultados incompleta, e as listas foram unidas pelo
+DOI.
+% PENDENTE: a limitação do curinga em frases da ACM DL vem das dicas de busca
+% da própria ACM DL (referencias-verificadas.md, piloto da ACM DL), que não
+% são referência revisada por pares. Decidir se entra como nota de rodapé.
+
+\textbf{Fontes nacionais.} Na RSL 1, a busca usa a caixa de busca de cada
+site, com os cinco termos do bloco A e dois termos em português,
+\lq\lq fontes abertas\rq\rq{} e \lq\lq inteligência de fontes abertas\rq\rq,
+executados separadamente. As duas grafias de \lq\lq open source
+intelligence\rq\rq{} ficam separadas, porque a busca dos sites não as trata
+como iguais. Na RSL 2, a busca usa os termos dos blocos A1 e A2. Em todas as
+fontes, a string é adaptada ao site e registrada exatamente como foi
+executada, com a data \cite[itens 8 e 13]{rethlefsen2021}.
+
+\textbf{Filtros, período e idioma.} As revisões não aplicam filtro de idioma
+nas bases. O idioma é conferido na triagem (critério CI4), e a ausência de
+limite é informada, como pede o PRISMA-S \cite[item 9]{rethlefsen2021}. Não há
+limite inferior de data: a busca vai até a data da busca definitiva. Qualquer
+restrição de data, idioma ou fonte é registrada com a justificativa
+\cite[seção 4.3.1]{kitchenham2023segress}. A RSL 1 não aplica filtro de tipo
+de documento. A RSL 2 aplica o filtro de artigos de periódico e de evento.
+
+\textbf{Validação da string.} O PRISMA 2020 cita, como forma de validar a
+busca, verificar se ela identifica um conjunto de estudos claramente elegíveis,
+que deve ser informado \cite[item 7]{page2021ee}. As duas revisões usam
+estudos de controle, encontrados por busca na Crossref, independente da
+string. A RSL 1 tem quatro estudos primários de controle e confere também três
+estudos secundários sobre OSINT
+\cite{ghioni2024,browne2024,pastorgalindo2020}. A RSL 2 tem sete estudos
+primários de controle, que cobrem as dimensões de segurança, qualidade,
+processo, produtividade e custo. O autor (R1) e o orientador (R2) confirmam
+na calibração que os controles atendem aos critérios de inclusão. Se algum
+controle não for recuperado, a string é revisada, e a mudança é registrada no
+histórico de versões do protocolo.
+% PENDENTE: decidir se os estudos de controle (4 da RSL 1 e 7 da RSL 2) são
+% listados em apêndice. Os metadados deles foram conferidos só na Crossref, e
+% a revisão por pares de cada veículo ainda não foi conferida
+% (referencias-verificadas.md, "Controles: metadados conferidos na Crossref").
+% Por isso eles não foram citados neste capítulo.
+
+A Tabela~\ref{tab:piloto} mostra o resultado do piloto com as strings atuais
+de cada revisão.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Piloto das buscas com as strings atuais}
+	\label{tab:piloto}
+	\small
+	\begin{tabular}{p{2.6cm}p{1.9cm}>{\raggedright\arraybackslash}p{3.4cm}p{1.9cm}>{\raggedright\arraybackslash}p{3.4cm}}
+		\hline
+		& \multicolumn{2}{l}{\textbf{RSL 1 (09/11/2026)}} &
+		\multicolumn{2}{l}{\textbf{RSL 2 (10/11/2026)}} \\
+		\textbf{Base} & \textbf{Registros} & \textbf{Controles recuperados} &
+		\textbf{Registros} & \textbf{Controles recuperados} \\
+		\hline
+		Scopus & 882 & 4 de 4 primários e 3 de 3 secundários & 3.148 &
+		6 de 6 indexados \\
+		Web of Science & 494 & 4 de 4 primários e 3 de 3 secundários &
+		1.909 & 5 de 5 indexados \\
+		IEEE Xplore & 267 & 1 de 1 indexado & 1.577 & 2 de 2 indexados \\
+		ACM DL & 137 & 2 de 2 indexados & 1.413 & 6 de 6 indexados \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base nos protocolos das revisões.}
+\end{table}
+
+\textbf{Buscas definitivas da RSL 1.} As buscas definitivas da RSL 1 foram
+feitas em 10/11/2026, com as strings do protocolo e sem filtro de data, de
+idioma ou de tipo. As quatro bases retornaram o mesmo total do piloto:
+882 registros no Scopus, 494 no Web of Science, 267 no IEEE Xplore e 137 na
+ACM DL, num total de 1.780. Foram exportados 1.779 registros. O registro do
+IEEE Xplore que não foi exportado é um curso, que a exportação de citações não
+devolve. Nas fontes nacionais, a soma dos registros únicos de cada fonte deu 17, e
+ficaram 15 depois de remover os duplicados entre fontes. Assim, a remoção de
+duplicatas partiu de 1.794 registros.
+
+\textbf{Teste de sensibilidade da string da RSL 1.} Como o protótipo se volta
+para a investigação de corrupção e lavagem de dinheiro
+(Seção~\ref{sec:metodologia-requisitos}), a string foi testada no Scopus, em
+10/11/2026, com buscas que retornam só os registros que ela não recupera.
+Termos de corrupção, lavagem de dinheiro e crimes financeiros, combinados com
+o bloco A, trouxeram 8 registros fora da string. Termos como
+\texttt{criminal*}, \texttt{terroris*} e \texttt{extremis*} trouxeram 60. A
+união das duas listas tem 65 registros.
+% PENDENTE: o teste de sensibilidade mostrou que o bloco B não tem
+% "criminal" sozinho nem os termos de terrorismo e extremismo. Não há decisão
+% registrada sobre ampliar a string ou tratar esses 65 registros (por exemplo,
+% como busca complementar). Registrar a decisão no protocolo antes de
+% descrevê-la aqui.
+
+% ---------------------------------------------------------------------------
+\subsection{Critérios de seleção}
+
+Um estudo entra na revisão se atender a todos os critérios de inclusão (CI) e
+a nenhum critério de exclusão (CE). As Tabelas~\ref{tab:criterios-rsl1}
+e~\ref{tab:criterios-rsl2} apresentam os critérios de cada revisão.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Critérios de seleção da RSL 1}
+	\label{tab:criterios-rsl1}
+	\small
+	\begin{tabular}{p{1cm}p{13.4cm}}
+		\hline
+		\textbf{ID} & \textbf{Critério} \\
+		\hline
+		\multicolumn{2}{l}{\textit{Inclusão (todos devem ser atendidos)}} \\
+		CI1 & Trata de OSINT aplicada a investigação criminal, segurança
+		pública ou atividade de inteligência \\
+		CI2 & Apresenta ferramenta, sistema, arquitetura ou método, ou analisa
+		requisitos, desafios ou riscos dessas ferramentas \\
+		CI3 & Publicado em periódico ou evento com revisão por pares \\
+		CI4 & Escrito em inglês ou português \\
+		\hline
+		\multicolumn{2}{l}{\textit{Exclusão (basta um)}} \\
+		CE1 & OSINT apenas citada de passagem, sem ser objeto do estudo \\
+		CE2 & OSINT exclusivamente comercial ou de marketing, sem finalidade
+		investigativa ou de inteligência \\
+		CE3 & Texto sem revisão por pares: \textit{preprint}, tese,
+		dissertação, relatório técnico, editorial, resumo, pôster ou tutorial
+		\\
+		CE4 & Texto completo indisponível pela UnB/CAPES, por acesso aberto ou
+		por pedido aos autores (pedido feito antes de excluir, com prazo
+		registrado) \\
+		CE5 & Duplicata (registro do mesmo relato) ou outro relato de um
+		estudo já incluído \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base no protocolo da RSL 1.}
+\end{table}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Critérios de seleção da RSL 2}
+	\label{tab:criterios-rsl2}
+	\small
+	\begin{tabular}{p{1cm}p{13.4cm}}
+		\hline
+		\textbf{ID} & \textbf{Critério} \\
+		\hline
+		\multicolumn{2}{l}{\textit{Inclusão (todos devem ser atendidos)}} \\
+		CI1 & Estuda o uso de assistentes ou agentes baseados em LLMs em
+		atividades de desenvolvimento de software \\
+		CI2 & Traz evidência empírica (experimento, estudo de caso, estudo de
+		campo, \textit{survey}, mineração de repositórios ou avaliação com
+		\textit{benchmark}) sobre pelo menos uma das dimensões das QP1 a QP5
+		\\
+		CI3 & Publicado em periódico ou evento com revisão por pares \\
+		CI4 & Escrito em inglês ou português \\
+		\hline
+		\multicolumn{2}{l}{\textit{Exclusão (basta um)}} \\
+		CE1 & O LLM só é citado de passagem, sem ser objeto do estudo \\
+		CE2 & A contribuição é só uma técnica para melhorar o desempenho do
+		modelo em \textit{benchmark} (arquitetura, treino,
+		\textit{fine-tuning}), sem analisar nenhuma das dimensões no
+		desenvolvimento \\
+		CE3 & Trata de engenharia de sistemas de IA (a IA como produto
+		desenvolvido), e não do uso de IA para desenvolver software \\
+		CE4 & Trata só de ensino, com foco em resultados de aprendizagem, ou
+		todos os participantes humanos do estudo são estudantes. Estudos com
+		amostra mista e estudos sem participantes humanos continuam elegíveis
+		\\
+		CE5 & Texto sem revisão por pares: \textit{preprint}, tese,
+		dissertação, relatório técnico, editorial, resumo, pôster ou tutorial
+		\\
+		CE6 & Texto completo indisponível pela UnB/CAPES, por acesso aberto ou
+		por pedido aos autores (pedido feito antes de excluir, com prazo
+		registrado) \\
+		CE7 & Duplicata (registro do mesmo relato) ou outro relato de um
+		estudo já incluído \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base no protocolo da RSL 2.}
+\end{table}
+
+Os relatos de um mesmo estudo são analisados juntos, com a regra de escolha
+registrada \cite[quadro 1 e item 9]{page2021ee}. Nas fontes nacionais e em
+eventos, o tipo do texto é conferido artigo por artigo na triagem, porque um
+mesmo veículo pode ter mais de uma modalidade de revisão. É o caso da RBI, que
+declara arbitragem duplo-cega, exceto para artigos depositados em servidor de
+\textit{preprints}.
+
+\textbf{Estudos secundários.} As revisões que atendam aos critérios não entram
+como estudos primários. São analisadas à parte, como trabalhos relacionados, e
+o relatório explica como contribuíram para a busca
+\cite[item 7]{kitchenham2023segress}.
+
+\textbf{Literatura cinzenta.} \citeonline{kitchenham2023grey} argumentam que
+as diretrizes de revisão sistemática nunca excluíram a literatura cinzenta por
+princípio: a decisão cabe aos critérios de elegibilidade de cada revisão, e um
+estudo sem garantia de disponibilidade pública a longo prazo não deve ser
+usado como estudo primário. As duas revisões deste trabalho exigem revisão por
+pares (CI3), por decisão do autor. Na área da RSL 2, \citeonline[seção
+2.3]{hou2024} mantiveram na revisão deles os \textit{preprints} do arXiv de
+2023 e 2024, porque a área é emergente e muitos trabalhos ainda estavam em
+submissão. O efeito dessa decisão sobre a cobertura é tratado nas ameaças à
+validade (Seção~\ref{sec:metodologia-ameacas}).
+% PENDENTE: Kitchenham, Madeyski e Budgen (2023b) foi conferido pela página do
+% IEEE Xplore e pelo resumo (referencias-verificadas.md). Confirmar se o
+% trecho sobre disponibilidade pública a longo prazo foi lido no texto
+% completo.
+
+\textbf{Regras de aplicação dos critérios da RSL 1.} A calibração de
+10/11/2026 (Seção~\ref{sec:metodologia-selecao}) gerou regras para casos
+ambíguos, aprovadas pelo autor (R1) e incorporadas ao protocolo:
+
+\begin{itemize}
+	\item livros e capítulos de livro não atendem ao CI3, que exige periódico
+	ou evento; os relevantes podem ser usados na fundamentação do trabalho,
+	fora da revisão;
+	\item vigilância em saúde pública sem uso policial ou de inteligência,
+	desastres e defesa civil não atendem ao CI1;
+	\item cibersegurança corporativa, testes de invasão e ataques com OSINT
+	contra empresas ou pessoas não atendem ao CI1, mas entram os estudos sobre
+	ameaças contra a ferramenta ou contra o investigador (QP4);
+	\item investigações de direitos humanos e jornalismo investigativo com
+	fontes abertas atendem ao CI1 só quando a finalidade declarada for prova
+	para responsabilização criminal;
+	\item estudos que só aplicam OSINT a um alvo, sem propor ou avaliar
+	ferramenta, método, requisito ou risco, não atendem ao CI2;
+	\item registros sem resumo são decididos pelo título e pelo veículo e, se
+	o título for compatível com CI1 e CI2, passam para a etapa 2;
+	\item quando o idioma não pode ser identificado pelo registro, o registro
+	passa para a etapa 2, e o CI4 é conferido no texto completo.
+\end{itemize}
+
+% PENDENTE: as regras foram aprovadas por R1 em 10/11/2026
+% (docs/rsl1-calibracao.md, "Decisões"). Registrar se o orientador (R2)
+% também as aprovou.
+
+% ---------------------------------------------------------------------------
+\subsection{Processo de seleção}
+\label{sec:metodologia-selecao}
+
+A seleção da RSL 1 tem sete passos:
+
+\begin{enumerate}
+	\item \textbf{Remoção de duplicatas}, antes da triagem, com registro de
+	quantos registros saíram \cite[item 16a]{page2021ee}. A remoção é feita por
+	um \textit{script} aplicado aos arquivos exportados das bases, fora do
+	Rayyan, porque o recurso do Rayyan que resolve duplicatas em lote só está
+	disponível nos planos
+	pagos\footnote{\url{https://help.rayyan.ai/hc/en-us/articles/34563050458257}}.
+	As regras são aplicadas em ordem: DOI igual; título normalizado e ano
+	iguais, quando os DOIs não são diferentes; e conferência manual dos casos
+	ambíguos. Entre os registros de um grupo de duplicatas, fica o que tem
+	resumo e, entre esses, o da fonte nesta ordem: Scopus, Web of Science, IEEE
+	Xplore, ACM DL e fontes nacionais.
+	\item \textbf{Importação no Rayyan} \cite{ouzzani2016} do arquivo sem
+	duplicatas. A detecção de duplicados do Rayyan serve de conferência, e
+	cada par que ela marca é conferido à mão.
+	\item \textbf{Calibração:} os dois revisores aplicam os critérios aos
+	mesmos 20 a 30 registros, número recomendado por \citeonline[diretriz
+	3]{polanin2019}, e discutem as divergências. Se necessário, os critérios
+	são ajustados e registrados no histórico de versões do protocolo.
+	\item \textbf{Etapa 1:} o autor (R1) e o orientador (R2) fazem a triagem
+	de todos os registros por título, resumo e palavras-chave, de forma
+	independente. Revisores independentes evitam o viés do pesquisador
+	\cite[seção 2.2]{kitchenham2023segress}, e a triagem dupla tende a ser
+	mais confiável que a simples \cite[item 8]{page2021ee}. O Rayyan fica no
+	modo cego, que impede cada revisor de ver as decisões do outro até que os
+	dois
+	terminem\footnote{\url{https://help.rayyan.ai/hc/en-us/articles/17460918624145-How-to-Use-Blind-Mode-in-Rayyan}}.
+	\item \textbf{Etapa 2:} o autor (R1) e o orientador (R2) leem o texto
+	completo de todos os estudos
+	que passaram na etapa 1, também de forma independente.
+	\item \textbf{\textit{Snowballing}} iterativo, com a mesma triagem dupla e
+	independente.
+	\item \textbf{Registro do motivo de cada exclusão na etapa 2}, que o
+	fluxograma do PRISMA 2020 apresenta para os relatos avaliados
+	\cite{page2021prisma}.
+\end{enumerate}
+
+% PENDENTE: as duas notas de rodapé acima remetem à documentação do Rayyan.
+% Em referencias-verificadas.md, a página do modo cego tem situação "⚠️"
+% (documentação técnica, não revisada por pares), e a do Auto Resolver está
+% registrada no registro de buscas. Decidir se a monografia mantém essas
+% notas de rodapé.
+
+\textbf{Concordância.} O SEGRESS pede que se informe como a concordância entre
+os revisores foi medida e que ela seja relatada \cite[itens 8 e
+16a]{kitchenham2023segress}. Em cada etapa, a medida é o kappa de Cohen
+\cite{cohen1960}, calculado sobre todas as decisões. As divergências são
+resolvidas por consenso entre o autor (R1) e o orientador (R2), e cada uma é
+registrada.
+% PENDENTE: se o capítulo de resultados interpretar o valor do kappa (por
+% exemplo, por faixas de concordância), é preciso uma referência verificada
+% para essas faixas.
+
+\textbf{Diferenças na RSL 2.} A RSL 2 segue o mesmo processo. Pelo volume de
+registros, ela usa a semiautomação do Rayyan, que ordena os registros com um
+modelo de predição \cite{ouzzani2016}, seguindo a recomendação de usar uma
+ferramenta de mineração de texto na triagem \cite[diretriz 6]{polanin2019}. A
+ferramenta só ordena os registros: os dois revisores continuam decidindo todos
+eles, como pede a diretriz 7 de \citeonline{polanin2019}.
+% PENDENTE: o passo 1 da seção 11 do protocolo da RSL 2 (v0.7) ainda diz
+% "Importação no Rayyan e remoção de duplicatas", enquanto a RSL 1 (v0.11 em
+% diante) remove as duplicatas por script, fora do Rayyan, porque o Auto
+% Resolver só existe nos planos pagos. Alinhar o protocolo da RSL 2 e depois
+% descrever aqui o procedimento adotado.
+
+\textbf{Situação da seleção na RSL 1.} A remoção de duplicatas foi feita em
+10/11/2026. Dos 1.794 registros, saíram 729 duplicatas: 647 pelo DOI, 60 pelo
+título e ano e 22 na conferência manual. Ficaram 1.065 registros únicos,
+importados no Rayyan. A detecção de duplicados do Rayyan marcou 70 registros,
+e a conferência par a par mostrou que nenhum era duplicata. Os 1.065 registros
+seguem para a triagem.
+
+Para a calibração, 25 registros foram sorteados entre os 1.065, com semente
+fixa, para que o sorteio possa ser repetido. Antes da triagem dos revisores,
+os critérios foram aplicados a essa amostra numa aplicação piloto, feita com
+assistência de IA só a partir do registro (título, resumo, palavras-chave,
+tipo e veículo), para testar se os critérios estavam claros. Essa aplicação
+piloto não substitui as decisões dos revisores. Dela saíram as ambiguidades
+que deram origem às regras de aplicação apresentadas acima. Em seguida, o autor
+(R1) e o orientador (R2) vão triar os mesmos 25 registros no Rayyan, em modo cego, e o kappa da
+calibração será calculado sobre as decisões deles.
+% PENDENTE: confirmar com o autor como declarar o uso de IA na aplicação
+% piloto da calibração (docs/rsl1-calibracao.md registra "assistência de IA
+% (Claude)"), e se há norma da UnB ou da FGA sobre isso.
+
+% ---------------------------------------------------------------------------
+\subsection{Avaliação de qualidade}
+
+As duas revisões usam o instrumento de \citeonline[seção 3.5]{dyba2008}: 11
+critérios baseados no \textit{Critical Appraisal Skills Programme} (CASP) e em
+boas práticas de pesquisa empírica em engenharia de software, que cobrem
+rigor, credibilidade e relevância. Cada critério é respondido com sim ou não,
+como no original. A Tabela~\ref{tab:qualidade} mostra os critérios e como
+cada revisão os usa.
+% PENDENTE: em referencias-verificadas.md, a linha da tabela de 27/10/2026
+% ainda marca Dybå e Dingsøyr (2008) como "⚠️ retirada dos protocolos". A
+% seção "Checklist de qualidade (atualização de 09/11/2026)" registra a
+% leitura do texto completo e a revisão por pares. Atualizar a situação para
+% ✅ naquela tabela.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Critérios de avaliação de qualidade}
+	\label{tab:qualidade}
+	\small
+	\begin{tabular}{p{1.8cm}p{8.8cm}p{1.4cm}p{1.4cm}}
+		\hline
+		\textbf{Critério} & \textbf{Pergunta} & \textbf{RSL 1} &
+		\textbf{RSL 2} \\
+		\hline
+		1 & O estudo relata pesquisa empírica, e não apenas lições aprendidas
+		baseadas em opinião de especialista? & AQ1 & Não usa \\
+		2 & Os objetivos estão claramente relatados, com a justificativa do
+		estudo? & AQ2 & AQ1 \\
+		3 & O contexto em que a pesquisa foi feita está adequadamente
+		descrito? & AQ3 & AQ2 \\
+		4 & O desenho da pesquisa é adequado aos objetivos? & AQ4 & AQ3 \\
+		5 & A amostra e a forma de identificá-la e recrutá-la estão
+		adequadamente descritas? & AQ5 & AQ4 \\
+		6 & Houve grupo de controle para comparar tratamentos? & AQ6 & AQ5 \\
+		7 & Os métodos de coleta de dados são adequados e estão descritos? &
+		AQ7 & AQ6 \\
+		8 & Os métodos de análise dos dados estão adequadamente descritos? &
+		AQ8 & AQ7 \\
+		9 & A relação entre pesquisador e participantes foi considerada de
+		forma adequada? & AQ9 & AQ8 \\
+		10 & Os achados estão claramente declarados, com resultados críveis e
+		conclusões justificadas? & AQ10 & AQ9 \\
+		11 & O estudo tem valor para a pesquisa ou para a prática? & AQ11 &
+		AQ10 \\
+		Acréscimo & O estudo informa o modelo e a versão (ou a data) da
+		ferramenta usada? & Não usa & AQ11 \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base em \citeonline[seção 3.5]{dyba2008}
+	e nos protocolos das revisões.}
+\end{table}
+
+As duas revisões adaptam o instrumento, e adaptações de um instrumento
+existente devem ser informadas \cite[item 11]{page2021ee}:
+
+\begin{itemize}
+	\item \textbf{RSL 1:} no original, o critério 1 serve para excluir estudos
+	que não relatam pesquisa empírica. Aqui ele é só um item da nota, porque o
+	CI2 admite propostas de ferramenta sem avaliação empírica.
+	\item \textbf{RSL 2:} o critério 1 não entra na nota, porque o CI2 já
+	exige evidência empírica. Entra um item sobre o modelo e a versão da
+	ferramenta (AQ11), porque o desempenho e o comportamento do GPT-3.5 e do
+	GPT-4 podem variar muito ao longo do tempo \cite{chen2024}.
+\end{itemize}
+
+Na RSL 1, o autor (R1) e o orientador (R2) avaliam cada estudo de forma independente e resolvem as
+divergências por consenso. A pontuação de cada estudo, de 0 a 11, serve para
+ponderar a síntese, e não para excluir estudos. Ponderar a importância de cada
+estudo na síntese é um dos usos da avaliação de qualidade relatados na
+engenharia de software, e o uso pretendido precisa ser declarado
+\cite[seção 2.3 e tabela 2]{kitchenham2023segress}.
+% PENDENTE: o protocolo da RSL 2 (seção 12) não diz se R1 e R2 avaliam a
+% qualidade de forma independente. Confirmar e registrar no protocolo.
+
+% ---------------------------------------------------------------------------
+\subsection{Extração de dados}
+
+Nas duas revisões, o autor (R1) extrai os dados de todos os estudos incluídos,
+e o orientador (R2) confere a extração de todos eles, uma das formas de coleta
+descritas no PRISMA 2020 \cite[item 9]{page2021ee}. Os formulários de extração
+têm campos comuns (referência completa, ano, país, tipo de publicação, tipo de
+estudo e nota de qualidade) e campos ligados às questões de pesquisa:
+
+\begin{itemize}
+	\item \textbf{RSL 1:} ferramenta ou sistema descrito e sua arquitetura e
+	fontes de dados OSINT utilizadas (QP1); técnicas de IA e fase do ciclo de
+	inteligência (QP2); requisitos e desafios legais, éticos, de privacidade e
+	de soberania (QP3); ameaças, riscos e mitigações (QP4); método de
+	avaliação, métricas e tratamento da evidência, isto é, preservação, cadeia
+	de custódia e rastreabilidade (QP5). As fases do ciclo de inteligência são
+	planejamento, coleta, processamento, análise, difusão e avaliação,
+	segundo \citeonline[seção 1]{browne2024}.
+	\item \textbf{RSL 2:} número de participantes ou projetos; contexto e
+	tarefa de desenvolvimento, ferramenta, modelo, versão e nível de autonomia
+	(QP6); grupo de comparação, se houver; métricas e resultados de
+	produtividade (QP1) e de qualidade (QP2); vulnerabilidades, riscos e
+	mitigações avaliadas (QP3); custos relatados e forma de medição (QP4); e
+	mudanças de processo, papéis, revisão humana e governança (QP5).
+\end{itemize}
+
+% ---------------------------------------------------------------------------
+\subsection{Síntese}
+
+As duas revisões começam por um mapeamento, isto é, a análise das
+características dos estudos \cite[seção 4.2]{kitchenham2023segress}. Na RSL 1,
+o mapeamento mostra a distribuição dos estudos por ano, país, tipo de estudo,
+técnica de IA e fase do ciclo de inteligência. Na RSL 2, por ano, contexto,
+tipo de estudo, ferramenta e nível de autonomia.
+
+Na RSL 1, cada questão de pesquisa recebe uma síntese temática, nas três
+etapas de \citeonline{thomas2008}: codificação do texto linha a linha,
+desenvolvimento de temas descritivos e geração de temas analíticos.
+
+Na RSL 2, cada dimensão (QP1 a QP5) recebe uma tabela com a direção do efeito
+relatado (positivo, negativo, misto ou nulo), as métricas usadas e a nota de
+qualidade de cada estudo. A contagem pela direção do efeito é uma das formas
+de síntese descritas no PRISMA 2020 \cite[quadro 1]{page2021ee}. Não está
+prevista meta-análise: \citeonline{mohamed2026} descrevem os estudos sobre
+assistentes baseados em LLMs como metodologicamente diversos, em sua maioria
+exploratórios (59\%), e com resultados contraditórios sobre a qualidade, que
+dependem do contexto e do critério de avaliação. Se o corpus permitir, essa
+decisão é revista e registrada.
+% PENDENTE: o trecho de Mohamed, Assi e Guizani (2026) foi conferido só no
+% resumo, porque o texto completo não está em HTML na ACM DL
+% (referencias-verificadas.md, "Sem meta-análise na RSL 2 (resumo)").
+
+Nas duas revisões, a síntese termina na rastreabilidade para o trabalho: cada
+achado relevante da RSL 1 vira um requisito candidato do buscador, e cada
+achado relevante da RSL 2 vira uma prática ou um requisito candidato para o
+processo de desenvolvimento.
+
+% ---------------------------------------------------------------------------
+\subsection{Ameaças à validade}
+\label{sec:metodologia-ameacas}
+
+\begin{itemize}
+	\item \textbf{Viés de publicação.} \citeonline[p.~10302]{pastorgalindo2020}
+	descrevem o uso de OSINT pelos órgãos policiais e de inteligência da
+	Espanha como um
+	aspecto confidencial do funcionamento desses órgãos, o que pode deixar
+	ferramentas sem publicação. Exigir revisão por pares também deixa de fora
+	o que só é publicado fora desses veículos, como os \textit{preprints} que
+	\citeonline[seção 2.3]{hou2024} mantiveram na área da RSL 2. Buscas amplas
+	são a defesa contra o viés de publicação
+	\cite[seção 2.2]{kitchenham2023segress}. Na RSL 1, a mitigação prevista é
+	triangular os resultados com a entrevista com um delegado de polícia.
+	\item \textbf{Terminologia.} Termos inconsistentes fazem a busca em bases
+	perder estudos relevantes, como no exemplo de \citeonline[seção
+	3.1]{wohlin2014}, e termos amplos trazem muitos artigos irrelevantes
+	\cite[seção 2]{wohlin2014}. O piloto calibra a string, e os estudos de
+	controle verificam se ela recupera o que deve.
+	\item \textbf{Subjetividade da seleção.} É mitigada pela triagem dupla e
+	independente \cite[seção 2.2]{kitchenham2023segress}, pela calibração e
+	pela medida de concordância.
+	\item \textbf{Idioma e acesso.} As revisões só incluem textos em inglês e
+	português, e produção relevante em outros idiomas pode ficar de fora. A
+	restrição de idioma e a impossibilidade de acessar todos os relatos são
+	limitações a discutir \cite[item 23c]{page2021ee}.
+	\item \textbf{Obsolescência (RSL 2).} Um resultado obtido com uma versão do
+	modelo pode não valer para a seguinte \cite{chen2024}. O item AQ11 e a
+	extração da versão do modelo permitem relativizar os achados.
+\end{itemize}
+
+% ===========================================================================
+\section{Registro e transparência}
+\label{sec:metodologia-registro}
+
+Os protocolos das duas revisões não foram registrados em base externa. Eles
+ficam versionados no repositório do trabalho, cada um com um histórico de
+versões que registra as mudanças, com data e motivo. Na data descrita neste
+capítulo, o protocolo da RSL 1 está na versão 0.12, e o da RSL 2, na versão
+0.7. O PRISMA 2020 pede que o relato informe o registro da revisão ou declare
+que ela não foi registrada, e que indique onde o protocolo pode ser acessado
+\cite[itens 24a e 24b]{page2021prisma}. No SEGRESS, o registro é opcional para
+todos os tipos de revisão \cite[item 24a]{kitchenham2023segress}. O documento
+de explicação e elaboração do PRISMA 2020 associa o registro à redução de viés
+e ao aumento da transparência \cite[item 24a, quadro 6]{page2021ee}.
+% PENDENTE: indicar o endereço público do repositório (ou anexar os
+% protocolos como apêndice), para atender ao item 24b do PRISMA 2020.
+
+As buscas seguem o PRISMA-S. Para cada base, o registro de buscas guarda o
+nome e a plataforma, a data, a string exata executada, os filtros aplicados e
+o número de resultados \cite[itens 1, 8, 9, 13 e 15]{rethlefsen2021}. Os
+arquivos exportados das bases ficam guardados localmente, fora do controle de
+versões. A remoção de duplicatas gera um relatório com cada grupo de
+duplicatas, o registro mantido e os removidos. O sorteio da amostra de
+calibração usa semente fixa e pode ser repetido.
+% PENDENTE: os arquivos exportados (docs/exportacoes/) ficam fora do git.
+% Decidir se e onde serão disponibilizados (por exemplo, em repositório de
+% dados), já que o PRISMA-S trata do relato das buscas, e não da guarda dos
+% resultados.
+
+Cada referência citada nos protocolos foi conferida na página do editor, e
+cada escolha de método cita a fonte e o local do trecho que a sustenta, como
+nas citações deste capítulo.
+
+% ===========================================================================
+\section{Levantamento de requisitos}
+\label{sec:metodologia-requisitos}
+
+O levantamento de requisitos partiu de uma sugestão do orientador, recebida em
+10/11/2026, para um aplicativo OSINT de investigação de corrupção e lavagem de
+dinheiro na Polícia Civil do Distrito Federal (PCDF). Esse levantamento é uma
+fonte primária do projeto, e não uma referência bibliográfica. Ele tem dois
+eixos: correlacionar dados abertos heterogêneos (pessoas, empresas, contratos,
+bens, redes) e produzir prova que se sustente em juízo.
+
+A lista inicial tem 10 requisitos funcionais (RF01 a RF10) e 11 requisitos não
+funcionais (RNF01 a RNF11). Cada requisito foi ligado à questão de pesquisa da
+RSL 1 que pode trazer evidência sobre ele, como mostra a
+Tabela~\ref{tab:requisitos}. Para o orientador, o requisito mais crítico para
+a defesa em juízo é a combinação da cadeia de custódia (RF07) com a trilha de
+auditoria (RNF02).
+
+\begin{table}[htbp]
+	\centering
+	\caption{Lista inicial de requisitos e ligação com a RSL 1}
+	\label{tab:requisitos}
+	\small
+	\begin{tabular}{p{1.4cm}p{9.6cm}p{2.6cm}}
+		\hline
+		\textbf{ID} & \textbf{Requisito} & \textbf{QP da RSL 1} \\
+		\hline
+		RF01 & Coleta multifonte & QP1 \\
+		RF02 & Resolução de entidades & QP1, QP2 \\
+		RF03 & Análise de vínculos em grafo & QP1, QP2 \\
+		RF04 & Alertas de tipologias & QP2 \\
+		RF05 & Linha do tempo patrimonial & QP1 \\
+		RF06 & Monitoramento contínuo & QP1 \\
+		RF07 & Cadeia de custódia digital & QP5 \\
+		RF08 & Gestão de casos & QP1 \\
+		RF09 & Relatórios & QP5 \\
+		RF10 & Integrações sob ordem judicial & QP3 \\
+		\hline
+		RNF01 & Segurança & QP3, QP4 \\
+		RNF02 & Auditoria imutável & QP4, QP5 \\
+		RNF03 & Anonimato operacional & QP4 \\
+		RNF04 & Conformidade legal & QP3 \\
+		RNF05 & Explicabilidade & QP2, QP5 \\
+		RNF06 & Desempenho e escala & QP5 \\
+		RNF07 & Disponibilidade e resiliência & QP4 \\
+		RNF08 & Usabilidade & QP5 \\
+		RNF09 & Interoperabilidade & QP1 \\
+		RNF10 & Manutenibilidade & QP1 \\
+		RNF11 & DevSecOps & QP4 \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base no levantamento com o orientador.}
+\end{table}
+
+O levantamento segue três passos:
+
+\begin{enumerate}
+	\item \textbf{Confronto com a evidência e com a legislação.} Cada requisito
+	é confrontado com a evidência da RSL 1, pela questão de pesquisa indicada
+	na Tabela~\ref{tab:requisitos}, e com a legislação conferida. O resultado
+	desse confronto entra na monografia.
+	\item \textbf{Conferência das fontes de dados.} Para cada fonte do RF01, o
+	autor confere se há API ou dados abertos oficiais, os termos de uso e quais
+	campos são públicos.
+	\item \textbf{Recorte do protótipo.} O autor define quais requisitos entram
+	na implementação e quais ficam como trabalho futuro.
+\end{enumerate}
+
+% PENDENTE: citar a técnica de levantamento de requisitos usada (por exemplo,
+% entrevista com especialista). Não há referência verificada sobre engenharia
+% de requisitos em docs/referencias-verificadas.md.
+% PENDENTE: a entrevista com o delegado está prevista (docs/rsl1-protocolo.md,
+% seção 14), mas a data, o roteiro e a necessidade de termo de consentimento
+% ainda estão em aberto. Descrever o procedimento da entrevista quando for
+% definido.
+% PENDENTE: a legislação conferida (LGPD, Marco Civil da Internet, Leis
+% 9.613/1998, 12.846/2013 e 12.850/2013) está em docs/requisitos-app.md e
+% docs/normas-iso.md, mas não em docs/referencias-verificadas.md. Incluir as
+% entradas BibTeX das leis antes de citá-las. O Marco Civil da Internet ainda
+% não foi conferido (docs/requisitos-app.md, nota 2).
+
+\endgroup

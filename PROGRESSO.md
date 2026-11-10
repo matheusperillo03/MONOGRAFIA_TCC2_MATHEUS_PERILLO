@@ -39,11 +39,12 @@
 - 27/10 — Reunião com o orientador e levantamento dos tópicos
 - 27/10 — Criação dos repositórios de front-end e back-end
 - 27/10 — Criação do repositório da monografia a partir do template LaTeX da FGA-UnB ([fga-unb/template-latex-tcc](https://github.com/fga-unb/template-latex-tcc))
+- 27/10 — Rascunho do protocolo da revisão sobre OSINT — ver [docs/rsl1-protocolo.md](https://github.com/matheusperillo03/MONOGRAFIA_TCC2_MATHEUS_PERILLO/blob/main/docs/rsl1-protocolo.md)
 - 27/10 — Levantamento das normas ISO/IEC aplicáveis (núcleo: 42001, 23894, 27090; complementares: família 27037/27042, 27001/27002, 27701, 5338, 42005, 25059, entre outras)
 
 ## Próximos passos
 
-- [ ] Montar o protocolo da revisão sobre OSINT (perguntas de pesquisa, strings de busca, critérios de inclusão/exclusão)
+- [ ] Validar o protocolo da revisão sobre OSINT com o orientador e rodar o piloto das buscas
 - [ ] Montar o protocolo da revisão sobre AI-First
 - [ ] Fechar o roteiro de perguntas para o delegado
 - [ ] Preencher capa, folha de rosto e estrutura de capítulos no template LaTeX

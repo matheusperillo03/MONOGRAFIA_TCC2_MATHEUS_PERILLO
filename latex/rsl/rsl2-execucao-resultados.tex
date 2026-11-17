@@ -1,0 +1,36 @@
+% Parte II e III do PDF completo da RSL 2: execução e resultados.
+% Gerado a partir dos mesmos arquivos da monografia. Compilar na pasta latex/:
+%   pdflatex rsl/rsl2-execucao-resultados && bibtex rsl2-execucao-resultados && pdflatex ... (x2)
+\input{fixos/pacotes}
+\input{fixos/comandos}
+\usepackage{fixos/customizacoes}
+\begin{document}
+\frenchspacing\openany
+\pagestyle{simple}
+\begin{center}
+{\Large\bfseries RSL 2: Assistentes e agentes de IA no desenvolvimento de software}\\[6pt]
+{\large Execução e resultados}\\[12pt]
+Matheus Perillo (R1) e orientador (R2) · UnB/FCTE · \today
+\end{center}
+\vspace{12pt}
+\noindent Este documento continua o protocolo da revisão (parte I, nas páginas anteriores). A parte II descreve a execução: a seleção dos estudos, inclusive o \textit{snowballing}, e a avaliação de qualidade. A parte III traz os resultados: o fluxo de seleção, as características dos estudos, a qualidade e a síntese de cada questão de pesquisa. Os textos e as tabelas são os mesmos do capítulo de resultados da monografia, gerados dos mesmos arquivos. A seleção da etapa 2, a avaliação de qualidade, a extração e a síntese foram feitas pela IA como terceira opinião, com regras aceitas por R1. R2 ainda as confirma, e os resultados são provisórios.
+
+\chapter{Execução da revisão}
+\section{Seleção dos estudos}
+\label{sec:metodologia-selecao}
+{\let\subsubsection\subsection \input{editaveis/rsl-execucao-selecao}}
+{\let\subsection\section \input{editaveis/rsl-qualidade}}
+\section{Síntese}
+\label{sec:metodologia-sintese}
+\input{editaveis/rsl-sintese-regras}
+
+\chapter{Resultados}
+\label{sec:metodologia-rsl}
+\phantomsection\label{sec:metodologia-requisitos}
+\input{editaveis/gerado/qualidade}
+\input{editaveis/resultados-rsl2}
+
+\bibliography{bibliografia}
+\appendix
+\input{editaveis/gerado/apendice-estudos-rsl2}
+\end{document}

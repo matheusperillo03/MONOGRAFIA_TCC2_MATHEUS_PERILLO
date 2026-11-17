@@ -1,0 +1,508 @@
+% ---------------------------------------------------------------------------
+% Resultados da RSL 1 (OSINT para órgãos policiais e de inteligência).
+% Fontes: docs/triagem/prisma-etapa2.md, docs/triagem/snowball-leitura/,
+% docs/triagem/qualidade/, docs/triagem/sintese/ (mapeamento e leituras A1 a A4).
+% ---------------------------------------------------------------------------
+\section{RSL 1: ferramentas OSINT para órgãos policiais e de inteligência}
+\label{sec:resultados-rsl1}
+
+Esta seção apresenta a seleção, as características e a qualidade dos estudos
+incluídos na RSL 1, a síntese temática de cada questão de pesquisa e a
+ligação dos achados com o levantamento de requisitos do buscador. Os estudos
+incluídos são citados pelo identificador entre parênteses, por exemplo
+(RSL1-0494). O prefixo RSL1 indica estudos da busca nas bases, e o prefixo
+SB1, estudos do \textit{snowballing}. A lista completa, com a referência de
+cada relato, está no Apêndice~\ref{ap:estudos}.
+
+A leitura do texto completo na etapa 2, o \textit{snowballing}, a avaliação
+de qualidade, a extração e a síntese foram feitos pela IA como terceira
+opinião, com regras de aplicação aceitas pelo autor (R1). O orientador (R2)
+ainda confirma essas regras, e a avaliação independente de R1 e R2 ainda não
+foi feita. Os resultados desta seção são, portanto, provisórios. A síntese
+codificou os campos da extração, de até 60 palavras cada, e não o texto
+completo. Uma ausência registrada aqui (por exemplo, ``nenhum estudo trata do
+Brasil'') significa ausência nesses campos. Os números de resultado dos
+estudos foram conferidos por \textit{script} contra o texto completo.
+% PENDENTE: R2 confirma as regras R1-A a R1-D (etapa 2), R1-E a R1-H
+% (snowballing), Q-A a Q-C (qualidade) e S-A a S-D (síntese). Se alguma regra
+% mudar, os números e as listas de IDs desta seção são recalculados por script.
+
+% ---------------------------------------------------------------------------
+\subsection{Seleção dos estudos}
+\label{sec:rsl1-selecao}
+
+A Tabela~\ref{tab:prisma-rsl1} mostra o fluxo da busca nas bases. As cinco
+fontes retornaram 1.928 registros. Depois da remoção de 789 duplicatas,
+1.139 registros foram triados por título, resumo e palavras-chave. A etapa 1
+excluiu 689, e 450 passaram para a etapa 2.
+% PENDENTE: o registro de buscas da RSL 1 diz "1.923 registros" na seção de
+% ampliação, mas a soma dos arquivos dá 1.928 (1.794 + 134). Conferir e
+% corrigir o registro de buscas (docs/triagem/prisma-etapa2.md).
+
+Na etapa 2, o recorte da Seção~\ref{sec:metodologia-selecao} (CI5, ferramenta
+com avaliação; CI6, uso por órgão policial, de investigação criminal ou de
+inteligência explícito no registro; CI7, publicação a partir de 2015) excluiu
+361 registros pelo resumo e pelos metadados: 187 pelo CI6, 88 pelo CI5 e 86
+pelo CI7. Outros 19 registros eram estudos secundários e ficaram para a
+análise à parte. Dos 70 relatos buscados, 21 não foram recuperados pelo
+acesso da UnB/CAPES nem em acesso aberto. Dos 49 relatos lidos, 26 foram
+excluídos no texto completo, 13 deles pelo CI5. Entraram 23
+estudos primários.
+
+O \textit{snowballing} (Tabela~\ref{tab:snowball-rsl1}) partiu desses 23
+estudos e parou na sexta iteração, a primeira sem estudo novo. Ele
+identificou 2.162 registros novos. Os metadados excluíram 1.066, a triagem
+por título e resumo excluiu 930, e 26 eram estudos secundários. Dos 140
+relatos buscados, 43 não foram recuperados. Dos 97 avaliados no texto
+completo, 63 foram excluídos, e 34 entraram. A RSL 1 tem, assim, 57 estudos
+primários: 23 da busca nas bases e 34 do \textit{snowballing}.
+
+\input{editaveis/gerado/prisma-rsl1}
+
+Os relatos não recuperados (21 na busca nas bases e 43 no
+\textit{snowballing}) são uma limitação desta revisão, e a impossibilidade de
+acessar todos os relatos deve ser discutida \cite[item 23c]{page2021ee}. Os
+estudos secundários (19 da busca nas bases e 26 do \textit{snowballing}) não
+entram na síntese abaixo.
+% PENDENTE: a lista dos relatos não recuperados está em
+% docs/triagem/pedidos-autores.md. Registrar se os pedidos aos autores foram
+% feitos e com que prazo (CE4).
+% PENDENTE: os estudos secundários da RSL 1 (19 + 26) ainda não foram lidos.
+
+% ---------------------------------------------------------------------------
+\subsection{Características dos estudos}
+\label{sec:rsl1-caracteristicas}
+
+As Tabelas~\ref{tab:map-rsl1-anodepublica} a~\ref{tab:map-rsl1-fasedociclod}
+resumem o mapeamento dos 57 estudos. Os estudos vão de 2015 a 2026, e 2023 e
+2024 são os anos com mais estudos (9 cada). São 42 relatos em periódico (74\%)
+e 15 em conferência (26\%). Os países mais frequentes do primeiro autor são
+Espanha (8), Grécia (6) e Índia (6). Nenhum estudo é do Brasil ou de outro
+país da América Latina.
+
+A maioria dos estudos (45, ou 79\%) propõe uma ferramenta e a avalia. Nove
+são estudos empíricos, e três têm outro tipo. Nas técnicas de IA (QP2),
+predominam o PLN clássico (38 estudos, 67\%) e o aprendizado de máquina
+clássico (36, 63\%). LLM e \textit{transformers} aparecem em 20 estudos
+(35\%), e 5 estudos não usam IA ou não a relatam. Nas fases do ciclo de
+inteligência, a IA e as ferramentas se concentram em processamento (53, 93\%),
+análise (50, 88\%) e coleta (44, 77\%). Planejamento (6, 11\%) e avaliação
+(3, 5\%) quase não aparecem.
+
+\input{editaveis/gerado/mapeamento-rsl1}
+
+A Tabela~\ref{tab:cobertura-rsl1} mostra quantos estudos trazem informação em
+cada campo da extração. Os campos de ferramenta, fontes, ameaças e avaliação
+estão preenchidos nos 57 estudos. Os campos mais vazios são o tratamento da
+evidência (22 estudos, 39\%), o órgão usuário nomeado (25, 44\%) e os
+requisitos legais e éticos (37, 65\%). Esses três vazios voltam como lacunas
+nas QP3 e QP5.
+
+\input{editaveis/gerado/cobertura-rsl1}
+
+Os 32 estudos sem órgão usuário nomeado parecem contradizer o CI6, que exige
+uso policial explícito. A diferença está no que cada um pede. O CI6 foi
+aplicado ao registro e aceita a declaração de que a ferramenta é para a
+polícia ou foi usada por ela. O campo da extração pede o nome de um órgão
+concreto, e esses 32 estudos citam o uso policial de forma genérica.
+% PENDENTE: R1 e R2 decidem se o CI6 exige órgão nomeado ou basta o uso
+% policial declarado. A decisão vale para o grupo de 32 estudos, não só para
+% RSL1-0856, cujo texto não nomeia nenhum órgão (qualidade/LEIAME.md).
+% PENDENTE: o campo tipo_crime da extração ainda depende de R1 e R2 e não é
+% relatado aqui.
+
+Dois pares de estudos podem ser relatos do mesmo projeto: RSL1-0340 e
+SB1-0202, ambos sobre o projeto SIGNIFICANCE, e SB1-0272 e SB1-0421, ambos
+sobre detecção de atividades ilegais na \textit{dark web}. Até a decisão,
+eles contam como estudos separados.
+% PENDENTE: R1 e R2 conferem os pares RSL1-0340/SB1-0202 e SB1-0272/SB1-0421
+% pelos autores. Se algum par for o mesmo estudo, a RSL 1 passa a ter 56 ou
+% 55 estudos, e as tabelas são regeradas.
+
+% ---------------------------------------------------------------------------
+\subsection{Qualidade dos estudos}
+\label{sec:rsl1-qualidade}
+
+Na RSL 1, a nota média é 8,58 de 11, e a mediana é 9
+(Tabela~\ref{tab:qualidade-resumo}). As notas vão de 4 a 11. Oito estudos
+ficaram entre 4 e 6, 24 entre 7 e 9, e 25 entre 10 e 11. As notas mais baixas
+são de RSL1-0856 (4), RSL1-0309 e RSL1-0368. A nota pondera a síntese e não
+exclui estudos (Seção~\ref{sec:metodologia-qualidade}).
+
+A Tabela~\ref{tab:qualidade-itens} mostra o número de ``sim'' em cada
+critério. Todos os 57 estudos relatam pesquisa empírica (AQ1) e têm valor
+para a pesquisa ou para a prática (AQ11). Os critérios com menos ``sim'' são
+o AQ9 (2 estudos, 4\%), o AQ10 (34, 60\%), o AQ8 (39, 68\%) e o AQ6 (40,
+70\%).
+
+O AQ9 pergunta se a relação entre o pesquisador e os participantes foi
+considerada. Só RSL1-0381 e SB1-0781 têm ``sim''. Pela regra de aplicação
+desse critério, conta como ``sim'' discutir como os pesquisadores podem ter
+influenciado os resultados, por exemplo ao avaliar a própria ferramenta, e,
+em estudos sem participantes, discutir o viés dos autores como avaliadores.
+Quase nenhum estudo faz essa discussão. Como 45 dos 57 estudos propõem uma
+ferramenta e a avaliam, o resultado do AQ9 indica que a maior parte da
+evidência da RSL 1 vem de avaliações feitas pelos autores da ferramenta, sem
+discussão desse viés. Esse achado reforça a fragilidade da
+validade externa descrita na QP5 (Seção~\ref{sec:rsl1-qp5}). Entre os
+motivos de ``não'' no AQ10 (achados críveis) estão números inconsistentes no
+próprio relato, como em RSL1-0340 e SB1-0421.
+% PENDENTE: o "sim" de SB1-0781 no AQ9 é limítrofe (discussão de suposições
+% de rotulagem, não de viés pessoal; qualidade/rsl1-qualidade.csv). R1 e R2
+% confirmam.
+% PENDENTE: as notas são da IA (terceira opinião). O protocolo pede avaliação
+% independente de R1 e R2, com kappa, ainda não feita.
+
+% ---------------------------------------------------------------------------
+\subsection{QP1 e QP2: ferramentas, arquiteturas e técnicas de IA}
+\label{sec:rsl1-qp1-qp2}
+
+A síntese temática seguiu as três etapas de \citeonline{thomas2008}:
+codificação, temas descritivos e temas analíticos. A
+Tabela~\ref{tab:temas-A1} lista os temas analíticos das QP1 e QP2. Nessa
+tabela e nas seguintes, a coluna ``Estudos'' conta os estudos distintos nos
+códigos do tema, inclusive os códigos que registram uma ausência (por
+exemplo, ``nenhum mecanismo de preservação descrito''). O número mostra a
+abrangência do tema no corpus, e não quantos estudos sustentam a afirmação do
+tema.
+
+\input{editaveis/gerado/temas-A1}
+
+\textbf{TA1. Arquitetura de referência: \textit{pipeline} modular, com a
+busca do investigador no centro.} Os estudos convergem num fluxo de coleta,
+normalização, análise e apresentação (RSL1-0288, SB1-0421, SB1-0837). Os
+sistemas mais completos separam conectores por fonte, armazenamento indexado
+e módulos de análise, e expõem tudo por API e painel (SB1-0202, SB1-0421,
+RSL1-0856, SB1-0837). A busca ativa pelo investigador é rara: o código
+correspondente reúne 8 estudos, entre eles RSL1-0183, SB1-0444, RSL1-0494 e
+RSL1-0856. A maioria entrega só um classificador ou componente, sem
+interface (RSL1-0211, SB1-0767, SB1-0914). As fontes definem os conectores.
+A \textit{dark web} é fonte em 33 estudos e exige \textit{crawler} para Tor,
+com sessão e CAPTCHA (RSL1-0309, SB1-0629, SB1-0436). Redes sociais,
+notícias, infraestrutura técnica e \textit{blockchain} exigem APIs e
+raspadores próprios (SB1-0404, RSL1-0381, RSL1-0908). Muitos estudos validam
+em conjuntos de dados prontos, e não em coleta viva (SB1-0367, SB1-0547,
+SB1-0873).
+
+\textbf{TA2. Funções de IA: triagem, extração e ligação, com LLM como camada
+de apoio.} O uso central da IA é triar conteúdo, isto é, classificar textos e
+imagens como ilícitos ou relevantes (SB1-0620, SB1-0547, SB1-0827, SB1-0837).
+Depois vêm a extração de entidades e campos (SB1-0724, SB1-0873), a ligação
+de contas, \textit{aliases} e redes (RSL1-0466, SB1-0781, SB1-0767) e a
+localização no tempo e no espaço (RSL1-0183, RSL1-0662). Os LLMs fazem
+extração, modelagem de tópicos, checagem e busca semântica (SB1-0724,
+SB1-1001, RSL1-0381, RSL1-0494), em geral seguidos de expressões regulares
+ou de verificação humana (SB1-0724, SB1-0837). Sumarização e expansão de
+consultas apoiam o analista (RSL1-0494, SB1-1025, SB1-0444). Técnicas para
+poucos rótulos mostram a falta de dados rotulados na área (SB1-0678,
+SB1-0828, SB1-0367). A detecção de conteúdo sintético é rara (RSL1-0381,
+RSL1-0466).
+
+\textbf{TA3. Distância entre os modelos de pesquisa e as ferramentas
+adotadas pela polícia.} As ferramentas que a polícia de fato usa são
+navegadores sem IA, centrados em auditoria, captura, \textit{hash} e
+relatório (RSL1-0854, RSL1-0863). Processos reais combinam ferramentas de
+terceiros (RSL1-0908, RSL1-0466, RSL1-0816). Já a maioria das propostas com
+IA não tem órgão usuário concreto (SB1-0298, SB1-0547, SB1-0620). A IA fica
+em processamento e análise, e planejamento e avaliação quase não recebem
+apoio (RSL1-0214, RSL1-0368, RSL1-0612). Poucos estudos unem IA e
+preservação de evidência no mesmo sistema (SB1-0306, RSL1-0466, SB1-0837), e
+a explicabilidade é rara (SB1-0781, SB1-0837). Os modelos de avaliação de
+ferramentas mostram que o órgão julga segurança, facilidade de uso e
+acurácia, e não só o desempenho do modelo (RSL1-0612, RSL1-0381).
+
+\textbf{Contradições.} Primeiro, as ferramentas adotadas por polícias não
+usam IA e priorizam evidência e relatório (RSL1-0854, RSL1-0863), enquanto a
+maioria das propostas se centra em classificadores sem órgão usuário
+(SB1-0547, SB1-0620); o modelo de valor do Exército dos EUA trata o
+aprendizado de máquina como tecnologia futura (RSL1-0612). Segundo, a
+autonomia da decisão diverge: um sistema emite alerta automático de conteúdo
+ilegal (SB1-0465), e outros exigem decisão final humana (RSL1-0368,
+SB1-0837). Terceiro, técnicas tradicionais seguem como alternativa às
+recentes, como SIFT com SVM diante de \textit{features} de CNN (SB1-0827) e
+LDA e TF-IDF diante de LLM (SB1-1001). Quarto, o projeto SIGNIFICANCE
+aparece com arquiteturas diferentes em RSL1-0340 e SB1-0202.
+% PENDENTE: se R1 e R2 decidirem que RSL1-0340 e SB1-0202 são o mesmo
+% estudo, a quarta contradição vira evolução do projeto entre dois relatos.
+
+\textbf{Lacunas.} Nenhum estudo relata órgão usuário, fonte ou idioma do
+Brasil ou da América Latina. Planejamento e avaliação do ciclo quase não
+recebem apoio de ferramenta. Mensageiros e grupos fechados são pouco
+cobertos como fonte (RSL1-0368, RSL1-0466, RSL1-0816, SB1-0689, SB1-0837).
+IA e preservação de evidência raramente aparecem juntas (SB1-0306,
+RSL1-0466, SB1-0837, SB1-0421). A explicabilidade quase não aparece
+(SB1-0781, SB1-0837), e em RSL1-0309 fica como trabalho futuro.
+
+% ---------------------------------------------------------------------------
+\subsection{QP3 e QP4: requisitos legais e éticos, ameaças e mitigações}
+\label{sec:rsl1-qp3-qp4}
+
+A Tabela~\ref{tab:temas-A2} lista os temas analíticos das QP3 e QP4. O
+recorte da etapa 2 deixou de fora estudos conceituais, legais e éticos sem
+avaliação de ferramenta (CI5). Por isso, a evidência das QP3 e QP4 vem
+sobretudo do que os estudos de ferramenta relatam sobre esses temas, e 20
+dos 57 estudos não tratam de requisitos legais nem éticos.
+
+\input{editaveis/gerado/temas-A2}
+
+\textbf{TA1. A conformidade legal é requisito de concepção, e não etapa
+posterior.} Os estudos que discutem o direito tratam a conformidade como
+restrição de projeto. Na polícia holandesa, a leitura do GDPR proíbe
+identificar usuários, ligar perfis, entrar em grupos fechados e armazenar
+dados brutos (RSL1-0183). No Reino Unido, o nível da investigação define o
+que é permitido, sob necessidade e proporcionalidade (RSL1-0854). Os testes
+passam por avaliação de impacto e minimização (RSL1-0381, SB1-0781), e as
+ações ativas ou intrusivas dependem de autorização (RSL1-0368, RSL1-0816,
+RSL1-0908). A jurisdição limita o alcance (RSL1-0561, SB1-0689). Na coleta
+automatizada não há consenso, e parte dos estudos contorna barreiras sem
+discutir a legalidade (SB1-0629, SB1-0436, SB1-0678).
+
+\textbf{TA2. A evidência só tem valor com proveniência e integridade
+verificáveis.} A admissibilidade em juízo depende da proveniência e da
+integridade (RSL1-0466, RSL1-0854, SB1-0104, SB1-0528, SB1-0837). Como o
+conteúdo é volátil, a captura precisa ser imediata: publicações são editadas
+ou apagadas (RSL1-0466), e a página pode sumir entre a anotação e o
+arquivamento (SB1-0528). As respostas técnicas são o \textit{hash}
+(SB1-0306), o \textit{blockchain} ligado a normas ISO/IEC e às regras de
+prova dos EUA (RSL1-0466) e a trilha de auditoria automática, porque o
+registro manual falha (RSL1-0863).
+
+\textbf{TA3. A IA gera pistas, e a decisão e a explicação ficam com o
+humano.} Os estudos citam como riscos da IA o erro de classificação
+(RSL1-0348, RSL1-0618), a alucinação de LLM (RSL1-0494, RSL1-0906,
+RSL1-0908, SB1-0724), o viés (RSL1-0368, SB1-0584, SB1-1001), a opacidade
+(RSL1-0381, SB1-0367, SB1-0781) e o viés de automação (RSL1-0381,
+RSL1-0618). A resposta mais frequente trata os vereditos como pistas, que
+exigem corroboração independente e revisão humana (RSL1-0381). Ela também
+ancora a resposta no texto da fonte (RSL1-0494) e verifica a saída com
+técnicas de explicação (SB1-0837). Várias mitigações de viés e de
+explicabilidade ficam como trabalho futuro (SB1-0367, SB1-0547).
+
+\textbf{TA4. O modelo de ameaças tem três alvos: investigador, ferramenta e
+dados.} O investigador deixa rastros nos registros dos alvos (RSL1-0381),
+expõe IP e localização (RSL1-0854) e pode alertar o suspeito (RSL1-0908,
+RSL1-0816), e os sites detectam o coletor (SB1-0421, SB1-0528, SB1-1026). Na
+ferramenta, o risco de ataque justifica o sigilo (RSL1-0183), e uma
+infraestrutura frágil compromete a segurança (RSL1-0906, SB1-0528). Nos
+dados, pesam a transferência a terceiros, como \textit{chatbots} externos
+(RSL1-0906), e a dependência de \textit{software} estrangeiro (RSL1-0856).
+As mitigações relatadas são o anonimato do operador e ambientes virtuais
+(RSL1-0381, RSL1-0309, SB1-0272), os dados mantidos localmente (RSL1-0854)
+e a infraestrutura controlada pelo órgão (RSL1-0856).
+
+\textbf{TA5. A coleta em ambiente adversarial exige resiliência e manutenção
+contínua.} Os sites somem e migram (SB1-0767, SB1-0877, SB1-0914), e as
+barreiras contra a coleta se multiplicam (SB1-0436, SB1-1026). Os criminosos
+ofuscam termos e trocam de identidade (SB1-0272, SB1-0689, SB1-0781). As
+gírias mudam e degradam modelos treinados numa base estática (SB1-0367,
+SB1-0873). As ferramentas ficam obsoletas (RSL1-0906), e as plataformas
+mudam termos de uso e APIs (RSL1-0381, SB1-0584). Na coleta, as mitigações
+são novas tentativas, espera crescente e redescoberta de endereços
+(SB1-0306, RSL1-0309). Nos modelos, o aprendizado contínuo aparece só como
+proposta (SB1-0367).
+
+\textbf{Contradições.} Seis pontos dividem os estudos. Sobre o
+\textit{robots.txt}, RSL1-0309 e SB1-0104 respeitam o arquivo, SB1-0629 o
+ignora, e SB1-0421 oferece a opção de ignorá-lo. A ligação de identidades é
+proibida na leitura holandesa do GDPR (RSL1-0183), mas RSL1-0466 correlaciona
+conta e pessoa, e SB1-0781 liga \textit{aliases} sob avaliação de impacto. A
+entrada em grupos fechados é proibida em RSL1-0183, admitida com autorização
+em RSL1-0368 e RSL1-0612 e feita sem discussão ética em SB1-0689. A recusa
+ética dos LLMs é lacuna a contornar em SB1-0724 e salvaguarda em SB1-0367. A
+captura automática é criticada como excessiva em RSL1-0854, enquanto
+RSL1-0863 mostra que o registro manual falha. Por fim, RSL1-0863 apresenta o
+código aberto como mitigação de confiança, e RSL1-0183 relata o sigilo das
+ferramentas por risco de ataque.
+
+\textbf{Lacunas.} Dez estudos monitoram pessoas, grupos ou manifestações sem
+discussão substantiva de ética ou da privacidade dos monitorados: RSL1-0662,
+RSL1-0288, SB1-0867, RSL1-0344, SB1-0297, SB1-0689, SB1-0421, RSL1-0561,
+RSL1-0348 e SB1-0404. Nos dois últimos, o caso é limítrofe. Nenhum estudo
+trata da lei brasileira. A soberania dos dados aparece só em RSL1-0856,
+RSL1-0854, RSL1-0494 e RSL1-0906. Ameaças contra a própria ferramenta
+aparecem só em RSL1-0183, RSL1-0856, RSL1-0863, RSL1-0906 e SB1-0528, e
+nenhum estudo relata teste de segurança. Quatro estudos contornam barreiras
+de acesso sem discussão legal ou ética (SB1-0436, SB1-0629, SB1-0678,
+SB1-0877).
+% PENDENTE: R1 e R2 confirmam a classificação de RSL1-0348 e SB1-0404 como
+% casos limítrofes do grupo de vigilância sem discussão ética.
+
+% ---------------------------------------------------------------------------
+\subsection{QP5: avaliação das ferramentas e preservação da evidência}
+\label{sec:rsl1-qp5}
+
+A Tabela~\ref{tab:temas-A3} lista os temas analíticos da QP5. Em 38 dos 57
+estudos, a avaliação dominante são métricas num conjunto de dados. Só 7
+estudos avaliam com usuários. Só 7 tratam explicitamente da cadeia de
+custódia, e outros 15 descrevem algum registro ou preservação, como
+\textit{hash}, carimbo de tempo ou captura de tela, sem tratar da cadeia de
+custódia. Nenhum estudo avalia se a evidência é aceita em juízo.
+
+\input{editaveis/gerado/temas-A3}
+
+\textbf{TA1. A avaliação mede o modelo e quase nunca o trabalho do
+investigador.} Os estudos avaliam o componente de IA isolado, com métricas de
+classificação em dados separados para teste ou em validação cruzada, e
+comparam com \textit{baselines} (RSL1-0561, SB1-0367, SB1-0584). Em outras
+tarefas, usam métricas de agrupamento, tópicos, ordenação ou resumo
+(RSL1-0344, RSL1-0618, SB1-0914, SB1-1025). Os 7 estudos com usuários são
+RSL1-0183, RSL1-0381, RSL1-0494, RSL1-0854, RSL1-0863, RSL1-0906 e SB1-0837.
+Em RSL1-0494, o perfil dos participantes não está no campo extraído. Os
+resultados com participantes divergem. Em RSL1-0494, o grupo com IA teve
+pontuação maior (18,2 contra 11,5; p = 0,007). Em RSL1-0183, as hipóteses
+H1 a H4 não foram confirmadas, mas elas testam outra coisa. O SUS
+(RSL1-0183, RSL1-0494) e o tempo de tarefa (RSL1-0906, RSL1-0368) têm
+direção favorável à ferramenta, e parte do benefício só é declarada, sem
+dados (RSL1-0863, SB1-0202).
+
+\textbf{TA2. A validade externa das avaliações é frágil.} A verdade de
+referência vem de bases públicas, de rótulos por heurística (RSL1-0288,
+SB1-0668) ou de anotação manual pequena, como as 30 páginas de SB1-0724. A
+validação contra dado independente é rara (RSL1-0779, SB1-0867, SB1-1026).
+Estudos de caso sem métricas (RSL1-0466, RSL1-0908) e validação julgada
+pelos próprios autores (RSL1-0214) não permitem comparação. Há dados ou
+denominadores não descritos (RSL1-0381, RSL1-0856, SB1-0465) e números
+inconsistentes (RSL1-0340, SB1-0421). Quando policiais testam ferramentas
+existentes, o desempenho varia muito, de 100\% na busca reversa de imagens a
+16\% numa ferramenta de notícias (RSL1-0381).
+
+\textbf{TA3. Coleta, cobertura e desempenho operacional são critérios de
+avaliação próprios.} Os estudos de coleta medem vazão, latência, taxa de
+sucesso e cobertura (RSL1-0309, SB1-0421, SB1-0104, SB1-0629). Cobertura de
+sites e cobertura de atividade são medidas diferentes: em SB1-1026, a coleta
+cobre 44,6\% dos sites e 98\% da atividade. O registro de integridade tem
+custo que cresce com o volume (RSL1-0466). Componentes centrais ficam sem
+avaliação, como o \textit{crawler} (SB1-0436) e os extratores (RSL1-0309).
+
+\textbf{TA4. A preservação da evidência é exceção, e quem a trata converge
+para os mesmos mecanismos.} Muitos estudos não descrevem preservação, ou
+declaram que não tratam da cadeia de custódia (RSL1-0348, SB1-0724). Os 7
+estudos que a tratam são RSL1-0466, RSL1-0816, RSL1-0854, RSL1-0863,
+SB1-0306, SB1-0528 e SB1-0837. Os mecanismos se repetem: \textit{hash} na
+captura, carimbo de tempo, conteúdo bruto, registro das ações, proveniência
+e relatório exportável (RSL1-0466, RSL1-0854, RSL1-0863, SB1-0528,
+SB1-0104). A exigência vem do contexto jurídico, como o precedente Bucknor
+v R, citado em RSL1-0854, e a trilha de auditoria das diretrizes da ACPO,
+citada em RSL1-0863. Selagem e \textit{ledger} aparecem como
+reforço (RSL1-0466, SB1-0306, SB1-0421), mas em SB1-0306 o \textit{ledger} é
+simulado.
+% PENDENTE: R1 e R2 conferem a classificação de cadeia de custódia (A3,
+% "Decisões de codificação"): SB1-0837 ("estilo cadeia de custódia") e
+% SB1-0306 (ledger simulado) marcados "sim"; SB1-0104 e SB1-0421 marcados
+% "não".
+
+\textbf{TA5. A saída da IA orienta a investigação, mas não substitui a
+prova.} RSL1-0381 e SB1-0781 afirmam que os resultados automáticos não
+sustentam sozinhos uma alegação probatória. Outros estudos buscam
+rastreabilidade: RSL1-0494 liga as respostas ao texto da fonte, e SB1-0272
+escolhe a fusão linear de modelos pela interpretabilidade. RSL1-0618
+discute a confiabilidade de processos automatizados em tribunal, e RSL1-0816
+sustenta a validade com um procedimento controlado e repetível. Já
+RSL1-0381 não preserva os registros de execução.
+
+\textbf{Contradições.} Sobre reter dados, RSL1-0183 não guarda dados brutos,
+e RSL1-0466, RSL1-0854, RSL1-0863 e SB1-0528 guardam o conteúdo bruto com
+\textit{hash} e registro. O desempenho dos LLMs é instável: em SB1-0367, o
+SVM supera o Llama 3.2 na tarefa binária e perde na multiclasse, e em
+SB1-0837 o GPT-4o mini fica abaixo do modelo proposto. Em RSL1-0618, a
+métrica automática piora, mas os tópicos ficam mais coerentes à inspeção
+humana.
+
+\textbf{Lacunas.} Fora dos 7 estudos com usuários e dos 7 com cadeia de
+custódia citados acima, nenhum estudo avalia com usuários ou trata da cadeia
+de custódia. Nenhum estudo avalia a aceitação da evidência em juízo, e
+RSL1-0466 registra essa ausência. O uso operacional prolongado só aparece no
+OSIRT, um navegador para investigadores (RSL1-0854, RSL1-0863).
+Componentes centrais ficam sem avaliação em SB1-0436, RSL1-0309, RSL1-0466 e
+SB1-0629. Nenhum estudo usa dados em português.
+
+% ---------------------------------------------------------------------------
+\subsection{Rastreabilidade para o buscador}
+\label{sec:rsl1-rastreabilidade}
+
+A última leitura cruzou os achados com o levantamento de requisitos do
+buscador (Seção~\ref{sec:metodologia-requisitos}). Ela reuniu os requisitos
+candidatos dos estudos em 27 temas descritivos, ligados a um requisito do
+levantamento ou marcados como novos (Tabela~\ref{tab:rastreabilidade}), e em
+7 temas analíticos (Tabela~\ref{tab:temas-A4}).
+
+\input{editaveis/gerado/temas-A4}
+
+\input{editaveis/gerado/rastreabilidade-rsl1}
+
+\textbf{O que a revisão confirma.} A revisão confirma o núcleo probatório.
+Para o orientador, o requisito mais crítico é a combinação de cadeia de
+custódia (RF07) com trilha de auditoria (RNF02), e é essa combinação que os
+estudos mais ligam à admissibilidade. \textit{Hash}, carimbo de tempo e
+captura integral (RSL1-0466, RSL1-0863, SB1-0528, SB1-0837) andam junto com
+o registro automático das ações (RSL1-0854, RSL1-0863) e com o relatório
+exportável, que apoia o RF09 (RSL1-0854, RSL1-0466). Os grafos de vínculos
+apoiam o RF03 (RSL1-0344, RSL1-0368, RSL1-0856, RSL1-0908, SB1-0867). O RF02
+tem apoio indireto, porque os estudos ligam contas e \textit{aliases}, e não
+CPF ou CNPJ. A coleta multifonte e o monitoramento com alerta apoiam o RF01 e
+o RF06 (RSL1-0348, RSL1-0856, SB1-0837, RSL1-0908, SB1-0421, SB1-0877). O
+anonimato operacional apoia o RNF03 (RSL1-0309, SB1-0421, RSL1-0854), e a
+autorização para a coleta ativa e o registro das justificativas apoiam o
+RNF04 (RSL1-0908, RSL1-0816, RSL1-0854, RSL1-0612, RSL1-0368). Usabilidade e
+gestão de casos têm apoio menor, em poucos estudos (RSL1-0612, SB1-0528,
+RSL1-0908, RSL1-0214).
+
+\textbf{O que a revisão amplia.} O RF07 ganha quatro pontos: identificar o
+coletor e a linha de base da coleta (RSL1-0466, RSL1-0816), verificar a
+integridade depois da captura (SB1-0528), versionar e comparar coletas
+repetidas (SB1-0421, RSL1-0816) e registrar a versão e a configuração do
+modelo de IA (RSL1-0381). O RNF05 deixa de ser só explicar o alerta. A saída
+da IA é pista e não conclusão (RSL1-0381), a decisão final é humana
+(RSL1-0368, SB1-0202), e a saída do LLM é validada por esquema (SB1-0837,
+SB1-0724). O RNF04 ganha a minimização por finalidade: capturar só o
+necessário e não guardar dados pessoais sem necessidade (RSL1-0183,
+RSL1-0854, SB1-1001). O RNF10 ganha a resiliência da coleta, porque as
+fontes somem, mudam ou bloqueiam o coletor (SB1-0767, SB1-0306, RSL1-0381).
+A revisão também sugere requisitos que o levantamento não tem: busca e
+filtros, classificação de conteúdo, extração de entidades com LLM e fonte
+citada, análise geográfica e temporal, suporte multilíngue, resiliência da
+coleta e priorização de alvos com uma política de erro declarada, isto é, a
+escolha entre precisão e revocação (RSL1-0561, SB1-0584).
+
+\textbf{O que fica sem respaldo.} Nenhum estudo pede as tipologias de
+corrupção (RF04), a linha do tempo patrimonial (RF05), as integrações sob
+ordem judicial (RF10) ou o DevSecOps (RNF11). Também não aparecem as fontes
+oficiais brasileiras do RF01, a resolução por CPF ou CNPJ do RF02, a
+autenticação multifator, o acesso por perfil e a criptografia do RNF01, nem a
+exportação para ferramentas de análise de vínculos do RNF09. O RNF07 tem
+apoio só em RSL1-0816. Os estudos tratam de terrorismo, armas, drogas, bens
+culturais, cibercrime e mercados ilícitos (RSL1-0348, RSL1-0211, RSL1-0779,
+RSL1-0340, SB1-0547), e o mais próximo da investigação financeira é o
+rastreamento de criptoativos (RSL1-0908). A revisão sustenta, portanto, os
+requisitos transversais do buscador, e não os requisitos do domínio de
+corrupção e lavagem de dinheiro. Esses requisitos precisam ser justificados
+pelo levantamento com o especialista e pela legislação. A falta de
+ferramentas OSINT voltadas a corrupção é uma lacuna da literatura revisada.
+
+\textbf{Contradições que afetam o produto.} Duas tensões pesam no projeto.
+A primeira opõe minimização e preservação: RSL1-0183 não guarda dados
+brutos, SB1-1001 não guarda dados pessoais, e RSL1-0854 critica a captura
+automática de todas as páginas, enquanto SB1-0837, SB1-0724, SB1-0421 e
+SB1-0528 guardam a cópia bruta para a proveniência. A segunda separa o
+artefato capturado da inferência da IA: SB1-0306 e RSL1-0466 buscam a
+admissibilidade do que foi coletado, e SB1-0781 e RSL1-0381 desaconselham
+usar a saída analítica como prova.
+
+\textbf{Implicações para o protótipo.} Os achados sustentam manter no
+protótipo a cadeia de custódia na captura (RF07) e a trilha de auditoria
+(RNF02), e acrescentar aos metadados de cada captura o coletor e a versão do
+conector. A coleta fica passiva, com justificativa obrigatória para cada
+busca. A ligação entre entidades fica como sugestão, com confirmação humana
+quando só o nome coincide. Todo alerta gerado por IA é tratado como pista,
+mostra o motivo e a fonte e exige a confirmação do analista, registrada na
+auditoria. Os conectores registram falhas e mudanças de formato da fonte. A
+captura deve ser seletiva e decidida pelo investigador, o que concilia a
+integridade da evidência com a minimização. O monitoramento contínuo (RF06),
+hoje fora do recorte do protótipo, tem respaldo na revisão. A avaliação do
+protótipo deve ter dois níveis, como sugere a QP5: métricas por componente
+num conjunto de teste próprio e documentado, e avaliação com policiais, com
+usabilidade e tempo de tarefa comparado ao fluxo manual.
+% PENDENTE: R1 e R2 decidem quais requisitos novos sugeridos pela leitura A4
+% entram em docs/requisitos-app.md. Nada foi alterado lá.
+% PENDENTE: a tensão entre minimização e preservação bruta afeta o RF07 do
+% protótipo, que guarda a carga bruta. Decidir a política de retenção.

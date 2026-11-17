@@ -1,0 +1,108 @@
+% Diagrama de sequência (UML 2): verificação de integridade.
+% Elementos e fontes no código: docs/sistema/diagramas-fontes.md.
+% Coordenadas geradas por script; para mudar, edite as coordenadas à mão.
+\begin{figure}[p]
+\centering
+\caption{Diagrama de sequência da verificação de integridade de uma captura e da cadeia da auditoria}
+\label{fig:uml-seq-verificacao}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  vida/.style={draw, fill=white, align=center, inner sep=3pt, font=\footnotesize, minimum height=0.9cm},
+  rotvida/.style={align=center, font=\footnotesize, inner sep=1pt},
+  linhavida/.style={dashed, gray!70!black},
+  msgsinc/.style={-{Latex[length=5pt]}},
+  msgresp/.style={-{Straight Barb[length=5pt]}, dashed},
+  rotmsg/.style={font=\footnotesize, align=center, inner sep=1pt, fill=white},
+  frag/.style={draw, thin},
+  rotfrag/.style={font=\footnotesize\bfseries, inner sep=2.5pt},
+  rotguarda/.style={font=\footnotesize, inner sep=1pt, fill=white},
+  notaseq/.style={align=left, font=\scriptsize, inner sep=3pt},
+  ator/.pic={
+    \draw (0,0.32) circle (0.12);
+    \draw (0,0.2) -- (0,-0.12) (-0.22,0.1) -- (0.22,0.1)
+          (0,-0.12) -- (-0.17,-0.42) (0,-0.12) -- (0.17,-0.42);}
+]
+\providecommand{\dobra}[1]{}
+\renewcommand{\dobra}[1]{%
+  \draw (#1.north west) -- ([xshift=-5pt]#1.north east) -- ([yshift=-5pt]#1.north east)
+        -- (#1.south east) -- (#1.south west) -- cycle;
+  \draw ([xshift=-5pt]#1.north east) |- ([yshift=-5pt]#1.north east);}
+\pic at (0.00,0.55) {ator};
+\node[rotvida, anchor=north] at (0.00,-0.05) {Usuário\\autenticado};
+\draw[linhavida] (0.00,-0.75) -- (0.00,-29.30);
+\node[vida] at (2.60,-0.15) {Front-end\\{\scriptsize\texttt{CartaoAlerta},}\\{\scriptsize\texttt{AbaAuditoria}}};
+\draw[linhavida] (2.60,-0.75) -- (2.60,-29.30);
+\node[vida] at (5.80,-0.15) {API\\{\scriptsize\texttt{rotas\_capturas},}\\{\scriptsize\texttt{rotas\_auditoria}}};
+\draw[linhavida] (5.80,-0.75) -- (5.80,-29.30);
+\node[vida] at (10.00,-0.15) {Custódia\\{\scriptsize\texttt{Custodia}}};
+\draw[linhavida] (10.00,-0.75) -- (10.00,-29.30);
+\node[vida] at (12.80,-0.15) {Banco\\{\scriptsize\texttt{auditoria}}};
+\draw[linhavida] (12.80,-0.75) -- (12.80,-29.30);
+\node[vida] at (15.00,-0.15) {Âncora\\{\scriptsize\texttt{auditoria.json}}};
+\draw[linhavida] (15.00,-0.75) -- (15.00,-29.30);
+\node[vida] at (17.20,-0.15) {Auditoria\\{\scriptsize\texttt{auditoria}}};
+\draw[linhavida] (17.20,-0.75) -- (17.20,-29.30);
+\draw[msgsinc] (0.00,-1.94) -- (2.60,-1.94);
+\node[rotmsg, above=1pt] at (1.30,-1.94) {verificar\\evidência};
+\draw[msgsinc] (2.60,-2.98) -- (5.80,-2.98);
+\node[rotmsg, above=1pt] at (4.20,-2.98) {\texttt{GET /capturas/\{id\}/verificar}\\\texttt{X-Justificativa}};
+\draw[msgsinc] (5.80,-3.36) -- ++(0.35,0) -- ++(0,-0.76) -- (5.80,-4.12);
+\node[rotmsg, anchor=north west, align=left] at (6.25,-3.28) {\texttt{ctx.caso}: membro (papel $\geq$ leitor);\\vale também com prazo vencido};
+\draw[msgsinc] (5.80,-4.78) -- (10.00,-4.78);
+\node[rotmsg, above=1pt] at (7.90,-4.78) {\texttt{verificar(captura)}};
+\draw[msgsinc] (10.00,-5.16) -- ++(0.35,0) -- ++(0,-0.76) -- (10.00,-5.92);
+\node[rotmsg, anchor=north west, align=left] at (10.45,-5.08) {lê \texttt{<aa>/<sha256>.gcm}\\do volume};
+\draw[msgresp] (10.00,-7.51) -- (5.80,-7.51);
+\node[rotmsg, above=1pt] at (7.90,-7.51) {\texttt{integra = falso},\\\texttt{arquivo\_encontrado = falso}};
+\draw[msgresp] (10.00,-9.10) -- (5.80,-9.10);
+\node[rotmsg, above=1pt] at (7.90,-9.10) {\texttt{integra = falso}, sem SHA-256\\recalculado};
+\draw[msgsinc] (10.00,-10.03) -- ++(0.35,0) -- ++(0,-1.52) -- (10.00,-11.55);
+\node[rotmsg, anchor=north west, align=left] at (10.45,-9.95) {decifra AES-256-GCM\\(AAD = SHA-256\\registrado) e\\recalcula o SHA-256};
+\draw[msgresp] (10.00,-12.59) -- (5.80,-12.59);
+\node[rotmsg, above=1pt] at (7.90,-12.59) {\texttt{integra} = (recalculado\\= registrado)};
+\draw[frag] (2.20,-6.17) rectangle (12.50,-12.84);
+\node[rotfrag, anchor=north west] (fr) at (2.20,-6.17) {alt};
+\draw[frag] (fr.south west) -- ([xshift=-0.12cm]fr.south east) -- ([yshift=0.12cm]fr.south east) -- (fr.north east);
+\draw[frag, dashed] (2.20,-7.76) -- (12.50,-7.76);
+\draw[frag, dashed] (2.20,-9.35) -- (12.50,-9.35);
+\node[rotguarda, anchor=north west] at (3.10,-6.20) {[arquivo ausente]};
+\node[rotguarda, anchor=north west] at (2.32,-7.79) {[etiqueta GCM inválida (arquivo alterado ou outra chave)]};
+\node[rotguarda, anchor=north west] at (2.32,-9.38) {[decifrou]};
+\draw[msgsinc] (5.80,-13.60) -- (17.20,-13.60);
+\node[rotmsg, above=1pt] at (11.50,-13.60) {registrar \texttt{captura.verificar}; commit; âncora};
+\draw[msgresp] (5.80,-14.26) -- (2.60,-14.26);
+\node[rotmsg, above=1pt] at (4.20,-14.26) {íntegra?, SHA-256 registrado e recalculado};
+\draw[msgsinc] (0.00,-15.50) -- (2.60,-15.50);
+\node[rotmsg, above=1pt] at (1.30,-15.50) {verificar\\a cadeia};
+\draw[msgsinc] (2.60,-16.54) -- (5.80,-16.54);
+\node[rotmsg, above=1pt] at (4.20,-16.54) {\texttt{GET /auditoria/verificar}\\(sem restrição de perfil)};
+\draw[msgsinc] (5.80,-17.20) -- (17.20,-17.20);
+\node[rotmsg, above=1pt] at (11.50,-17.20) {\texttt{verificar(sessão, chave HMAC, âncora)}};
+\draw[msgsinc] (17.20,-17.86) -- (15.00,-17.86);
+\node[rotmsg, above=1pt] at (16.10,-17.86) {\texttt{ler()}};
+\draw[msgresp] (15.00,-18.52) -- (17.20,-18.52);
+\node[rotmsg, above=1pt] at (16.10,-18.52) {\texttt{seq}, \texttt{hash}, MAC};
+\draw[msgsinc] (17.20,-18.90) -- ++(0.35,0) -- ++(0,-0.76) -- (17.20,-19.66);
+\node[rotmsg, anchor=north west, align=left] at (17.65,-18.82) {confere o MAC\\da âncora};
+\draw[msgsinc] (17.20,-20.87) -- (12.80,-20.87);
+\node[rotmsg, above=1pt] at (15.00,-20.87) {\texttt{SELECT} das entradas seguintes};
+\draw[msgresp] (12.80,-21.53) -- (17.20,-21.53);
+\node[rotmsg, above=1pt] at (15.00,-21.53) {lote};
+\draw[msgsinc] (17.20,-21.91) -- ++(0.35,0) -- ++(0,-3.04) -- (17.20,-24.95);
+\node[rotmsg, anchor=north west, align=left] at (17.65,-21.83) {para cada entrada:\\\texttt{seq} contínua; versão 2;\\\texttt{hash\_anterior} = hash\\da entrada anterior;\\HMAC-SHA256(chave,\\JSON canônico) = \texttt{hash};\\na \texttt{seq} da âncora,\\\texttt{hash} = hash ancorado};
+\draw[frag] (12.35,-19.91) rectangle (21.80,-25.20);
+\node[rotfrag, anchor=north west] (fr) at (12.35,-19.91) {loop};
+\draw[frag] (fr.south west) -- ([xshift=-0.12cm]fr.south east) -- ([yshift=0.12cm]fr.south east) -- (fr.north east);
+\node[rotguarda, anchor=north west] at (13.40,-19.94) {[lotes de entradas, em ordem de \texttt{seq}, até a primeira quebra]};
+\draw[msgsinc] (17.20,-25.68) -- ++(0.35,0) -- ++(0,-1.14) -- (17.20,-26.82);
+\node[rotmsg, anchor=north west, align=left] at (17.65,-25.60) {âncora ausente?\\cadeia truncada\\(âncora além do fim)?};
+\draw[msgresp] (17.20,-27.48) -- (5.80,-27.48);
+\node[rotmsg, above=1pt] at (11.50,-27.48) {\texttt{integra}, entradas, \texttt{primeira\_quebra}, motivo};
+\draw[msgsinc] (5.80,-28.14) -- (17.20,-28.14);
+\node[rotmsg, above=1pt] at (11.50,-28.14) {registrar \texttt{auditoria.verificar}; commit; âncora avança};
+\draw[msgresp] (5.80,-28.80) -- (2.60,-28.80);
+\node[rotmsg, above=1pt] at (4.20,-28.80) {resultado da verificação};
+\end{tikzpicture}}
+\fonte{Elaborada pelo autor a partir de \texttt{buscador/api/rotas\_capturas.py} (\texttt{verificar\_captura}), \texttt{buscador/custodia/servico.py} (\texttt{Custodia.verificar}), \texttt{buscador/api/rotas\_auditoria.py} (\texttt{verificar\_auditoria}), \texttt{buscador/auditoria/servico.py} (\texttt{verificar}, \texttt{Ancora}) e, no front-end, \texttt{src/componentes/CartaoAlerta.tsx} e \texttt{src/telas/abas/AbaAuditoria.tsx}.}
+\end{figure}

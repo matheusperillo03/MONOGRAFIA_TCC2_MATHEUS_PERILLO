@@ -1,0 +1,63 @@
+% Diagrama de máquina de estados (UML 2) do alerta. Elementos e fontes no código:
+% docs/sistema/diagramas-fontes.md, seção 7.
+\begin{figure}[htbp]
+\centering
+\caption{Diagrama de máquina de estados do alerta}
+\label{fig:uml-estado-alerta}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  estado/.style={draw, rounded corners=6pt, minimum width=2.7cm, minimum height=0.9cm,
+    align=center, fill=white},
+  inicial/.style={circle, fill=black, inner sep=0pt, minimum size=7pt},
+  final/.style={circle, draw, inner sep=0pt, minimum size=11pt,
+    path picture={\fill (path picture bounding box.center) circle (3pt);}},
+  trans/.style={-{Straight Barb[length=6pt]}},
+  rot/.style={font=\scriptsize, align=center, inner sep=1.5pt, fill=white},
+  nota/.style={align=left, font=\scriptsize, inner sep=4pt}
+]
+\newcommand{\dobraest}[1]{%
+  \draw (#1.north west) -- ([xshift=-6pt]#1.north east) -- ([yshift=-6pt]#1.north east)
+        -- (#1.south east) -- (#1.south west) -- cycle;
+  \draw ([xshift=-6pt]#1.north east) |- ([yshift=-6pt]#1.north east);}
+% ----- pendente -----
+\node[inicial] (i0) at (-0.6,0.3) {};
+\node[estado] (pend) at (-0.6,-2.6) {\textbf{Pendente}\\{\scriptsize\texttt{situacao = pendente}}\\{\scriptsize\texttt{ativo = verdadeiro}}};
+\node[final] (fim) at (-0.6,-6.4) {};
+\draw[trans] (i0) -- node[rot, right=2pt, align=left]{tipologia detecta\\(chave nova) / cria} (pend);
+\draw[trans] (pend) -- node[rot, right=2pt, align=left]{reexecução não detecta\\{[}sem decisão{]} / apaga o alerta} (fim);
+\draw[trans] (pend.west) .. controls +(-1.8,0.9) and +(-1.8,-0.9) .. node[rot, left=1pt, align=right]{reexecução detecta /\\atualiza motivo,\\evidências e\\parâmetros} (pend.west);
+% ----- composto: decidido -----
+\node[estado] (conf) at (6.1,-0.9) {\textbf{Confirmado}\\{\scriptsize\texttt{situacao = confirmado}}};
+\node[estado] (desc) at (6.1,-4.4) {\textbf{Descartado}\\{\scriptsize\texttt{situacao = descartado}}};
+\draw[trans] ([xshift=-0.45cm]conf.south) -- node[rot, left=1pt]{revisão} ([xshift=-0.45cm]desc.north);
+\draw[trans] ([xshift=0.45cm]desc.north) -- node[rot, right=1pt]{revisão} ([xshift=0.45cm]conf.north |- conf.south);
+\node[inicial] (i1) at (9.2,-0.9) {};
+\node[estado] (ativo) at (11.5,-0.9) {\textbf{Ativo}\\{\scriptsize\texttt{ativo = verdadeiro}}};
+\node[estado] (inat)  at (11.5,-4.4) {\textbf{Inativo}\\{\scriptsize\texttt{ativo = falso}}};
+\draw[trans] (i1) -- (ativo.west);
+\draw[trans] ([xshift=-0.45cm]ativo.south) -- node[rot, left=1pt, align=right]{reexecução\\não detecta} ([xshift=-0.45cm]inat.north);
+\draw[trans] ([xshift=0.45cm]inat.north) -- node[rot, right=1pt, align=left]{reexecução\\detecta} ([xshift=0.45cm]ativo.south);
+\node[draw, rounded corners=8pt, inner sep=0.4cm, fit={(conf)(desc)(ativo)(inat)(i1) ($(conf.north)+(0,0.75)$) ($(inat.east)+(0.2,0)$)}] (dec) {};
+\node[anchor=north, font=\footnotesize\bfseries] at (dec.north) {Decidido};
+\draw ([yshift=-0.55cm]dec.north west) -- ([yshift=-0.55cm]dec.north east);
+\draw[dashed] (8.75,0 |- dec.north) ++(0,-0.55) -- (8.75,0 |- dec.south);
+\node[anchor=north west, font=\scriptsize\itshape] at ($(dec.north west)+(0.1,-0.6)$) {situação};
+\node[anchor=north west, font=\scriptsize\itshape] at ($(8.75,0 |- dec.north)+(0.1,-0.6)$) {detecção};
+% ----- entradas no composto -----
+\draw[trans] (pend.east) -- node[rot, sloped, above, pos=0.45]{decidir(\texttt{confirmado},\\justificativa)} (conf.west);
+\draw[trans] (pend.east) -- node[rot, sloped, below, pos=0.45]{decidir(\texttt{descartado},\\justificativa)} (desc.west);
+% ----- nota -----
+\node[nota, text width=12.6cm, anchor=north west] (nt) at ($(fim.south west)+(1.0,0.75)$) {%
+  Toda decisão exige papel de investigador ou responsável e o caso dentro do prazo de retenção
+  (\texttt{caso\_aberto}); a justificativa é obrigatória. Cada decisão, inclusive a revisão (que
+  pode repetir a decisão anterior), acrescenta uma linha a \texttt{alerta\_decisoes} (só de
+  acréscimo) e a entrada \texttt{alerta.decidir} à trilha de auditoria. Não há transição de volta a
+  Pendente. A entrada em Decidido leva a região de detecção ao estado Ativo; um alerta decidido
+  nunca é apagado.};
+\dobraest{nt}
+\end{tikzpicture}}
+\fonte{Elaborada pelo autor a partir de \texttt{buscador/tipologias/motor.py} (\texttt{executar}),
+\texttt{buscador/api/rotas\_casos.py} (\texttt{decidir\_alerta}), \texttt{buscador/api/esquemas.py}
+(\texttt{DecisaoEntrada}) e \texttt{buscador/modelos.py} (\texttt{Alerta}, \texttt{AlertaDecisao}).}
+\end{figure}

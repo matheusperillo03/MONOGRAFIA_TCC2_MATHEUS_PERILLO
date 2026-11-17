@@ -1,0 +1,61 @@
+% Diagrama de máquina de estados (UML 2) do caso. Elementos e fontes no código:
+% docs/sistema/diagramas-fontes.md, seção 8.
+\begin{figure}[htbp]
+\centering
+\caption{Diagrama de máquina de estados do caso, com o que cada estado permite}
+\label{fig:uml-estado-caso}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  estado/.style={draw, rounded corners=6pt, rectangle split, rectangle split parts=2,
+    align=left, text width=#1, inner sep=4pt, fill=white},
+  inicial/.style={circle, fill=black, inner sep=0pt, minimum size=7pt},
+  trans/.style={-{Straight Barb[length=6pt]}},
+  rot/.style={font=\scriptsize, align=center, inner sep=1.5pt, fill=white},
+  nota/.style={align=left, font=\scriptsize, inner sep=4pt}
+]
+\newcommand{\dobraest}[1]{%
+  \draw (#1.north west) -- ([xshift=-6pt]#1.north east) -- ([yshift=-6pt]#1.north east)
+        -- (#1.south east) -- (#1.south west) -- cycle;
+  \draw ([xshift=-6pt]#1.north east) |- ([yshift=-6pt]#1.north east);}
+\node[estado=6.2cm, anchor=north] (ativo) at (0,0) {%
+  \centering\textbf{Ativo}\par{\scriptsize hoje $\leq$ \texttt{retencao\_ate}\par ou caso sem prazo\par}
+  \nodepart{second}\raggedright\scriptsize
+  \textbf{Permite}, além do que Somente leitura permite:\\
+  -- coletar e recoletar;\\
+  -- buscar entidades, ver detalhe, grafo e caminho;\\
+  -- exportar o grafo (GraphML, CSV);\\
+  -- executar tipologias e decidir alertas;\\
+  -- ler o texto de captura, extrair com IA e decidir sugestões;\\
+  -- anotar; criar e alterar tarefas;\\
+  -- criar, reativar e executar monitoramentos;\\
+  -- o agendador executa os monitoramentos ativos.};
+\node[estado=7.4cm, anchor=north] (leit) at (10.6,0) {%
+  \centering\textbf{Somente leitura}\par{\scriptsize hoje $>$ \texttt{retencao\_ate}\par (prazo de retenção vencido)\par}
+  \nodepart{second}\raggedright\scriptsize
+  \textbf{Permite} (sem \texttt{caso\_aberto}):\\
+  -- ver o caso; listar coletas, comparações, alertas, membros,
+  anotações, tarefas, avisos, monitoramentos e sugestões;\\
+  -- ver, comparar e verificar capturas; gerar o relatório;\\
+  -- gerenciar membros (papel responsável);\\
+  -- desativar monitoramento; marcar aviso como lido.\\[3pt]
+  \textbf{Recusa} com 403 e \texttt{caso.retencao\_recusa} na trilha:\\
+  -- tudo o que só Ativo permite.\\[3pt]
+  \textbf{Agendador}: execução \texttt{recusada\_retencao}, monitoramento
+  desativado e \texttt{monitoramento.retencao\_recusa} na trilha.};
+\node[inicial] (i0) at ($(ativo.north)+(0,1.3)$) {};
+\draw[trans] (i0) -- node[rot, right=2pt, align=left]{criar caso (\texttt{finalidade}, \texttt{retencao\_ate}) /\\
+  criador vira responsável; \texttt{caso.criar} na trilha} (ativo.north);
+\draw[trans] (ativo.east |- leit.text split) -- node[rot, above, align=center]{when(hoje UTC $>$\\\texttt{retencao\_ate})}
+  (leit.west |- leit.text split);
+\node[nota, text width=16.0cm, anchor=north west] (nt) at ($(ativo.south west |- leit.south)+(0,-0.35)$) {%
+  Nos dois estados vale também o papel no caso: leitura exige leitor; alteração, investigador;
+  membros, responsável. O prazo (\texttt{retencao\_ate}) só é gravado na criação e o último dia
+  ainda vale; por isso não há volta a Ativo. Não há estado de exclusão: nada é apagado pelo
+  sistema, e o descarte depois do prazo fica a cargo do órgão responsável.};
+\dobraest{nt}
+\end{tikzpicture}}
+\fonte{Elaborada pelo autor a partir de \texttt{buscador/retencao.py}, \texttt{buscador/api/deps.py}
+(\texttt{Contexto.caso\_aberto}), das rotas em \texttt{buscador/api/rotas\_*.py} (quais chamam
+\texttt{caso\_aberto} e quais só \texttt{Contexto.caso}) e de \texttt{buscador/api/monitoramento.py}.}
+\end{figure}

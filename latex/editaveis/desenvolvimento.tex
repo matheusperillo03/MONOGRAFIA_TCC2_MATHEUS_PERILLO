@@ -1,0 +1,697 @@
+% ---------------------------------------------------------------------------
+% Capítulo de desenvolvimento do protótipo.
+% Fontes: repositórios BACKEND_TCC2_MATHEUS_PERILLO e FRONTEND_TCC2_MATHEUS_PERILLO
+% (código, README, docker-compose.yml, testes, docs/desempenho-grafo.md),
+% docs/mvp-escopo.md, docs/mvp-diario.md, docs/backlog/, docs/sistema/.
+% Tabelas e figuras de dados geradas por docs/sistema/*.py; diagramas em
+% editaveis/diagramas/ (fontes de cada elemento em docs/sistema/diagramas-fontes.md).
+% ---------------------------------------------------------------------------
+\begingroup
+\setlength{\emergencystretch}{3em}
+
+\chapter{Desenvolvimento do protótipo}
+\label{cap:desenvolvimento}
+
+Este capítulo descreve o protótipo do buscador: a arquitetura, os casos de
+uso, o modelo de dados, os fluxos principais, a interface de programação, as
+decisões de arquitetura, o modelo de ameaças, a engenharia de testes e o processo de
+desenvolvimento com IA. O protótipo implementa a maior parte das histórias
+dos três horizontes do \textit{backlog}; a situação de cada uma está na
+Tabela~\ref{tab:backlog}. O código está em dois repositórios, sob a licença
+MIT: um para o
+\textit{back-end} e outro para o \textit{front-end}. Os testes automatizados
+e a demonstração usam só dados sintéticos. Os conectores também foram
+conferidos contra as fontes reais, num teste de fumaça
+(Seção~\ref{sec:desenv-verificacao}).
+
+% ===========================================================================
+\section{Visão geral e arquitetura}
+\label{sec:desenv-arquitetura}
+
+O protótipo segue o fluxo de uma investigação sobre contratações públicas:
+o investigador abre um caso com finalidade e prazo de retenção, coleta dados
+abertos de várias fontes, o sistema une as entidades e monta o grafo de
+vínculos, as tipologias geram alertas e o investigador confirma ou descarta
+cada alerta. Toda captura entra na cadeia de custódia, e toda ação entra na
+trilha de auditoria.
+
+\textbf{Tecnologias.} O \textit{back-end} usa Python 3.12, FastAPI,
+SQLAlchemy~2 e PostgreSQL (SQLite nos testes). O \textit{front-end} usa
+React, TypeScript, Vite, Cytoscape.js para o grafo e o Padrão Digital de
+Governo (\texttt{@govbr-ds/core}) sem a marca gov.br. A escolha buscou o
+menor número de peças que entregasse a fatia toda, e é decisão do autor
+(Tabela~\ref{tab:adr}).
+
+Os diagramas deste capítulo usam a notação da UML~2, padronizada na ISO/IEC
+19505-2 \cite{iso19505-2}. Cada elemento de cada diagrama foi conferido no
+código ou na configuração (\texttt{docs/sistema/diagramas-fontes.md}). A Figura~\ref{fig:uml-componentes} mostra os módulos e as dependências entre
+eles, e a Figura~\ref{fig:uml-implantacao}, a implantação em contêineres.
+
+\input{editaveis/diagramas/componentes}
+\input{editaveis/diagramas/implantacao}
+
+\textbf{Fontes de dados.} A coleta é só passiva, por conectores com nome e
+versão: dados abertos do CNPJ (arquivos no layout da Receita Federal), API de
+consulta e termos de contrato do PNCP, API do Portal da Transparência (CEIS,
+CNEP e servidores, com chave do usuário), dados abertos do TSE (prestação de
+contas e candidatos) e editais em texto ou em PDF com camada de texto. Os
+fatos usados pelas regras (limites
+da Lei 14.133/2021, decreto de atualização de 2026, campos das APIs e códigos
+de situação cadastral) foram conferidos nas fontes oficiais
+(\texttt{docs/sistema/fontes-horizonte2.md}).
+
+\textbf{Editais em PDF.} O conector de editais lê também PDF com camada de
+texto, com a biblioteca \texttt{pypdf} (versão 7.1.0, licença BSD-3-Clause).
+A custódia é sobre os bytes originais: a captura guarda o PDF como veio, e o
+SHA-256 registrado é o do arquivo. O texto é derivado. A rota de texto, a
+tipologia T10 e a extração por IA extraem o texto de novo a partir da
+captura, e as posições de um trecho referem-se ao texto extraído, e não ao
+arquivo. Para que essa referência seja reproduzível, a captura registra o
+número de páginas, o extrator (biblioteca e versão) e o SHA-256 do texto
+extraído na coleta. Se outra versão da biblioteca extrair outro texto, a
+diferença é sinalizada. A extração roda num processo separado, sem as
+variáveis de ambiente da API, e é encerrada no prazo. Há limites de tamanho
+(50~MiB), de páginas (300), de caracteres (5 milhões) e de tempo (60~s). O
+código só extrai o texto das páginas: não executa JavaScript nem ações do
+documento e não abre anexos. PDF criptografado, corrompido ou acima dos
+limites é recusado, com o motivo. PDF escaneado fica na custódia, marcado como
+``sem camada de texto'', porque não há OCR. O conector não baixa o edital do
+PNCP: o investigador o põe na pasta de ingestão.
+
+\textbf{Recorte do CNPJ.} O conector do CNPJ copia cada arquivo para a
+custódia e transforma cada linha em entidade do caso, com tetos de 16~MiB por
+arquivo e de 100 mil registros por coleta. A base completa de 2026-11 tem 37
+arquivos ZIP, com 7,87~GB compactados e, por proporção, mais de 26~GB
+descompactados nas três tabelas lidas. Por isso ela não passa pelo conector.
+Um \textit{script} (\texttt{scripts/recortar\_cnpj.py}) lê os ZIPs oficiais
+em fluxo, sem descompactar em disco, e grava só as linhas dos CNPJs do caso,
+com um manifesto que registra o SHA-256 de cada ZIP lido. O conector lê esse
+recorte normalmente. O recorte é dado derivado: a captura registra o SHA-256
+do recorte, e o manifesto o liga aos ZIPs de origem. Na medição, o
+\textit{script} leu cerca de 110~MB/s.
+
+% ===========================================================================
+\section{Casos de uso}
+\label{sec:desenv-casos-uso}
+
+A Figura~\ref{fig:uml-casos-de-uso} liga os atores às funções do sistema,
+agrupadas pelos épicos do \textit{backlog}. Os papéis vêm do código: perfis
+globais (analista, delegado e administrador) e papéis no caso (responsável,
+investigador e leitor). O código não tem perfis separados de auditor e de
+perito: a trilha de auditoria é listada pelos perfis delegado e
+administrador, e a recoleta exige o papel de investigador no caso.
+
+\input{editaveis/diagramas/casos-de-uso}
+
+% ===========================================================================
+\section{Modelo de dados}
+\label{sec:desenv-dados}
+
+O banco tem 21 tabelas. As Figuras~\ref{fig:modelo-coleta},
+\ref{fig:modelo-analise} e~\ref{fig:modelo-acesso} mostram o modelo em três
+áreas, com as multiplicidades de cada relação. A Tabela~\ref{tab:relacoes}
+lista as 38 chaves estrangeiras e as 9 referências sem chave estrangeira, com
+a cardinalidade de cada uma. O Apêndice~\ref{ap:dicionario} traz o dicionário
+de dados, com a descrição de cada coluna. As figuras e as tabelas são geradas
+a partir do modelo do próprio código, para não divergirem do sistema.
+
+O caso é o centro do modelo: quase toda tabela tem a coluna
+\texttt{caso\_id}, numa relação 1:N com \texttt{casos}. Quatro tabelas são
+só de acréscimo, protegidas por gatilhos do banco contra alteração e
+exclusão: \texttt{auditoria}, \texttt{alerta\_decisoes}, \texttt{anotacoes} e
+\texttt{tarefa\_eventos}. Nas capturas, o papel do banco usado pela aplicação
+só pode ler e inserir.
+
+\input{editaveis/gerado/modelo-dados}
+
+\input{editaveis/gerado/relacoes}
+
+Algumas referências não usam chave estrangeira, por decisão de projeto:
+\begin{itemize}
+	\item \textbf{Listas em JSON:} as entidades e as evidências de um alerta,
+	as capturas de um aviso e as recoletas de uma execução do monitoramento.
+	Cada lista é gravada junto com o registro que a produziu e não muda depois.
+	\item \textbf{Alvo polimórfico:} uma anotação aponta para uma entidade ou
+	para um alerta, conforme \texttt{alvo\_tipo}. A API confere se o alvo é do
+	mesmo caso.
+	\item \textbf{Login:} membros e responsáveis de tarefas guardam o login,
+	porque o usuário de token de desenvolvimento não tem linha em
+	\texttt{usuarios}.
+	\item \textbf{Auditoria:} a trilha guarda o caso sem chave estrangeira,
+	para não depender de nenhuma outra tabela.
+\end{itemize}
+
+% ===========================================================================
+\section{Fluxos principais}
+\label{sec:desenv-fluxos}
+
+Três fluxos sustentam o diferencial do protótipo, a produção de prova para o
+inquérito (Seção~\ref{sec:requisitos-mercado}). A
+Figura~\ref{fig:uml-seq-coleta} mostra a coleta com cadeia de custódia; a
+Figura~\ref{fig:uml-seq-alerta}, a execução das tipologias e a decisão sobre um
+alerta; e a Figura~\ref{fig:uml-seq-verificacao}, a verificação de integridade de
+uma captura e da trilha de auditoria. As Figuras~\ref{fig:uml-estado-alerta}
+e~\ref{fig:uml-estado-caso} mostram os estados do alerta e do caso.
+
+\input{editaveis/diagramas/seq-coleta-custodia}
+\input{editaveis/diagramas/seq-alerta-decisao}
+\input{editaveis/diagramas/seq-verificacao}
+\input{editaveis/diagramas/estado-alerta}
+\input{editaveis/diagramas/estado-caso}
+
+\textbf{Tipologias.} São dez regras explícitas, sem aprendizado de máquina,
+cada uma com severidade e política de erro declaradas (decisão do autor, a
+validar com o orientador). Todo alerta traz a regra, o motivo em texto e as
+evidências ligadas às capturas. As tipologias que comparam pessoas (T7, sócio
+servidor; T9, doador contratado) nunca afirmam identidade, porque o CPF dos
+sócios nos dados abertos do CNPJ é descaracterizado: geram ``possível
+coincidência'', para o investigador conferir.
+
+% ===========================================================================
+\section{Interface de programação}
+\label{sec:desenv-api}
+
+A Tabela~\ref{tab:api} lista os 53 \textit{endpoints} da API, extraídos da
+especificação OpenAPI gerada pelo próprio FastAPI. Toda rota de caso exige
+sessão (ou token de desenvolvimento, só no modo de desenvolvimento),
+justificativa no cabeçalho, ser membro do caso com o papel adequado e caso
+dentro do prazo de retenção para escrever. Cada chamada entra na trilha de
+auditoria.
+
+\input{editaveis/gerado/api}
+
+% ===========================================================================
+\section{Decisões de arquitetura}
+\label{sec:desenv-decisoes}
+
+A Tabela~\ref{tab:adr} registra as principais decisões de arquitetura, com o
+contexto, a decisão, as alternativas consideradas e a base de cada uma.
+Quando a base é uma lei, um requisito ou um achado das revisões, ela é citada;
+quando não há fonte externa, a decisão é do autor.
+
+\begin{small}
+\begin{longtable}{p{2.6cm}p{4.4cm}p{3.6cm}p{3.6cm}}
+\caption{Registro de decisões de arquitetura}\rotulounico{tab:adr}\\
+\hline
+\textbf{Decisão} & \textbf{O que foi decidido} & \textbf{Alternativas} & \textbf{Base} \\ \hline\endhead
+Coleta só passiva & Ler só dados abertos, sem interagir com alvos nem usar contas & Coleta ativa, perfis controlados & Lei 12.850/2013, art.~10-A \cite{brasil2013lei12850}; histórias H11 e H26 \\
+Homônimos & Sugestão de unificação, nunca fusão automática, quando só o nome coincide & Fusão por nome & CPF descaracterizado no CNPJ (Receita Federal); RSL~1, similaridade é pista (SB1-0781) \\
+Cadeia de custódia & Cada carga guardada como veio, com SHA-256, instante UTC, origem, conector e versão; verificação sob demanda & Guardar só os dados extraídos & RF07; RSL~1, QP5 (A3, TA4) \\
+Trilha de auditoria & Só de acréscimo, encadeada por HMAC com chave fora do banco, com gatilhos e âncora & Registro comum em tabela & RNF02; RSL~1 (A4, TD6) \\
+Papéis do banco & Papel dono (migração) separado do papel da aplicação, que só tem os privilégios necessários & Um só usuário de banco & Menor privilégio; decisão do autor \\
+Alerta como pista & Alerta exige confirmação ou descarte com justificativa; histórico guardado & Alerta como conclusão & RF12; RSL~1 (A2, TA3; A4, TA3) \\
+Regras em vez de IA nas tipologias & Dez tipologias por regras explícitas, com motivo e evidências & Classificador treinado & RNF05; nenhum estudo da RSL~1 trata de fraude em contratações nem do Brasil (Seção~\ref{sec:requisitos-mercado}) \\
+IA só local e opcional & Extração por modelo local, desligada por padrão; trecho literal obrigatório; decisão humana & Serviço de IA externo & Soberania dos dados; RSL~1 (A2, TA4); RSL~2 (B3, TA3) \\
+Sessão & Sessão no servidor com token opaco, expiração por duração e inatividade & JWT & Logout e desativação valem na hora; decisão do autor \\
+Acesso por caso & Membros com papéis por caso; perfil global não abre caso & Acesso só por perfil & RNF01; minimização (RNF04) \\
+Criptografia em repouso & AES-256-GCM das capturas, chave fora do banco, SHA-256 sobre o conteúdo original & Cifrar o disco inteiro & RNF01; decisão do autor \\
+Retenção & Depois do prazo, o caso fica só leitura; nada é apagado & Apagar ao fim do prazo & RNF04; custódia e auditoria são só de acréscimo; descarte é decisão do órgão \\
+Grafo no banco & Busca nível a nível no PostgreSQL, sem novo serviço & NetworkX em memória; banco de grafos & Medição de desempenho (Seção~\ref{sec:desenv-verificacao}) \\
+Dados de teste & Só dados sintéticos, CPFs com dígito inválido ou gerados na execução & Amostras reais & LGPD; regra do projeto \\
+Editais em PDF & Custódia sobre os bytes do PDF; texto derivado, com o SHA-256 do texto; extração em processo separado, com limites; sem OCR & Guardar só o texto extraído; OCR & Custódia (RF07); decisão do autor \\
+CNPJ por recorte & \textit{Script} lê os ZIPs oficiais em fluxo e grava só os CNPJs do caso, com manifesto dos SHA-256 & Carga da base completa pelo conector & Mais de 26~GB descompactados (estimativa por proporção, 17/11/2026); decisão do autor \\
+\hline
+\multicolumn{4}{p{14.6cm}}{\footnotesize Fonte: elaborada pelo autor, a partir do código, dos requisitos e da síntese das revisões.}\\
+\end{longtable}
+\end{small}
+% PENDENTE: o orientador valida as decisões marcadas como do autor.
+
+% ===========================================================================
+\section{Modelo de ameaças}
+\label{sec:desenv-ameacas}
+
+A síntese da RSL~1 mostrou que o modelo de ameaças de uma ferramenta OSINT
+policial tem três alvos: o investigador, a ferramenta e os dados (A2, TA4,
+Seção~\ref{sec:resultados-rsl1}). A Tabela~\ref{tab:ameacas} relaciona cada
+ameaça tratada no protótipo ao controle implementado e ao teste automatizado
+que o verifica.
+
+\begin{small}
+\begin{longtable}{p{3.4cm}p{1.8cm}p{4.6cm}p{4.4cm}}
+\caption{Ameaças, controles e testes}\rotulounico{tab:ameacas}\\
+\hline
+\textbf{Ameaça} & \textbf{Alvo} & \textbf{Controle} & \textbf{Teste (back-end)} \\ \hline\endhead
+Acesso a caso alheio & Dados & Acesso por caso com papéis; negação auditada & \nometeste{test_h23_nao_membro_nao_ve_nem_age_no_caso_e_a_negacao_e_auditada} \\
+Roubo de senha & Ferramenta & Argon2id, MFA por TOTP, bloqueio após 5 falhas, código de uso único & \nometeste{test_h23_senha_errada_usuario_inexistente_e_bloqueio_por_tentativas}; \nometeste{test_h23_mfa_o_mesmo_codigo_nao_vale_duas_vezes} \\
+Adulteração da prova & Dados & SHA-256 na captura e verificação; cifra autenticada & \nometeste{test_h23_adulteracao_troca_de_arquivo_e_chave_errada_sao_detectadas} \\
+Adulteração da trilha & Ferramenta & HMAC encadeado, gatilhos, papel sem UPDATE e DELETE & \nometeste{test_adulteracao_via_sql_e_detectada}; \nometeste{test_gatilho_do_banco_bloqueia_update_e_delete} \\
+Vazamento em repouso & Dados & AES-256-GCM das capturas, chave fora do banco & \nometeste{test_h23_captura_fica_cifrada_no_disco_e_o_sha256_e_do_conteudo_original} \\
+Envio de dados a terceiros pela IA & Dados & IA desligada por padrão; só servidor local; modelo remoto recusado & \nometeste{test_h22_configuracao_so_aceita_servidor_local}; \nometeste{test_h22_provedor_ollama_recusa_modelo_remoto_ausente_e_respostas_ruins} \\
+Conteúdo inventado pela IA & Ferramenta & Trecho literal, valor dentro do trecho e esquema obrigatórios & \nometeste{test_h22_trecho_inventado_valor_inventado_e_esquema_invalido_sao_recusados} \\
+Exposição de CPF & Dados & Só os seis dígitos centrais em entidades, alertas, avisos e relatório; máscara na interface & \nometeste{test_rnf04_nenhum_cpf_completo_chega_a_entidades_alertas_avisos_ou_relatorio} \\
+CPF completo em dado bruto & Dados & O contrato do PNCP guarda só o CPF descaracterizado do fornecedor; as capturas ficam cifradas no disco. Risco em tratamento: o CPF completo continua nas capturas brutas e na comparação entre capturas & \nometeste{test_cpf_de_fornecedor_pessoa_fisica_nao_fica_completo_no_contrato} \\
+PDF malicioso & Ferramenta & Extração em processo separado, sem as variáveis de ambiente da API e encerrada no prazo; só o texto das páginas, sem JavaScript nem anexos; limites de tamanho, páginas, caracteres e tempo & \nometeste{test_javascript_e_anexo_do_pdf_nao_sao_executados_nem_lidos}; \nometeste{test_limites_de_paginas_tamanho_caracteres_e_tempo} \\
+Texto do PDF diferente do da coleta & Dados & SHA-256 do texto extraído na coleta, comparado a cada nova extração & \nometeste{test_texto_extraido_diferente_do_da_coleta_e_sinalizado} \\
+Fórmula maliciosa em planilha exportada & Investigador & Neutralização de fórmulas no CSV; escape de XML no GraphML & \nometeste{test_h38_csv_neutraliza_formulas_e_graphml_escapa_xml} \\
+Alertar o alvo ou deixar rastro & Investigador & Só coleta passiva de dados abertos & Desenho dos conectores (só GET); anonimato operacional fora desta entrega (H26) \\
+Consulta que derruba o serviço & Ferramenta & Tetos de nós na resposta e nos visitados & \nometeste{test_h29_tetos_e_erros_das_consultas} \\
+Uso fora da finalidade & Dados & Justificativa em toda chamada; retenção com só leitura & \nometeste{test_rotas_de_caso_exigem_token_e_justificativa}; \nometeste{test_h17_caso_exige_finalidade_e_prazo_de_retencao} \\
+\hline
+\multicolumn{4}{p{14.6cm}}{\footnotesize Fonte: elaborada pelo autor, a partir do código e dos testes do \textit{back-end}.}\\
+\end{longtable}
+\end{small}
+% PENDENTE: atualizar quando a correção do CPF/CNPJ alfanumérico terminar.
+% Em 17/11/2026, outro agente corrige no back-end a exibição do CPF completo
+% (capturas brutas e comparação entre capturas) e o CNPJ alfanumérico.
+
+Antes do horizonte~1, o protótipo passou por uma auditoria de segurança
+assistida por IA, e os 17 itens encontrados foram corrigidos, cada um com
+teste de regressão (execuções 4 e 5 do diário, Seção~\ref{sec:desenv-processo}).
+% PENDENTE do CI: ver a Seção sec:desenv-testes-ci.
+
+% ===========================================================================
+\section{Engenharia de testes e verificação}
+\label{sec:desenv-verificacao}
+% Fontes: testes dos dois repositórios (tests/, conftest.py, sinteticos.py,
+% src/**/*.test.ts(x), src/test/), pyproject.toml, vite.config.ts,
+% package.json, .github/workflows/ci.yml dos dois repositórios e
+% docs/mvp-diario.md. Termos de teste conforme o SWEBOK v4.0, cap. 5.
+
+Esta seção descreve como o protótipo foi verificado: a estratégia de testes,
+as técnicas usadas, a ligação entre requisitos e testes, os portões da
+integração contínua, o teste contra as fontes reais, a medição de desempenho
+e as lacunas. Os termos seguem o capítulo de teste do SWEBOK v4.0
+\cite{swebok4}. O mesmo guia lembra o limite de toda a seção: o teste mostra
+a presença de defeitos, mas nunca a ausência deles \cite[cap.~5, seç.~1.2.8]{swebok4}.
+
+% ---------------------------------------------------------------------------
+\subsection{Estratégia}
+\label{sec:desenv-testes-estrategia}
+
+O SWEBOK distingue níveis de teste pelo alvo (unidade, integração, sistema e
+aceitação) e tipos de teste pelo objetivo \cite[cap.~5, seç.~2]{swebok4}.
+O teste de unidade verifica, isolado, um elemento testável em separado; o de
+integração verifica as interações entre elementos; e o de sistema verifica o
+comportamento do conjunto e é o lugar usual dos requisitos não funcionais,
+como segurança e privacidade \cite[cap.~5, seç.~2.1]{swebok4}. A
+Tabela~\ref{tab:niveis-teste} mostra como cada nível aparece no protótipo.
+A escolha de testar cada nível com essas ferramentas é decisão do autor.
+
+\begin{small}
+\begin{longtable}{p{2.6cm}p{5.6cm}p{6.2cm}}
+\caption{Níveis de teste do protótipo}\label{tab:niveis-teste}\\
+\hline
+\textbf{Nível} & \textbf{O que se verifica} & \textbf{Como} \\ \hline\endhead
+Unidade & Funções isoladas: normalização de nomes e endereços, dígito verificador do CNPJ, descaracterização do CPF, código TOTP, cofre AES-256-GCM, extração de texto de PDF, conversão do grafo para o Cytoscape.js & \textit{pytest}; Vitest (por exemplo, \texttt{test\_normalizacao.py} e \texttt{privacidade.test.ts}) \\
+Integração com o banco & Serviços sobre o banco real: custódia, trilha de auditoria, resolução, tipologias, migração do esquema; no PostgreSQL, também os gatilhos e os privilégios do papel da aplicação & SQLite em arquivo temporário em todo teste; PostgreSQL só quando as variáveis \texttt{TEST\_POSTGRES\_URL} e \texttt{TEST\_POSTGRES\_URL\_APP} existem; sem elas, os 8 testes de PostgreSQL são pulados (\texttt{pytest.mark.skipif}) \\
+API & A aplicação inteira pela interface HTTP: autenticação, justificativa, acesso por caso, coleta, alertas, relatório e exportação & \texttt{TestClient} do FastAPI sobre a aplicação montada com os conectores simulados \\
+\textit{Front-end} & Componentes e telas: o que é mostrado, o que é enviado à API, as recusas e os papéis & Vitest com jsdom e a Testing Library; cliente da API falso \\
+\hline
+\multicolumn{3}{p{14.4cm}}{\footnotesize Fonte: elaborada pelo autor, a partir de \texttt{tests/conftest.py}, dos testes e do \texttt{vite.config.ts}.}\\
+\end{longtable}
+\end{small}
+
+Não há testes de aceitação automatizados nem testes ponta a ponta, com o
+navegador e o \textit{back-end} reais juntos. A avaliação com usuários tem
+protocolo (Capítulo~\ref{cap:avaliacao}), mas ainda não foi executada.
+
+Os tipos de teste presentes são seis:
+\begin{itemize}
+	\item \textbf{Funcional:} as tipologias têm casos que disparam e, na
+	maioria, casos que não disparam (por exemplo, \texttt{test\_\allowbreak{}t1\_\allowbreak{}dispara\_\allowbreak{}para\_\allowbreak{}empresa\_\allowbreak{}recente\_\allowbreak{}e\_\allowbreak{}nao\_\allowbreak{}para\_\allowbreak{}antiga}
+	e \texttt{test\_\allowbreak{}h31\_\allowbreak{}t4\_\allowbreak{}nao\_\allowbreak{}dispara\_\allowbreak{}para\_\allowbreak{}ativa\_\allowbreak{}nem\_\allowbreak{}para\_\allowbreak{}empresa\_\allowbreak{}sem\_\allowbreak{}dado\_\allowbreak{}do\_\allowbreak{}cnpj}).
+	\item \textbf{Segurança:} o SWEBOK a define como a verificação da
+	confidencialidade, da integridade e da disponibilidade, incluindo o uso
+	indevido, isto é, o teste negativo \cite[cap.~5, seç.~2.2.8]{swebok4}. No
+	protótipo, são os testes da Tabela~\ref{tab:ameacas} e as regressões da
+	auditoria de segurança (\texttt{test\_seguranca.py}).
+	\item \textbf{Privacidade:} o guia trata o teste de privacidade como tipo
+	próprio \cite[cap.~5, seç.~2.2.9]{swebok4}. Aqui, ele verifica que o CPF
+	completo não sai da custódia por nenhum caminho da API
+	(\texttt{test\_privacidade\_cpf.py}).
+	\item \textbf{Regressão:} o novo teste depois de uma mudança, para mostrar
+	que o que passava continua passando \cite[cap.~5, seç.~2.2.5]{swebok4}.
+	Cada um dos 17 achados da auditoria de segurança e cada correção vinda das
+	fontes reais ganhou um teste (\texttt{test\_fontes\_reais.py}).
+	\item \textbf{Desempenho:} a verificação de que o sistema atende aos
+	requisitos de desempenho \cite[cap.~5, seç.~2.2.7]{swebok4}. A medição do
+	grafo (Seção~\ref{sec:desenv-desempenho}) é feita à parte, por
+	\textit{script}, e não entra na suíte nem no \textit{pipeline}. Na suíte, os
+	testes da H29 conferem só o resultado das consultas, e não o tempo.
+	\item \textbf{Fumaça:} o teste rápido de que as funções centrais operam
+	\cite[cap.~5, seç.~3.3.3]{swebok4}. Aqui, é a execução manual dos conectores
+	contra as fontes reais (Seção~\ref{sec:desenv-fontes-reais}). O arquivo
+	\texttt{test\_fontes\_reais.py} testa só o \textit{script} dessa execução,
+	sem rede.
+\end{itemize}
+
+% ---------------------------------------------------------------------------
+\subsection{Técnicas}
+\label{sec:desenv-testes-tecnicas}
+
+\textbf{Dublês de teste.} O SWEBOK descreve \textit{stubs} e
+\textit{drivers} que simulam os módulos chamados e os que chamam
+\cite[cap.~5, seç.~8.2]{swebok4}. Simular uma dependência dá foco e
+velocidade ao teste, mas tira realismo, e manter o simulado compatível com o
+original é difícil \cite{spadini2017mock}. O protótipo usa estes dublês:
+\begin{itemize}
+	\item \texttt{TransporteSimulado}, transporte do \texttt{httpx} que serve
+	as páginas do PNCP a partir de arquivos locais, sem rede. Ele registra as
+	chamadas recebidas e pode forçar respostas 503 nas primeiras chamadas,
+	para testar a retentativa. As capturas feitas com ele ficam marcadas como
+	sintéticas;
+	\item \texttt{TransporteRotas}, transporte do mesmo tipo que responde por
+	uma função, como o Portal da Transparência ou os termos do PNCP
+	responderiam, inclusive com erro;
+	\item \texttt{httpx.MockTransport}, que responde como o servidor Ollama
+	do modelo local;
+	\item \texttt{ProvedorFalso}, provedor de IA determinístico, sem modelo.
+	Nos testes, ele devolve respostas prontas, inclusive inválidas ou com
+	trecho inventado, para provar que o serviço as recusa;
+	\item substituições pontuais com o \texttt{monkeypatch} do \textit{pytest},
+	como a data corrente da retenção, para testar o último dia do prazo, e
+	funções espiãs que registram se uma etapa foi chamada;
+	\item no \textit{front-end}, um \texttt{fetch} falso (\texttt{vi.fn}) para o
+	cliente HTTP e o \texttt{clienteFalso}, que parte do cliente simulado
+	(\texttt{ClienteMock}) e troca só os métodos de cada teste.
+\end{itemize}
+
+\textbf{Dados sintéticos.} Os testes só usam dados inventados
+(Tabela~\ref{tab:adr}), como recomenda a RSL~2 para o código feito com IA
+(Seção~\ref{sec:resultados-rsl2-praticas}). Como todo número de CPF com
+dígitos verificadores válidos pode ser de alguém, nenhum fica gravado nos
+repositórios. A cada execução, o teste sorteia a base e calcula os
+verificadores (\texttt{cpf\_sintetico} no \textit{back-end} e
+\texttt{cpfSinteticoValido} no \textit{front-end}). O CNPJ alfanumérico
+também é sorteado, com o dígito verificador da regra oficial. Os PDFs de
+editais são gerados em memória, e as \textit{fixtures} das fontes vêm de
+\textit{scripts} geradores (\texttt{scripts/gerar\_fixtures.py} e
+\texttt{scripts/gerar\_fixtures\_h2.py}). Essa geração aleatória é a seleção
+aleatória de entradas descrita no SWEBOK \cite[cap.~5, seç.~3.7.2]{swebok4}.
+Não há semente registrada, o que tem um custo (Seção~\ref{sec:desenv-testes-lacunas}).
+
+\textbf{Oráculos.} O oráculo decide se o comportamento observado está
+correto \cite[cap.~5, seç.~1.2.7]{swebok4}. Barr et al.\ classificam os
+oráculos em especificados, derivados, implícitos e humanos
+\cite{barr2015oracle}. O protótipo usa dois deles:
+\begin{itemize}
+	\item \textbf{Especificados:} os vetores de teste da RFC~6238 para o
+	código TOTP; o exemplo oficial do manual da Receita para o dígito
+	verificador do CNPJ alfanumérico; os limites de 2026 do decreto de
+	atualização, para a T5. Também são especificados os casos de cada
+	tipologia, escritos a partir da regra, e as
+	verificações de integridade: o teste da custódia recalcula o SHA-256 dos
+	bytes com a biblioteca padrão e o compara com o da captura; na auditoria,
+	o teste altera uma linha direto no banco, ou reescreve a cadeia com outra
+	chave de HMAC, e exige que a verificação acuse a quebra.
+	\item \textbf{Derivados:} os testes da H29 comparam, para todo nó e toda
+	profundidade, a consulta no banco com a implementação anterior, em
+	NetworkX, com o grafo inteiro em memória. É uma versão alternativa do
+	programa usada como oráculo, perto do que Barr et al.\ chamam de
+	pseudo-oráculo \cite{barr2015oracle}. Pela definição deles, porém, a
+	versão alternativa deve ser produzida de forma independente, e aqui as
+	duas foram escritas pelo mesmo agente.
+\end{itemize}
+No teste com as fontes reais e na execução com o modelo local
+(Seção~\ref{sec:desenv-limitacoes}), a saída foi conferida pelos agentes de
+IA, e não há registro de conferência humana. Por isso, esses casos não contam
+como oráculo humano.
+
+Não há testes baseados em propriedades: nenhum dos repositórios usa
+bibliotecas desse tipo.
+
+% ---------------------------------------------------------------------------
+\subsection{Rastreabilidade entre requisitos e testes}
+\label{sec:desenv-testes-rastreabilidade}
+\input{editaveis/gerado/rastreabilidade-testes-numeros}
+
+Uma medida de cobertura citada pelo SWEBOK é a porcentagem dos requisitos
+funcionais exercitados pelos testes \cite[cap.~5, seç.~4]{swebok4}. Para
+medi-la, um \textit{script} (\texttt{docs/sistema/gera\_rastreabilidade.py})
+lê os testes dos dois repositórios, sem executá-los, e liga cada teste aos
+requisitos do Capítulo~\ref{cap:requisitos}. A ligação tem três níveis, nesta
+ordem:
+\begin{enumerate}
+	\item \textbf{Nome:} o identificador está no próprio teste. No
+	\textit{back-end}, o nome começa por \nometeste{test_h23_},
+	\nometeste{test_rf02_} ou \nometeste{test_rnf04_}; no \textit{front-end}, o
+	título do teste ou do grupo cita H, RF ou RNF. A história vira requisitos
+	pelo próprio \textit{backlog} (Tabela~\ref{tab:backlog}).
+	\item \textbf{Padrão:} uma expressão regular sobre o nome do teste, com a
+	justificativa escrita ao lado.
+	\item \textbf{Arquivo:} para os arquivos temáticos sem identificador, como
+	\texttt{test\_custodia.py}, o requisito do arquivo.
+\end{enumerate}
+Os níveis~2 e~3 estão num mapa explícito
+(\texttt{docs/sistema/rastreabilidade-mapa.json}), escrito pelo autor com
+apoio de IA, a partir do nome de cada teste. O \textit{script} para com erro
+se o mapa citar um arquivo que não existe e avisa quando um identificador não
+está no \textit{backlog}. Títulos genéricos, como ``horizonte~2'', não viram
+histórias. Os \rastExcluidos{} testes do cliente simulado do \textit{front-end} ficam fora,
+porque testam o simulador, e não o sistema.
+
+\input{editaveis/gerado/rastreabilidade-testes}
+
+A Tabela~\ref{tab:rastreabilidade-testes} mostra o resultado. Do
+\textit{back-end}, \rastLigBack{} das \rastTestesBack{} funções de teste
+ligam-se a algum requisito, \rastNomeBack{} delas pelo nome. Do
+\textit{front-end}, fora os do cliente simulado, \rastLigFront{} dos
+\rastElegiveisFront{} testes ligam-se, \rastNomeFront{} pelo título. No
+\textit{back-end}, os testes sem ligação são sobretudo de migração do esquema,
+de conferência das \textit{fixtures} e de limites defensivos dos conectores;
+no \textit{front-end}, são sobretudo os do cliente HTTP, que conferem as rotas
+e os cabeçalhos do contrato da API. A lista completa está em
+\texttt{docs/sistema/rastreabilidade.md}. A contagem é de funções e de blocos
+\texttt{it}: um teste parametrizado conta uma vez.
+% PENDENTE: o autor revisa o mapa de rastreabilidade (níveis 2 e 3), feito com IA.
+
+Sete requisitos não têm nenhum teste ligado. Quatro deles não foram
+implementados: RF05 e RF15 estão ``a fazer'', e RF10 e RNF03 estão fora desta
+entrega. Os outros três estão no sistema, mas sem teste automatizado:
+\begin{itemize}
+	\item \textbf{RNF07 (disponibilidade):} não tem história. Só há a política
+	de reinício dos contêineres no \texttt{docker-compose.yml}, sem teste de
+	\textit{backup} nem de recuperação;
+	\item \textbf{RNF08 (usabilidade):} não tem teste automatizado; a
+	avaliação com usuários prevista no Capítulo~\ref{cap:avaliacao} ainda não
+	foi executada;
+	\item \textbf{RNF11 (DevSecOps):} a parte feita é a configuração do
+	\textit{pipeline}, com análise estática de segurança
+	(Seção~\ref{sec:desenv-testes-ci}). Não é um teste, e não há DAST, SBOM
+	nem \textit{pentest}.
+\end{itemize}
+Ter teste ligado também não prova que o requisito foi atendido por inteiro.
+O RF01, por exemplo, lista fontes que o protótipo não coleta, como o DODF e
+as juntas comerciais, e o RNF06 tem só testes do resultado e dos tetos das
+consultas, sem medir o tempo.
+A tabela mostra onde há teste, e não o quanto cada requisito foi verificado.
+
+% ---------------------------------------------------------------------------
+\subsection{Execução e cobertura}
+\label{sec:desenv-testes-execucao}
+
+Na última rodada registrada no diário, em 17/11/2026, o \textit{back-end}
+tinha 342 testes coletados pelo \textit{pytest}, dos quais 8 são específicos
+de PostgreSQL. Com SQLite, 334 passaram, e os 8 de PostgreSQL foram pulados:
+o Docker travou, e eles não rodaram nesta rodada. Na rodada anterior, de
+16/11/2026, os 301 testes de então passaram com PostgreSQL. A análise de
+estilo (ruff) e a análise estática de segurança (Bandit) não apontaram
+problemas. O \textit{front-end} tinha 234 testes. A contagem da
+Tabela~\ref{tab:rastreabilidade-testes} difere desses números por dois
+motivos: ela conta funções, e não casos (um teste parametrizado é um só), e
+é posterior a essa rodada, com os testes acrescentados depois dela.
+% PENDENTE: rodar os 8 testes de PostgreSQL com a suíte atual e atualizar
+% este parágrafo.
+
+A cobertura de código ainda não é medida. Sem ela, não se sabe que parte do
+código a suíte executa \cite[cap.~5, seç.~4]{swebok4}.
+% PENDENTE: preencher com os números de cobertura e dos testes E2E quando o dev-mvp concluir
+
+% ---------------------------------------------------------------------------
+\subsection{Portões da integração contínua}
+\label{sec:desenv-testes-ci}
+
+Os dois repositórios têm \textit{pipeline} no GitHub Actions, disparado a
+cada \textit{push} e a cada \textit{pull request}. Cada etapa é um comando
+que termina com erro quando falha, sem \texttt{continue-on-error}: qualquer
+falha reprova a mudança. Os portões são estes:
+\begin{itemize}
+	\item \textbf{\textit{Back-end}:} instalação com as versões travadas
+	(\texttt{uv sync -{}-locked}); análise de estilo (\texttt{ruff check}) e
+	de formatação (\texttt{ruff format -{}-check}); análise estática de
+	segurança (Bandit, sobre o código e os \textit{scripts}); testes com
+	SQLite e com um PostgreSQL~16 descartável, criado pelo próprio
+	\textit{job}, com o papel da aplicação; e uma etapa que roda de novo os
+	testes com ``postgres'' no nome, em quatro arquivos, e reprova o
+	\textit{pipeline} se algum deles for pulado.
+	\item \textbf{\textit{Front-end}:} instalação com as versões travadas
+	(\texttt{npm ci}); análise de estilo (ESLint); testes (Vitest);
+	\textit{build} (\texttt{tsc} e Vite, sem o modo simulado); uma busca que
+	reprova o \textit{build} se os tokens de demonstração tiverem entrado nele;
+	e auditoria das dependências, que reprova vulnerabilidade alta ou crítica
+	(\texttt{npm audit -{}-audit-level=high}).
+\end{itemize}
+Testes, análise de estilo e análise estática de segurança como portão são a
+segunda prática candidata da RSL~2 para código gerado por IA (B2, TA2; B3,
+TA2; Seção~\ref{sec:resultados-rsl2-praticas}). A auditoria de dependências
+é decisão do autor. O \textit{pipeline} não roda
+o teste contra as fontes reais nem a medição de desempenho, e ainda não mede
+a cobertura.
+% PENDENTE: o pipeline de CI ainda não rodou no GitHub (depende de commit e
+% push autorizados pelo autor). Até lá, os portões estão configurados, mas
+% não foram exercitados no GitHub.
+
+% ---------------------------------------------------------------------------
+\subsection{Teste com as fontes reais}
+\label{sec:desenv-fontes-reais}
+
+Em 17/11/2026, um \textit{script}
+(\texttt{scripts/testar\_fontes\_reais.py}) rodou os conectores contra as
+fontes reais, com as capturas só em memória, sem gravar no banco nem na
+custódia. Houve só coleta passiva, com no máximo uma requisição por segundo
+em cada fonte. Todas as fontes passaram: contratos e termos do PNCP, Portal
+da Transparência (CEIS, CNEP e servidores, com a chave do operador), CNPJ
+(amostra de 463~MB: três dos 30 ZIPs das tabelas lidas, de 2026-11, mais as
+tabelas de domínio), TSE (candidatos e receitas do DF de
+2026) e um edital real do PNCP em PDF, de 22 páginas, do qual foram
+extraídos 63.398 caracteres em 0,43~s. Os dados reais mostraram quatro
+divergências que os dublês não tinham revelado, corrigidas três no código e
+uma na documentação:
+\begin{itemize}
+	\item o contrato do PNCP guardava o CPF completo do fornecedor pessoa
+	física, e agora guarda só o descaracterizado;
+	\item o sócio pessoa jurídica vem com o CNPJ básico, de 8 dígitos, e era
+	tratado como pessoa; agora vira empresa;
+	\item o arquivo de receitas do TSE de 2026 chama o ano de
+	\texttt{AA\_ELEICAO}, e o conector passou a lê-lo;
+	\item os limites de uso e o formato das datas do Portal da Transparência
+	foram conferidos na fonte e registrados na documentação.
+\end{itemize}
+As três correções de código viraram testes de regressão, com dados
+sintéticos que reproduzem o formato observado na fonte.
+% Fontes: docs/mvp-diario.md (seção de 17/11/2026) e README do back-end
+% (seção "Fontes reais e piloto com dados públicos"). O tempo do edital é o
+% do diário (0,43 s); o README arredonda para 0,4 s.
+
+% ---------------------------------------------------------------------------
+\subsection{Desempenho do grafo}
+\label{sec:desenv-desempenho}
+
+A consulta de vínculos foi medida com grafos
+sintéticos de até 1 milhão de arestas no PostgreSQL. Com 1 milhão de arestas
+(500 mil nós), a vizinhança em até 3 níveis levou de 1,8 a 8,3~ms (mediana) e
+o caminho entre duas entidades, 11,3~ms, contra 13 a 20 segundos da
+implementação anterior, que montava o grafo inteiro em memória. O pico de
+memória do processo caiu de 2.557~MiB para 83~MiB. Os números vêm de uma
+execução por tamanho, numa máquina de desenvolvimento, e servem para comparar
+ordens de grandeza (relatório completo em \texttt{docs/desempenho-grafo.md}
+do \textit{back-end}).
+
+% ---------------------------------------------------------------------------
+\subsection{Lacunas e ameaças à validade dos testes}
+\label{sec:desenv-testes-lacunas}
+
+\begin{itemize}
+	\item \textbf{Testes escritos pelo mesmo agente que escreveu o código.}
+	A RSL~2 mostrou que testes gerados podem ter cobertura alta e, ainda
+	assim, ser tautológicos ou ter asserções fracas (B2, TA2;
+	Seção~\ref{sec:resultados-rsl2-qp2}). A prática candidata é o autor
+	escrever ou validar os testes como critério de aceitação
+	(Seção~\ref{sec:resultados-rsl2-praticas}). Aqui, o orquestrador rodou de
+	novo cada suíte, o que confirma que os testes passam, mas não que eles
+	são bons. A revisão humana dos testes está pendente.
+	\item \textbf{Eficácia da suíte não medida.} Não há teste de mutação, que
+	mede a parte dos defeitos injetados que a suíte detecta
+	\cite[cap.~5, seç.~3.4 e~4.2.2]{swebok4}, nem cobertura de código. A
+	RSL~2 aponta a mesma lacuna nos estudos: a eficácia dos testes gerados em
+	achar defeitos raramente é medida (B2).
+	\item \textbf{PostgreSQL.} Os 8 testes que só rodam com PostgreSQL
+	(gatilhos, privilégios do papel da aplicação e migração) não rodaram na
+	última rodada. O SQLite não reproduz os papéis do banco, então essas
+	proteções ficaram sem verificação desde 16/11/2026.
+	\item \textbf{Dublês diferentes das fontes.} As \textit{fixtures} e os
+	transportes simulados reproduzem o que se sabia do formato de cada fonte.
+	O teste com as fontes reais achou quatro divergências que eles não
+	cobriam, o que ilustra o risco descrito por Spadini et
+	al.\ \cite{spadini2017mock}. Do mesmo modo, o cliente simulado do
+	\textit{front-end} pode divergir da API real.
+	\item \textbf{Sem navegador real.} Os testes do \textit{front-end} rodam
+	no jsdom, que não é um navegador, e não há teste ponta a ponta. O grafo
+	do Cytoscape.js, por exemplo, não é desenhado nos testes.
+	\item \textbf{Dados aleatórios sem semente.} O sorteio dos CPFs e CNPJs a
+	cada execução amplia as entradas, mas uma falha que dependa do número
+	sorteado pode não se repetir.
+	\item \textbf{Rastreabilidade por nome.} A ligação dos níveis~2 e~3 é
+	decisão do autor e foi feita pelo nome dos testes. Um nome pode prometer
+	mais do que o teste verifica.
+\end{itemize}
+
+% ===========================================================================
+\section{Processo de desenvolvimento com IA}
+\label{sec:desenv-processo}
+
+O protótipo foi desenvolvido por agentes de codificação, sob orientação do
+autor, e cada execução foi registrada num diário (\texttt{docs/mvp-diario.md}):
+modelo e versão, tarefa, duração, tokens, resultado e correções. Foram nove
+execuções. As de desenvolvimento usaram o modelo \texttt{claude-fable-5-1} e
+depois o \texttt{claude-fable-5-2}; a orquestração, a revisão e a auditoria
+de segurança usaram o \texttt{claude-opus-5-5}. Depois delas, as sessões de
+16 e 17/11/2026 (teste da IA local, fontes reais e editais em PDF) foram
+registradas em seções próprias do mesmo diário.
+
+O processo aplicou as práticas candidatas da RSL~2
+(Seção~\ref{sec:resultados-rsl2}):
+\begin{itemize}
+	\item \textbf{Verificação independente:} ao fim de cada execução, o
+	orquestrador rodou de novo os testes, o lint, o \textit{build} e a análise
+	de segurança, sem aceitar o relato do agente como prova;
+	\item \textbf{Barreiras automáticas:} testes, análise estática e auditoria
+	de dependências no \textit{pipeline};
+	\item \textbf{Dados sintéticos:} só dados sintéticos nos testes
+	automatizados e na demonstração. O teste de fumaça contra as fontes reais
+	guarda as capturas só em memória, e os arquivos reais ficam fora do
+	controle de versão;
+	% PENDENTE: R1 registra se dados reais públicos chegaram ao contexto do
+	% agente na sessão de 17/11/2026.
+	\item \textbf{Registro de modelo, versão, tempo e tokens} de cada execução;
+	\item \textbf{Fatos externos conferidos antes do código:} as regras das
+	tipologias só usaram fatos conferidos em fonte oficial.
+\end{itemize}
+% PENDENTE: a RSL 2 aponta a revisão humana de cada mudança como prática
+% central. Registrar como o autor revisou os diffs antes do commit.
+
+% ===========================================================================
+\section{Limitações e trabalho futuro}
+\label{sec:desenv-limitacoes}
+
+\begin{itemize}
+	\item \textbf{Fontes reais:} as cinco fontes e um edital real em PDF
+	passaram pelo teste de fumaça de 17/11/2026, e as quatro divergências
+	encontradas foram corrigidas (Seção~\ref{sec:desenv-verificacao}). Foi um
+	teste de conferência, e não uma investigação: não houve coleta para um
+	caso, e a base completa do CNPJ não foi carregada. Essa base só entra por
+	recorte, e o recorte não busca as outras empresas de um sócio do caso.
+	Ficam pendentes: o CNPJ alfanumérico, que o código ainda trata como só
+	dígitos; o CPF completo nas capturas brutas do PNCP, do CEIS e dos
+	candidatos do TSE de 2026, e na comparação entre capturas; o arquivo de
+	receitas do TSE de São Paulo (264~MB), acima do teto padrão de 64~MiB; e
+	o nome do município do CNPJ, que não é resolvido.
+	% PENDENTE: atualizar quando a correção do CPF/CNPJ alfanumérico terminar.
+	\item \textbf{Integração:} a importação do GraphML e do CSV no Maltego e no
+	i2 Analyst's Notebook não foi testada nos programas.
+	\item \textbf{IA:} a extração foi executada uma vez com um servidor de
+	modelo local real (Ollama 0.40.16, modelo \texttt{qwen2.5:7b}, temperatura
+	0), sobre os três documentos sintéticos de editais da demonstração, em
+	16/11/2026. O modelo devolveu 7 itens: 5 viraram sugestões e 2 foram
+	recusados por trecho não literal. Um deles trazia o nome do órgão escrito
+	errado pelo modelo, o que mostra a verificação do trecho barrando conteúdo
+	inventado. O outro era um trecho verdadeiro que, no documento, estava
+	quebrado em duas linhas, uma recusa indevida. Por isso a comparação passou
+	a tratar qualquer sequência de espaços e quebras de linha como um espaço,
+	mantendo exatas as letras, os acentos e a pontuação. Repetido o teste, o
+	trecho foi aceito, e o nome escrito errado continuou recusado. Das 5
+	sugestões, uma veio com
+	o tipo errado (uma certidão classificada como objeto), e a decisão humana
+	é que a corrige. Três documentos curtos não medem a qualidade da extração.
+	Isso exige um conjunto anotado, que este trabalho não tem.
+	\item \textbf{Chaves:} a troca da chave de criptografia não recifra as
+	capturas antigas.
+	\item \textbf{Editais em PDF:} só PDF com camada de texto é lido. Não há
+	OCR, e o edital escaneado fica na custódia sem texto. O conector não
+	baixa o edital do PNCP. O edital real foi só lido pelo extrator de texto,
+	sem a extração por IA.
+	\item \textbf{Avaliação com usuários:} o protótipo ainda não foi avaliado
+	com policiais, como recomenda a síntese da QP5 da RSL~1.
+\end{itemize}
+
+\endgroup

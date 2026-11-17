@@ -1,0 +1,92 @@
+% Diagrama de sequência (UML 2): tipologias, alertas e decisão.
+% Elementos e fontes no código: docs/sistema/diagramas-fontes.md.
+% Coordenadas geradas por script; para mudar, edite as coordenadas à mão.
+\begin{figure}[htbp]
+\centering
+\caption{Diagrama de sequência da execução das tipologias e da decisão sobre um alerta}
+\label{fig:uml-seq-alerta}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  vida/.style={draw, fill=white, align=center, inner sep=3pt, font=\footnotesize, minimum height=0.9cm},
+  rotvida/.style={align=center, font=\footnotesize, inner sep=1pt},
+  linhavida/.style={dashed, gray!70!black},
+  msgsinc/.style={-{Latex[length=5pt]}},
+  msgresp/.style={-{Straight Barb[length=5pt]}, dashed},
+  rotmsg/.style={font=\footnotesize, align=center, inner sep=1pt, fill=white},
+  frag/.style={draw, thin},
+  rotfrag/.style={font=\footnotesize\bfseries, inner sep=2.5pt},
+  rotguarda/.style={font=\footnotesize, inner sep=1pt, fill=white},
+  notaseq/.style={align=left, font=\scriptsize, inner sep=3pt},
+  ator/.pic={
+    \draw (0,0.32) circle (0.12);
+    \draw (0,0.2) -- (0,-0.12) (-0.22,0.1) -- (0.22,0.1)
+          (0,-0.12) -- (-0.17,-0.42) (0,-0.12) -- (0.17,-0.42);}
+]
+\providecommand{\dobra}[1]{}
+\renewcommand{\dobra}[1]{%
+  \draw (#1.north west) -- ([xshift=-5pt]#1.north east) -- ([yshift=-5pt]#1.north east)
+        -- (#1.south east) -- (#1.south west) -- cycle;
+  \draw ([xshift=-5pt]#1.north east) |- ([yshift=-5pt]#1.north east);}
+\pic at (0.00,0.55) {ator};
+\node[rotvida, anchor=north] at (0.00,-0.05) {Investigador};
+\draw[linhavida] (0.00,-0.75) -- (0.00,-23.88);
+\node[vida] at (2.60,-0.15) {Front-end\\{\scriptsize\texttt{AbaAlertas}}};
+\draw[linhavida] (2.60,-0.75) -- (2.60,-23.88);
+\node[vida] at (5.60,-0.15) {API\\{\scriptsize\texttt{rotas\_casos}}};
+\draw[linhavida] (5.60,-0.75) -- (5.60,-23.88);
+\node[vida] at (9.60,-0.15) {Tipologias\\{\scriptsize\texttt{tipologias.motor}}};
+\draw[linhavida] (9.60,-0.75) -- (9.60,-23.88);
+\node[vida] at (13.60,-0.15) {Banco\\{\scriptsize PostgreSQL}};
+\draw[linhavida] (13.60,-0.75) -- (13.60,-23.88);
+\node[vida] at (16.40,-0.15) {Auditoria\\{\scriptsize\texttt{auditoria}}};
+\draw[linhavida] (16.40,-0.75) -- (16.40,-23.88);
+\draw[msgsinc] (0.00,-1.94) -- (2.60,-1.94);
+\node[rotmsg, above=1pt] at (1.30,-1.94) {executar\\tipologias};
+\draw[msgsinc] (2.60,-2.98) -- (5.60,-2.98);
+\node[rotmsg, above=1pt] at (4.10,-2.98) {\texttt{POST /casos/\{id\}/alertas/executar}\\\texttt{X-Justificativa}};
+\draw[msgsinc] (5.60,-3.36) -- ++(0.35,0) -- ++(0,-1.52) -- (5.60,-4.88);
+\node[rotmsg, anchor=north west, align=left] at (6.05,-3.28) {\texttt{caso\_aberto}: papel $\geq$\\investigador e prazo em vigor;\\parâmetros efetivos\\(configuração e sobrescrita)};
+\draw[msgsinc] (5.60,-5.92) -- (9.60,-5.92);
+\node[rotmsg, above=1pt] at (7.60,-5.92) {\texttt{executar(caso, parâmetros,}\\\texttt{ler\_captura)}};
+\draw[msgsinc] (9.60,-6.96) -- (13.60,-6.96);
+\node[rotmsg, above=1pt] at (11.60,-6.96) {trava o caso (\texttt{FOR UPDATE});\\lê entidades, arestas e capturas};
+\draw[msgresp] (13.60,-7.62) -- (9.60,-7.62);
+\node[rotmsg, above=1pt] at (11.60,-7.62) {contexto do caso};
+\draw[msgsinc] (9.60,-8.55) -- ++(0.35,0) -- ++(0,-1.52) -- (9.60,-10.07);
+\node[rotmsg, anchor=north west, align=left] at (10.05,-8.47) {regra $\to$ alerta detectado:\\motivo com os números reais,\\evidências (captura, fonte,\\SHA-256) e chave estável};
+\draw[frag] (5.30,-7.87) rectangle (14.80,-10.32);
+\node[rotfrag, anchor=north west] (fr) at (5.30,-7.87) {loop};
+\draw[frag] (fr.south west) -- ([xshift=-0.12cm]fr.south east) -- ([yshift=0.12cm]fr.south east) -- (fr.north east);
+\node[rotguarda, anchor=north west] at (6.35,-7.90) {[cada tipologia pedida (T1 a T10)]};
+\draw[msgsinc] (9.60,-11.84) -- (13.60,-11.84);
+\node[rotmsg, above=1pt] at (11.60,-11.84) {reconcilia pela chave: atualiza ou cria;\\apaga pendente sem decisão;\\decidido não detectado: \texttt{ativo = falso}};
+\draw[msgresp] (9.60,-12.50) -- (5.60,-12.50);
+\node[rotmsg, above=1pt] at (7.60,-12.50) {alertas por severidade};
+\draw[msgsinc] (5.60,-13.54) -- (16.40,-13.54);
+\node[rotmsg, above=1pt] at (11.00,-13.54) {registrar \texttt{alerta.executar};\\commit; âncora};
+\draw[msgresp] (5.60,-14.20) -- (2.60,-14.20);
+\node[rotmsg, above=1pt] at (4.10,-14.20) {alertas com motivo e evidências};
+\draw[msgresp] (2.60,-14.86) -- (0.00,-14.86);
+\node[rotmsg, above=1pt] at (1.30,-14.86) {lista};
+\draw[msgsinc] (0.00,-16.10) -- (2.60,-16.10);
+\node[rotmsg, above=1pt] at (1.30,-16.10) {confirma ou descarta,\\com justificativa};
+\draw[msgsinc] (2.60,-17.52) -- (5.60,-17.52);
+\node[rotmsg, above=1pt] at (4.10,-17.52) {\texttt{POST .../alertas/\{aid\}/decisao}\\corpo: \texttt{decisao}, \texttt{justificativa};\\cabeçalho: \texttt{X-Justificativa}};
+\draw[msgsinc] (5.60,-17.90) -- ++(0.35,0) -- ++(0,-0.76) -- (5.60,-18.66);
+\node[rotmsg, anchor=north west, align=left] at (6.05,-17.82) {\texttt{caso\_aberto}: papel $\geq$\\investigador e prazo em vigor};
+\draw[msgsinc] (5.60,-19.32) -- (13.60,-19.32);
+\node[rotmsg, above=1pt] at (9.60,-19.32) {\texttt{SELECT} do alerta \texttt{FOR UPDATE}};
+\draw[msgresp] (13.60,-19.98) -- (5.60,-19.98);
+\node[rotmsg, above=1pt] at (9.60,-19.98) {alerta e situação anterior};
+\draw[msgsinc] (5.60,-21.02) -- (13.60,-21.02);
+\node[rotmsg, above=1pt] at (9.60,-21.02) {\texttt{INSERT} em \texttt{alerta\_decisoes};\\\texttt{UPDATE} de \texttt{alertas} (situação e última decisão)};
+\draw[msgsinc] (5.60,-22.06) -- (16.40,-22.06);
+\node[rotmsg, above=1pt] at (11.00,-22.06) {registrar \texttt{alerta.decidir}: decisão, justificativa,\\situação anterior e \texttt{revisao}; commit; âncora};
+\draw[msgresp] (5.60,-22.72) -- (2.60,-22.72);
+\node[rotmsg, above=1pt] at (4.10,-22.72) {alerta com o histórico de decisões};
+\draw[msgresp] (2.60,-23.38) -- (0.00,-23.38);
+\node[rotmsg, above=1pt] at (1.30,-23.38) {situação atualizada};
+\end{tikzpicture}}
+\fonte{Elaborada pelo autor a partir de \texttt{buscador/api/rotas\_casos.py} (\texttt{executar\_alertas}, \texttt{decidir\_alerta}, \texttt{\_obter\_alerta}), \texttt{buscador/tipologias/motor.py} (\texttt{executar}), \texttt{buscador/modelos.py} (\texttt{Alerta}, \texttt{AlertaDecisao}), \texttt{buscador/api/deps.py} e, no front-end, \texttt{src/telas/abas/AbaAlertas.tsx}. A recusa por papel ou por prazo vencido segue o fluxo da Figura~\ref{fig:uml-seq-coleta}.}
+\end{figure}

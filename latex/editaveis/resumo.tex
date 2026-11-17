@@ -1,17 +1,52 @@
+% Resumo (NBR 6028). Números iguais aos dos capítulos (situação de 17/11/2026).
+% "39 histórias": número de linhas da Tabela tab:backlog (gerado/backlog.tex),
+% igual à soma da Tabela tab:moscow-resumo (11 + 7 + 15 + 6).
+% PENDENTE: atualizar os números se R2 mudar alguma regra das revisões, e a
+% frase final se a avaliação com usuários for executada.
 \begin{resumo}
- O resumo deve ressaltar o objetivo, o método, os resultados e as conclusões 
- do documento. A ordem e a extensão
- destes itens dependem do tipo de resumo (informativo ou indicativo) e do
- tratamento que cada item recebe no documento original. O resumo deve ser
- precedido da referência do documento, com exceção do resumo inserido no
- próprio documento. (\ldots) As palavras-chave devem figurar logo abaixo do
- resumo, antecedidas da expressão Palavras-chave:, separadas entre si por
- ponto e finalizadas também por ponto. O texto pode conter no mínimo 150 e 
- no máximo 500 palavras, é aconselhável que sejam utilizadas 200 palavras. 
- E não se separa o texto do resumo em parágrafos.
+ Este trabalho desenvolve um protótipo de buscador de inteligência de fontes
+ abertas (OSINT) para a polícia judiciária apurar fraude em contratações
+ públicas brasileiras. Os requisitos partiram de um levantamento com
+ especialista e foram confrontados com a legislação e com uma revisão
+ sistemática da literatura (RSL 1). Uma segunda revisão (RSL 2) orientou o
+ processo de desenvolvimento. As duas revisões são relatadas segundo o PRISMA
+ 2020 e o SEGRESS. A RSL 1 trata de ferramentas OSINT para órgãos policiais e
+ de inteligência. Dos
+ 1.928 registros recuperados, restaram 1.139 após a remoção de duplicatas, e
+ 57 estudos primários foram incluídos, 23 da busca nas bases e 34 do
+ \textit{snowballing}. Nenhum estudo é do Brasil ou de outro país da América
+ Latina, nenhum trata de fraude ou corrupção em contratações públicas, e só 7
+ tratam explicitamente da cadeia de custódia. A RSL 2 trata dos
+ efeitos de assistentes e agentes baseados em modelos de linguagem de grande
+ porte no desenvolvimento de software. Dos 8.181 registros, restaram 4.323
+ após a remoção de duplicatas, e 130 relatos, correspondentes a 129 estudos,
+ foram incluídos. Em produtividade, 51 dos 89 estudos que mediram o efeito
+ relatam direção positiva, e a direção é mais favorável quando o efeito é só
+ percebido. Em segurança, 14 dos 23 estudos que mediram o efeito relatam
+ direção negativa. A comparação com sete ferramentas existentes, feita pela
+ documentação oficial, não encontrou nenhuma que reúna fontes abertas
+ brasileiras de contratações, tipologias de fraude e preservação da prova
+ para o inquérito. Os requisitos foram escritos como 39 histórias de usuário,
+ priorizadas pelo método MoSCoW. O protótipo, de código aberto, tem coleta só
+ passiva, cadeia de custódia com \textit{hash} SHA-256 e carimbo de tempo em
+ cada captura, trilha de auditoria só de acréscimo, dez tipologias de fraude
+ por regras explícitas, cujos alertas são pistas que o investigador confirma
+ ou descarta, e extração de entidades por IA opcional e local. Foi
+ desenvolvido com agentes de IA, aplicando parte das práticas candidatas da
+ RSL 2, e tem
+ 342 testes automatizados no \textit{back-end} e 234 no \textit{front-end}.
+% PENDENTE: atualizar as contagens de testes ao fim das correções em andamento.
+ Os resultados das revisões são provisórios, porque etapas feitas pela IA
+ como terceira opinião ainda aguardam a confirmação dos dois revisores. O
+ protótipo tem testes automatizados com dados sintéticos e teve os conectores
+ conferidos contra as fontes reais, mas ainda não foi avaliado com policiais. Conclui-se que a literatura
+ e as ferramentas analisadas não cobrem a combinação de domínio de
+ contratações públicas e preservação da prova, e que o protótipo mostra que
+ essa combinação pode ser implementada.
 
  \vspace{\onelineskip}
-    
+
  \noindent
- \textbf{Palavras-chave}: latex. abntex. editoração de texto.
+ \textbf{Palavras-chave}: inteligência de fontes abertas. investigação
+ criminal. contratações públicas. cadeia de custódia. revisão sistemática.
 \end{resumo}

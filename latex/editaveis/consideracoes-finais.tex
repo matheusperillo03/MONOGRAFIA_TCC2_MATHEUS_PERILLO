@@ -1,0 +1,213 @@
+% ---------------------------------------------------------------------------
+% Capítulo de considerações finais.
+% Base: capítulos de introdução, metodologia, resultados, requisitos,
+% desenvolvimento e avaliação (situação de 17/11/2026). Os números repetem os
+% dos capítulos; não foram recalculados. A única fonte externa é a Portaria
+% SGD/MGI nº 7.076/2024 (docs/referencias-verificadas.md, seção
+% "Considerações finais (17/11/2026)").
+% ---------------------------------------------------------------------------
+\begingroup
+\setlength{\emergencystretch}{3em}
+
+\chapter{Considerações finais}
+\label{cap:consideracoes}
+
+Este capítulo retoma os objetivos do trabalho, resume os achados das duas
+revisões, as contribuições e as limitações, e indica os trabalhos futuros.
+
+% ===========================================================================
+\section{Objetivos alcançados}
+\label{sec:consideracoes-objetivos}
+
+O objetivo geral era desenvolver um protótipo de buscador OSINT para a
+polícia judiciária apurar fraude em contratações públicas brasileiras, com
+requisitos fundamentados numa revisão sistemática, na legislação e no
+levantamento com especialista, e com controles de preservação da prova desde
+a coleta (Seção~\ref{sec:intro-objetivos}). O protótipo foi desenvolvido
+(Capítulo~\ref{cap:desenvolvimento}). Cada história do \textit{backlog} aponta
+o requisito que atende e a evidência que a sustenta
+(Seção~\ref{sec:requisitos-historias}), e toda captura entra na cadeia de
+custódia (Seção~\ref{sec:desenv-arquitetura}). Os objetivos específicos foram
+atendidos assim:
+\begin{enumerate}
+	\item \textbf{RSL 1.} A revisão incluiu 57 estudos primários, 23 da busca
+	nas bases e 34 do \textit{snowballing} (Seção~\ref{sec:rsl1-selecao}), e
+	sintetizou as ferramentas, as técnicas de IA, os requisitos legais e
+	éticos, as ameaças e a avaliação
+	(Seções~\ref{sec:rsl1-qp1-qp2} a~\ref{sec:rsl1-qp5}). Os resultados são
+	provisórios, pelas pendências descritas na
+	Seção~\ref{sec:consideracoes-limitacoes}.
+	\item \textbf{RSL 2.} A revisão sintetizou 129 estudos, em 130 relatos
+	(Seção~\ref{sec:resultados-rsl2-selecao}), nas dimensões de
+	produtividade, qualidade, segurança, custo e processo
+	(Seções~\ref{sec:resultados-rsl2-direcao}
+	a~\ref{sec:resultados-rsl2-qp5}), e terminou em dez práticas candidatas
+	para o desenvolvimento (Seção~\ref{sec:resultados-rsl2-praticas}). Os
+	resultados também são provisórios.
+	\item \textbf{Requisitos e \textit{backlog}.} A síntese da RSL 1 reuniu 27
+	requisitos candidatos. Dezoito já tinham correspondente no levantamento,
+	e seis dos outros nove viraram requisitos novos
+	(Seção~\ref{sec:requisitos-novos}). Os requisitos foram escritos como 39
+	histórias de usuário, em sete épicos, e priorizados pelo MoSCoW
+	(Seções~\ref{sec:requisitos-historias}
+	e~\ref{sec:requisitos-priorizacao}).
+	\item \textbf{Comparação com ferramentas.} O buscador foi comparado com
+	sete ferramentas, pela documentação oficial de cada uma
+	(Seção~\ref{sec:requisitos-mercado}). A comparação mostrou o que falta a
+	elas no domínio deste trabalho e o que falta ao protótipo, organizado em
+	três horizontes do \textit{backlog}.
+	\item \textbf{Protótipo.} Das 39 histórias, 25 estão feitas, 6 em parte, 3
+	por fazer e 5 ficaram fora desta entrega. As 11 histórias \textit{Must
+	have} estão feitas (Seção~\ref{sec:requisitos-priorizacao}). O protótipo
+	tem coleta só passiva, cadeia de custódia com SHA-256 em cada captura,
+	trilha de auditoria encadeada, dez tipologias por regras explícitas, com
+	alertas tratados como pistas, e extração por IA local, desligada por
+	padrão (Capítulo~\ref{cap:desenvolvimento}). As ameaças tratadas estão
+	ligadas a testes automatizados (Seção~\ref{sec:desenv-ameacas}), e os
+	conectores foram conferidos contra as fontes reais
+	(Seção~\ref{sec:desenv-verificacao}).
+	\item \textbf{Avaliação.} O objetivo era planejar a avaliação com
+	usuários policiais, e o protocolo está pronto
+	(Seção~\ref{sec:avaliacao-protocolo}). A avaliação não foi executada. Ela
+	depende da validação do orientador e da decisão do sistema CEP/CONEP
+	(Seção~\ref{sec:avaliacao-etica}).
+\end{enumerate}
+% PENDENTE: se a avaliação com usuários for executada, atualizar o item 6 e
+% o objetivo específico 6 da introdução.
+
+% ===========================================================================
+\section{Principais achados das revisões}
+\label{sec:consideracoes-achados}
+
+\textbf{RSL 1.} Nenhum dos 57 estudos é do Brasil ou de outro país da
+América Latina, e nenhum usa dados em português
+(Seções~\ref{sec:rsl1-caracteristicas} e~\ref{sec:rsl1-qp5}). Nenhum trata de
+fraude ou corrupção em contratações públicas
+(Seção~\ref{sec:requisitos-mercado}). A avaliação mede o modelo, e quase
+nunca o trabalho do investigador: só 7 estudos avaliam com usuários. A
+preservação da evidência também é exceção: só 7 estudos tratam
+explicitamente da cadeia de custódia, e nenhum avalia se a evidência é
+aceita em juízo (Seção~\ref{sec:rsl1-qp5}). Os estudos tratam a saída da IA
+como pista, com a decisão e a explicação com o humano, e descrevem um modelo
+de ameaças com três alvos: o investigador, a ferramenta e os dados
+(Seção~\ref{sec:rsl1-qp3-qp4}). Nenhum estudo relata teste de segurança da
+própria ferramenta. A revisão confirma o núcleo probatório do levantamento,
+a cadeia de custódia com a trilha de auditoria, e não dá respaldo às
+tipologias de corrupção nem às fontes brasileiras, que continuam no projeto
+pelo levantamento e pela legislação (Seção~\ref{sec:rsl1-rastreabilidade}).
+
+\textbf{RSL 2.} O ganho de produtividade existe, mas é condicional e menor do
+que se percebe. Os resultados negativos e nulos aparecem sobretudo quando há
+medida objetiva (Seções~\ref{sec:resultados-rsl2-direcao}
+e~\ref{sec:resultados-rsl2-qp1}). Na qualidade, a direção mista predomina, e
+a qualidade depende da verificação humana, que a IA enfraquece
+(Seção~\ref{sec:resultados-rsl2-qp2}). O código gerado não é seguro por
+padrão, e quem usa IA superestima a segurança do próprio código
+(Seção~\ref{sec:resultados-rsl2-qp3-qp4}). No processo, o portão humano
+permanece, a verificação vira o gargalo, e as práticas de governança são
+propostas ou descritas, mas nenhum estudo mede o efeito delas. Também não há
+estudo sobre o desenvolvimento individual de um produto completo em contexto
+acadêmico (Seção~\ref{sec:resultados-rsl2-qp5}).
+
+% ===========================================================================
+\section{Contribuições}
+\label{sec:consideracoes-contribuicoes}
+
+As contribuições são as da Seção~\ref{sec:intro-contribuicoes}: as duas
+revisões sistemáticas, com a rastreabilidade dos achados para os requisitos
+e para o processo; o \textit{backlog} priorizado e a comparação com
+ferramentas existentes; o protótipo de código aberto, sob a licença MIT, com
+o modelo de ameaças ligado aos testes; e o registro do desenvolvimento com
+agentes de IA. O protótipo responde, em parte, a lacunas que a RSL 1 apontou:
+usa fontes brasileiras e dados em português, une cadeia de custódia, trilha
+de auditoria e grafo de vínculos, e trata o alerta e a saída da IA como
+pistas que o investigador confirma ou descarta. Se isso ajuda o trabalho do
+investigador ainda não foi avaliado.
+
+% ===========================================================================
+\section{Limitações}
+\label{sec:consideracoes-limitacoes}
+
+\textbf{Método das revisões.} Na etapa 1, R1 e R2 triaram de forma
+independente (Seção~\ref{sec:metodologia-selecao}). Da etapa 2 em diante, a
+leitura do texto completo, o \textit{snowballing}, a avaliação de qualidade,
+a extração e a síntese foram feitos pela IA como terceira opinião, com regras
+aceitas pelo autor (R1). O orientador (R2) ainda confirma essas regras, e a
+avaliação independente de R1 e R2 nessas etapas, com o kappa de cada uma,
+ainda não foi feita (Seções~\ref{sec:resultados-rsl1}
+e~\ref{sec:resultados-rsl2}). Ficaram relatos sem leitura: 21 na busca e 43
+no \textit{snowballing} da RSL 1, e 12 e 35 na RSL 2, não foram recuperados.
+Os estudos secundários das duas revisões ainda não foram lidos. Há ainda
+pares de relatos que podem ser do mesmo estudo, a decidir por R1 e R2
+(Seções~\ref{sec:rsl1-caracteristicas}
+e~\ref{sec:resultados-rsl2-selecao}). O recorte da etapa 2 deixou de fora,
+na RSL 1, os estudos conceituais, legais e éticos sem avaliação de
+ferramenta (Seção~\ref{sec:rsl1-qp3-qp4}).
+% PENDENTE: R2 confirma as regras de aplicação das etapas 2 em diante; R1 e
+% R2 fazem a avaliação independente e calculam o kappa. Atualizar este
+% parágrafo quando isso acontecer.
+
+\textbf{Protótipo.} Os testes automatizados e a demonstração usam só dados
+sintéticos. As fontes reais passaram por um teste de fumaça, e não por uma
+investigação (Seção~\ref{sec:desenv-verificacao}). A base completa do CNPJ
+só entra por recorte, e não há OCR para editais escaneados. A extração por
+IA foi testada com três documentos sintéticos, o que não mede a sua
+qualidade. A importação do grafo no Maltego e no i2 não foi testada nos
+programas. A troca da chave de criptografia não recifra as capturas antigas.
+Na última rodada, os testes específicos de PostgreSQL não rodaram. Estão em
+tratamento o CPF completo nas capturas brutas e na comparação entre capturas
+e o CNPJ alfanumérico (Seção~\ref{sec:desenv-limitacoes}).
+% PENDENTE: atualizar quando a correção do CPF/CNPJ alfanumérico terminar.
+
+\textbf{Avaliação.} O protótipo ainda não foi avaliado com policiais
+(Capítulo~\ref{cap:avaliacao}). Sem essa avaliação, não há como afirmar que
+ele apoia o trabalho do investigador nem que se aproxima das ferramentas
+comparadas (Seção~\ref{sec:requisitos-mercado}).
+
+% ===========================================================================
+\section{Trabalhos futuros}
+\label{sec:consideracoes-futuros}
+
+\textbf{Avaliação com usuários.} O primeiro trabalho é executar o protocolo
+do Capítulo~\ref{cap:avaliacao}, depois da decisão do sistema CEP/CONEP
+(Seção~\ref{sec:avaliacao-etica}).
+
+\textbf{Revisões.} Concluir a confirmação das regras por R2, a avaliação
+independente de R1 e R2 com o kappa, a leitura dos estudos secundários e os
+pedidos dos relatos não recuperados, e recalcular as tabelas por
+\textit{script} se algum resultado mudar.
+
+\textbf{Uso em produção.} Um órgão que queira usar o protótipo precisa de
+mais do que este trabalho entrega. As medidas a seguir são decisão do autor:
+\begin{itemize}
+	\item recifrar as capturas antigas quando a chave de criptografia for
+	trocada;
+	\item fazer um teste de invasão independente, já que nenhum estudo da
+	RSL 1 relata teste de segurança da ferramenta
+	(Seção~\ref{sec:rsl1-qp3-qp4}) e a auditoria do protótipo foi assistida
+	por IA (Seção~\ref{sec:desenv-ameacas});
+	\item elaborar, com o órgão, o relatório de impacto à proteção de dados
+	pessoais e a análise da LGPD para o tratamento feito pela ferramenta;
+	\item avaliar o carimbo do tempo emitido no âmbito da ICP-Brasil para as
+	capturas e a trilha, em lugar do relógio do servidor;
+	\item acrescentar a entrega contínua à integração contínua já
+	configurada nos dois repositórios (Seção~\ref{sec:desenv-verificacao});
+	\item integrar o acesso à Conta gov.br. Pela Portaria SGD/MGI
+	nº~7.076/2024, quem pede essa integração é o gestor público do órgão, e
+	o sistema precisa estar hospedado num domínio oficial de governo
+	\cite[art.~3º e art.~4º, § 1º]{brasil2024portariasgd7076}. Por isso, essa integração só
+	pode ser pedida pelo órgão que adotar a ferramenta.
+\end{itemize}
+
+\textbf{Fontes e tipologias.} Acrescentar as demais fontes do levantamento,
+como diários oficiais, tribunais de contas, juntas comerciais e cartórios,
+e as tipologias ainda não implementadas (Tabela~\ref{tab:backlog}). Nas
+fontes já ligadas, falta baixar o edital pelo próprio conector, ler os
+editais escaneados por OCR, buscar no CNPJ as outras empresas de um sócio do
+caso e ler arquivos do TSE acima do teto atual
+(Seção~\ref{sec:desenv-limitacoes}).
+
+\textbf{IA.} Medir a qualidade da extração por IA com um conjunto de editais
+anotado, que este trabalho não tem (Seção~\ref{sec:desenv-limitacoes}).
+
+\endgroup

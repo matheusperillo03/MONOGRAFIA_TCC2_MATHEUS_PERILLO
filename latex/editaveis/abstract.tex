@@ -1,10 +1,47 @@
+% Abstract: tradução do resumo (editaveis/resumo.tex), com os mesmos números.
 \begin{resumo}[Abstract]
  \begin{otherlanguage*}{english}
-   This is the english abstract.
+   This work develops a prototype open source intelligence (OSINT) search
+   tool for the Brazilian judicial police to investigate fraud in public
+   procurement. The requirements came from an elicitation with an expert and
+   were checked against the legislation and a systematic literature review
+   (SLR 1). A second review (SLR 2) guided the development process. Both
+   reviews are reported following PRISMA 2020 and SEGRESS. SLR 1 covers OSINT
+   tools for law enforcement and intelligence agencies. Of the 1,928 records
+   retrieved, 1,139 remained after duplicate removal, and 57 primary studies
+   were included, 23 from the database search and 34 from snowballing. No
+   study is from Brazil or any other Latin American country, none addresses
+   fraud or corruption in public procurement, and only 7 explicitly address
+   the chain of custody. SLR 2 covers the effects of
+   assistants and agents based on large language models on software
+   development. Of the 8,181 records, 4,323 remained after duplicate removal,
+   and 130 reports, corresponding to 129 studies, were included. On
+   productivity, 51 of the 89 studies that measured the effect report a
+   positive direction, and the direction is more favorable when the effect is
+   only perceived. On security, 14 of the 23 studies that measured the effect
+   report a negative direction. A comparison with seven existing tools, based
+   on their official documentation, found none that combines Brazilian open
+   procurement data sources, fraud typologies and evidence preservation for
+   the police inquiry. The requirements were written as 39 user stories,
+   prioritized with the MoSCoW method. The open source prototype has passive
+   collection only, a chain of custody with a SHA-256 hash and a timestamp for
+   each capture, an append-only audit trail, ten fraud typologies based on
+   explicit rules, whose alerts are leads that the investigator confirms or
+   dismisses, and optional, local AI-based entity extraction. It was
+   developed with AI agents, applying some of the candidate practices from
+   SLR 2, and has 342
+   automated back-end tests and 234 front-end tests. The review results are
+   provisional, because steps performed by AI as a third opinion still await
+   confirmation by the two reviewers. The prototype has automated tests with synthetic
+   data and its connectors were checked against the real sources, but it has not yet been evaluated with police officers. The conclusion is that the literature and the tools
+   analyzed do not cover the combination of the public procurement domain and
+   evidence preservation, and that the prototype shows that this combination
+   can be implemented.
 
    \vspace{\onelineskip}
- 
-   \noindent 
-   \textbf{Key-words}: latex. abntex. text editoration.
+
+   \noindent
+   \textbf{Keywords}: open source intelligence. criminal investigation.
+   public procurement. chain of custody. systematic review.
  \end{otherlanguage*}
 \end{resumo}

@@ -16,12 +16,11 @@ Este capítulo descreve o protótipo do buscador: a arquitetura, os casos de
 uso, o modelo de dados, os fluxos principais, a interface de programação, as
 decisões de arquitetura, o modelo de ameaças, a engenharia de testes e o processo de
 desenvolvimento com IA. O protótipo implementa a maior parte das histórias
-dos três horizontes de contratações públicas do \textit{backlog}. As
-histórias do escopo de lavagem de dinheiro (H40 a H57) ainda estão por
-fazer ou aguardam decisão do orientador. A situação de cada uma está na
-Tabela~\ref{tab:backlog}.
-% PENDENTE: atualizar quando as tipologias de lavagem em implementação
-% terminarem. O código está em dois repositórios, sob a licença
+dos três horizontes de contratações públicas do \textit{backlog}. Das 18
+histórias do escopo de lavagem de dinheiro (H40 a H57), 7 estão feitas, 5
+estão em parte, 5 aguardam decisão do orientador e 1 ficou fora desta
+entrega. A situação de cada uma está na Tabela~\ref{tab:backlog}. O código
+está em dois repositórios, sob a licença
 MIT: um para o
 \textit{back-end} e outro para o \textit{front-end}. Os testes automatizados
 e a demonstração usam só dados sintéticos. Os conectores também foram
@@ -57,7 +56,7 @@ eles, e a Figura~\ref{fig:uml-implantacao}, a implantação em contêineres.
 \textbf{Fontes de dados.} A coleta é só passiva, por conectores com nome e
 versão: dados abertos do CNPJ (arquivos no layout da Receita Federal), API de
 consulta e termos de contrato do PNCP, API do Portal da Transparência (CEIS,
-CNEP e servidores, com chave do usuário), dados abertos do TSE (prestação de
+CNEP, CEPIM, CEAF, servidores e convênios, com chave do usuário), dados abertos do TSE (prestação de
 contas e candidatos) e editais em texto ou em PDF com camada de texto. Os
 fatos usados pelas regras (limites
 da Lei 14.133/2021, decreto de atualização de 2026, campos das APIs e códigos
@@ -163,13 +162,139 @@ e~\ref{fig:uml-estado-caso} mostram os estados do alerta e do caso.
 \input{editaveis/diagramas/estado-alerta}
 \input{editaveis/diagramas/estado-caso}
 
-\textbf{Tipologias.} São dez regras explícitas, sem aprendizado de máquina,
+\textbf{Tipologias.} São regras explícitas, sem aprendizado de máquina,
 cada uma com severidade e política de erro declaradas (decisão do autor, a
-validar com o orientador). Todo alerta traz a regra, o motivo em texto e as
+validar com o orientador): dez sobre contratações (T1 a T10), onze de
+lavagem de dinheiro e uma de combinação
+(Seção~\ref{sec:desenv-lavagem}). Todo alerta traz a regra, o motivo em texto e as
 evidências ligadas às capturas. As tipologias que comparam pessoas (T7, sócio
 servidor; T9, doador contratado) nunca afirmam identidade, porque o CPF dos
 sócios nos dados abertos do CNPJ é descaracterizado: geram ``possível
 coincidência'', para o investigador conferir.
+
+% ===========================================================================
+% Fonte desta seção: código do back-end na develop (buscador/tipologias/lavagem.py,
+% combinacao.py, politicas.py e legislacao.py; buscador/importacao_judicial/;
+% buscador/api/rotas_importacao_judicial.py) e docs/mvp-diario.md (17/11/2026).
+\section{Tipologias de lavagem e importação sob ordem judicial}
+\label{sec:desenv-lavagem}
+
+As tipologias de lavagem (códigos L) seguem o mesmo contrato das T: cada
+uma é uma função sobre os dados do caso, e o alerta traz a regra, o motivo
+em texto, os números observados e as evidências ligadas às capturas. As T
+sinalizam possíveis infrações antecedentes em contratações; as L sinalizam
+possível ocultação pela interposição de pessoas e empresas
+(Seção~\ref{sec:intro-contexto}). Todas são indício cadastral, e o alerta
+diz isso. Nas regras que cruzam pessoas vale a regra da T7: os 6 dígitos
+visíveis do CPF e o nome normalizado iguais dão ``pessoa provável'', nunca
+identificação, e os registros não são fundidos. Nenhuma regra usa
+sobrenome. Os limiares são decisão do autor e ficam na configuração, salvo
+os limites de receita da L6, que vêm de lei. A severidade e a política de
+erro de cada tipologia também são decisão do autor. A
+Tabela~\ref{tab:tipologias-lavagem} resume as regras com os valores padrão.
+
+\begin{small}
+\begin{longtable}{p{1.3cm}p{8.4cm}p{4.6cm}}
+\caption{Tipologias de lavagem e alerta de combinação implementados}\label{tab:tipologias-lavagem}\\
+\hline
+\textbf{Código} & \textbf{Regra (valores padrão)} & \textbf{Base} \\ \hline\endhead
+L1 & Mesmo endereço normalizado, com o complemento, em 5 ou mais empresas com estabelecimento ativo, com ou sem contrato; o alerta diz se 3 delas iniciaram a atividade em até 180 dias & GAFI/Egmont, anexo E, itens 4 e 11; Velasco, seç.~3.1 \\
+L3 & Mesma pessoa provável na administração (como sócia ou representante legal) de 5 ou mais empresas do caso, 3 delas abertas em até 12 meses & GAFI/Egmont, anexo E, itens 4 e 10; BCB, art.~1º, III, h \\
+L4 & Empresa só com sócios pessoa jurídica no primeiro nível do quadro e com cadeia de 2 ou mais níveis de sócios pessoa jurídica; o alerta diz onde a cadeia termina (pessoa física, sócio estrangeiro ou empresa sem quadro nos dados) & GAFI/Egmont, anexo E, item 8; GAFI, §~47 \\
+L5 & Nível 1: empresa do caso com sócio estrangeiro. O país não é avaliado & GAFI/Egmont, anexo E, item 4 \\
+L6 & Soma dos contratos assinados no ano por MEI, microempresa ou empresa de pequeno porte acima do limite de receita do regime naquele ano & LC 123, arts.~3º e 18-A; LC 238, arts.~1º, 2º e 10; Velasco, seç.~3.2 \\
+L7 & Parte (a): nenhum sócio atual entrou até 30 dias depois do início da atividade, e há contrato até 12 meses depois da última entrada & GAFI/Egmont, anexo E, item 7 \\
+L8 & Contratada que dispara a T1 (aberta pouco antes do contrato) e a T7 (sócio que possivelmente é servidor) & COAF, tipologia 2.7 \\
+L10 & Contratada sem sanção própria que compartilha sócio-administrador provável ou endereço com empresa no CEIS ou no CNEP (sanção vigente na assinatura) ou no CEPIM; ou sócio de contratada ou de convenente que possivelmente coincide com pessoa do CEAF & GAFI/Egmont, anexo E, item 3; Lei 12.846, art.~5º, IV, e \\
+L14 & Sinal fraco: todos os sócios-administradores com até 20 anos ou com mais de 80, e contratos acima de R\$~100 mil & GAFI/Egmont, anexo E, itens 3 e 10 \\
+L15 & Sinal fraco: 20 ou mais atividades econômicas (CNAE) declaradas, ou contratos em 4 ou mais categorias de objeto & Velasco, seç.~3.2 \\
+L16 & Entidade sem fins lucrativos convenente com ao menos um destes sinais: aberta menos de 180 dias antes da vigência; registro no CEPIM; dirigente que possivelmente é servidor do órgão concedente; dirigente que é sócio de empresa no mesmo endereço, do mesmo ramo ou recém-aberta & COAF, tipologias 2.1, 2.8 e 2.9; Velasco, seç.~5 \\
+COMB & Mesma empresa ou pessoa com 2 ou mais tipologias distintas e soma de pesos de ao menos 2,0. Peso 1 por tipologia, 0,5 para sinal fraco e 0 para a L8, que é composição; a L1 e a T2 contam uma vez & Velasco, seç.~3.3 \\
+\hline
+\multicolumn{3}{p{14.3cm}}{\footnotesize Fonte: elaborada pelo autor, a partir do código do \textit{back-end}. Limiares, pesos, severidade e política de erro: decisão do autor, configuráveis, salvo os limites legais da L6. Bases: GAFI/Egmont \cite{fatfegmont2018}; GAFI \cite{fatf2011corruption}; Velasco \cite{velasco2021}; BCB \cite{bcb2020cc4001}; COAF \cite{coaf2021casos}; Lei 12.846 \cite{brasil2013lei12846}; LC 123 \cite{brasil2006lcp123}; LC 238 \cite{brasil2026lcp238}.}\\
+\end{longtable}
+\end{small}
+
+\textbf{Limites legais da L6.} O MEI tem limite de R\$~81.000,00 por
+ano-calendário pela redação atual \cite[art.~18-A, § 1º]{brasil2006lcp123},
+de R\$~110.000,00 em 2027 \cite[art.~2º]{brasil2026lcp238} e de
+R\$~140.000,00 a partir de 2028 \cite[arts.~1º e 10, I]{brasil2026lcp238}. No
+ano de início, o limite do MEI é proporcional aos meses de atividade
+\cite[art.~18-A, § 2º]{brasil2006lcp123}. A microempresa vai até
+R\$~360.000,00 e a empresa de pequeno porte até R\$~4.800.000,00
+\cite[art.~3º, I e II]{brasil2006lcp123}. Quatro escolhas são decisão do
+autor:
+\begin{itemize}
+	\item o valor é o inicial do contrato, ou o global quando não há outro,
+	somado no ano da assinatura;
+	\item o regime do MEI é o da tabela Simples do CNPJ na data de cada
+	assinatura, mas o porte da microempresa e da empresa de pequeno porte é
+	o do cadastro atual;
+	\item como o enquadramento no MEI mede a receita do ano-calendário
+	anterior \cite[art.~18-A, § 1º]{brasil2006lcp123}, a regra compara o valor
+	do ano com o maior entre o limite do ano e o do ano seguinte;
+	\item para a microempresa e a empresa de pequeno porte, a regra usa o
+	limite anual cheio também no ano de início, embora a lei o torne
+	proporcional nesse caso \cite[art.~3º, § 2º]{brasil2006lcp123}. Isso
+	reduz os alertas nesse ano.
+\end{itemize}
+
+\textbf{O que não entrou.} A L2 (contato compartilhado), o nível~2 da L5
+(lista de jurisdições, que depende de lista oficial ainda não conferida) e
+a parte (b) da L7 (troca de sócios entre duas coletas) não foram
+implementados. A L8 e a L16 não usam eleito nem pessoa exposta
+politicamente, porque isso depende da L9. A L9, a L11, a L12 e a L13
+aguardam decisão do orientador (Seção~\ref{sec:desenv-limitacoes}).
+
+\textbf{Combinação.} A combinação lê os alertas do caso, e não as
+entidades. Só entram alertas ativos e não descartados pelo investigador, e
+cada tipologia conta uma vez por entidade. O alerta lista os alertas que o
+compõem, com as evidências, e diz que não é escore de culpa, e sim uma pista
+para priorizar a análise. A base é a observação de
+\citeonline[seç.~3.3]{velasco2021} de que os padrões, isolados, não
+representam risco significativo, e de que o risco cresce quando eles
+aparecem combinados.
+
+\textbf{Importação sob ordem judicial (RF10).} É um módulo separado, desligado
+por padrão. Com ele desligado, só a rota de estado responde. Com ele
+ligado, o fluxo é este:
+\begin{enumerate}
+	\item um usuário de perfil autorizado registra a decisão judicial antes
+	de qualquer arquivo: processo, decisão, juízo, data, período, contas e
+	escopo;
+	\item cada arquivo é validado pelo leiaute do Anexo I da Instrução
+	Normativa BCB nº~636/2025, itens I a V (agências, contas, titulares,
+	extrato e origem-destino), em texto separado por tabulação, sem
+	cabeçalho \cite[arts.~2º e 3º]{bcb2025in636}. A linha fora do leiaute é
+	rejeitada, e o relatório indica a linha, o campo e o motivo, sem o
+	conteúdo;
+	\item o que estiver fora das contas ou do período autorizados fica em
+	quarentena, sinalizado;
+	\item os registros vão para uma base própria, cifrados com chave própria
+	(AES-256-GCM, como as capturas), com a marca da decisão judicial. Nada
+	disso vira entidade, aresta, alerta, relatório ou exportação;
+	\item cada arquivo recebido entra na custódia, com SHA-256, tamanho,
+	origem e carimbo de tempo;
+	\item toda chamada às rotas do módulo dentro de um caso, inclusive as de
+	leitura, entra na
+	trilha de auditoria com a justificativa, sem número de conta, documento
+	nem conteúdo de registro.
+\end{enumerate}
+O módulo só aceita pastas com um arquivo-marcador de dado sintético. Dado
+real nunca foi usado. Ficaram de fora o RIF, o Anexo II da instrução
+normativa (os códigos de tipo de lançamento, validados só como número), o
+leiaute anterior a ela, a camada do grafo, os alertas financeiros e o
+descarte ao fim da retenção. Que o SIMBA entregue os dados nesse leiaute é
+inferência do autor, pelos nomes dos arquivos, e não foi conferido.
+
+\textbf{\textit{Front-end}.} O catálogo de tipologias passou a incluir as L
+e a combinação. Cada cartão de alerta traz o aviso ``Pista, não
+conclusão'', e o caso ganhou uma aba de ordem judicial para o RF10. A tela
+nova não foi conferida em navegador nem contra a API real.
+% PENDENTE: as tabelas geradas da interface de programação e do modelo de
+% dados (docs/sistema/extrai_api.py e extrai_modelo.py) e os diagramas de
+% componentes e de casos de uso ainda não incluem o módulo de importação
+% judicial e as rotas novas; regenerar a partir do back-end atual.
 
 % ===========================================================================
 \section{Interface de programação}
@@ -204,7 +329,7 @@ Cadeia de custódia & Cada carga guardada como veio, com SHA-256, instante UTC, 
 Trilha de auditoria & Só de acréscimo, encadeada por HMAC com chave fora do banco, com gatilhos e âncora & Registro comum em tabela & RNF02; RSL~1 (A4, TD6) \\
 Papéis do banco & Papel dono (migração) separado do papel da aplicação, que só tem os privilégios necessários & Um só usuário de banco & Menor privilégio; decisão do autor \\
 Alerta como pista & Alerta exige confirmação ou descarte com justificativa; histórico guardado & Alerta como conclusão & RF12; RSL~1 (A2, TA3; A4, TA3) \\
-Regras em vez de IA nas tipologias & Dez tipologias por regras explícitas, com motivo e evidências & Classificador treinado & RNF05; nenhum estudo da RSL~1 trata de fraude em contratações nem do Brasil (Seção~\ref{sec:requisitos-mercado}) \\
+Regras em vez de IA nas tipologias & Vinte e duas tipologias por regras explícitas (dez de contratações, onze de lavagem e a combinação), com motivo e evidências & Classificador treinado & RNF05; nenhum estudo da RSL~1 trata de fraude em contratações nem do Brasil (Seção~\ref{sec:requisitos-mercado}) \\
 IA só local e opcional & Extração por modelo local, desligada por padrão; trecho literal obrigatório; decisão humana & Serviço de IA externo & Soberania dos dados; RSL~1 (A2, TA4); RSL~2 (B3, TA3) \\
 Sessão & Sessão no servidor com token opaco, expiração por duração e inatividade & JWT & Logout e desativação valem na hora; decisão do autor \\
 Acesso por caso & Membros com papéis por caso; perfil global não abre caso & Acesso só por perfil & RNF01; minimização (RNF04) \\
@@ -459,10 +584,10 @@ e os cabeçalhos do contrato da API. A lista completa está em
 \texttt{it}: um teste parametrizado conta uma vez.
 % PENDENTE: o autor revisa o mapa de rastreabilidade (níveis 2 e 3), feito com IA.
 
-Sete requisitos não têm nenhum teste ligado. Quatro deles não foram
-implementados: o RF05 aguarda decisão do orientador (H50 e H51); o RF15 está
-por fazer (H21); o RF10 tem duas histórias por fazer (H54 e H55) e uma fora
-desta entrega (H25); e o RNF03 está fora desta entrega (H26). Os outros três estão no sistema, mas sem teste automatizado:
+Seis requisitos não têm nenhum teste ligado. Três deles não foram
+implementados: o RF05 aguarda decisão do orientador (H50 e H51), o RF15 está
+por fazer (H21) e o RNF03 está fora desta entrega (H26). Os outros três estão
+no sistema, mas sem teste automatizado:
 \begin{itemize}
 	\item \textbf{RNF07 (disponibilidade):} não tem história. Só há a política
 	de reinício dos contêineres no \texttt{docker-compose.yml}, sem teste de
@@ -485,18 +610,16 @@ A tabela mostra onde há teste, e não o quanto cada requisito foi verificado.
 \subsection{Execução e cobertura}
 \label{sec:desenv-testes-execucao}
 
-Na última rodada registrada no diário, em 17/11/2026, o \textit{back-end}
-tinha 342 testes coletados pelo \textit{pytest}, dos quais 8 são específicos
-de PostgreSQL. Com SQLite, 334 passaram, e os 8 de PostgreSQL foram pulados:
-o Docker travou, e eles não rodaram nesta rodada. Na rodada anterior, de
-16/11/2026, os 301 testes de então passaram com PostgreSQL. A análise de
-estilo (ruff) e a análise estática de segurança (Bandit) não apontaram
-problemas. O \textit{front-end} tinha 234 testes. A contagem da
-Tabela~\ref{tab:rastreabilidade-testes} difere desses números por dois
-motivos: ela conta funções, e não casos (um teste parametrizado é um só), e
-é posterior a essa rodada, com os testes acrescentados depois dela.
-% PENDENTE: rodar os 8 testes de PostgreSQL com a suíte atual e atualizar
-% este parágrafo.
+Na última rodada registrada no diário, em 17/11/2026, depois das
+tipologias de lavagem e do RF10, o \textit{back-end} tinha 464 testes
+coletados pelo \textit{pytest}, dos quais 8 são específicos de PostgreSQL.
+Com SQLite, 456 passaram e os 8 de PostgreSQL foram pulados; com um
+PostgreSQL descartável, os 464 passaram. A análise de estilo (ruff) e a
+análise estática de segurança (Bandit) não apontaram problemas. O
+\textit{front-end} tinha 319 testes, em 28 arquivos. A contagem do
+\textit{back-end} na Tabela~\ref{tab:rastreabilidade-testes} difere desses
+números porque conta funções, e não casos: um teste parametrizado é um
+só.
 
 A cobertura de código ainda não é medida. Sem ela, não se sabe que parte do
 código a suíte executa \cite[cap.~5, seç.~4]{swebok4}.
@@ -532,9 +655,13 @@ TA2; Seção~\ref{sec:resultados-rsl2-praticas}). A auditoria de dependências
 é decisão do autor. O \textit{pipeline} não roda
 o teste contra as fontes reais nem a medição de desempenho, e ainda não mede
 a cobertura.
-% PENDENTE: o pipeline de CI ainda não rodou no GitHub (depende de commit e
-% push autorizados pelo autor). Até lá, os portões estão configurados, mas
-% não foram exercitados no GitHub.
+
+Na \textit{branch} \texttt{develop}, em 17/11/2026, o \textit{pipeline} do
+\textit{back-end} passou. No do \textit{front-end}, a análise de estilo, os
+testes e o \textit{build} passaram, e a auditoria de dependências falhou: ela
+aponta um aviso alto do pacote \texttt{picomatch} (GHSA-fc5q-39xc-vjpf), que
+ainda não tem versão corrigida e só afeta dependências de desenvolvimento
+(\texttt{npm audit -{}-omit=dev} não aponta nenhum).
 
 % ---------------------------------------------------------------------------
 \subsection{Teste com as fontes reais}
@@ -600,10 +727,6 @@ do \textit{back-end}).
 	\cite[cap.~5, seç.~3.4 e~4.2.2]{swebok4}, nem cobertura de código. A
 	RSL~2 aponta a mesma lacuna nos estudos: a eficácia dos testes gerados em
 	achar defeitos raramente é medida (B2).
-	\item \textbf{PostgreSQL.} Os 8 testes que só rodam com PostgreSQL
-	(gatilhos, privilégios do papel da aplicação e migração) não rodaram na
-	última rodada. O SQLite não reproduz os papéis do banco, então essas
-	proteções ficaram sem verificação desde 16/11/2026.
 	\item \textbf{Dublês diferentes das fontes.} As \textit{fixtures} e os
 	transportes simulados reproduzem o que se sabia do formato de cada fonte.
 	O teste com as fontes reais achou quatro divergências que eles não
@@ -697,6 +820,14 @@ O processo aplicou as práticas candidatas da RSL~2
 	sem a extração por IA.
 	\item \textbf{Avaliação com usuários:} o protótipo ainda não foi avaliado
 	com policiais, como recomenda a síntese da QP5 da RSL~1.
+	\item \textbf{Auditoria de dependências:} o passo de auditoria do
+	\textit{pipeline} do \textit{front-end} falha por um aviso alto do
+	\texttt{picomatch} (GHSA-fc5q-39xc-vjpf), sem versão corrigida, que só
+	afeta dependências de desenvolvimento (Seção~\ref{sec:desenv-testes-ci}).
+	\item \textbf{Tipologias de lavagem:} a leitura da tabela Simples do CNPJ,
+	usada pela L6, não foi testada com o arquivo real, e a tela nova não foi
+	conferida em navegador nem contra a API real
+	(Seção~\ref{sec:desenv-lavagem}).
 	\item \textbf{Dados abertos e lavagem de dinheiro:} com dados abertos, as
 	tipologias de lavagem só apontam indícios cadastrais. Vários sinais de
 	alerta de lavagem divulgados pelo Banco Central dependem de dado
@@ -705,8 +836,8 @@ O processo aplicou as práticas candidatas da RSL~2
 	por agentes públicos \cite[art. 1º, I, n, e VII, a]{bcb2020cc4001}. Esse
 	dado não é aberto. Por isso, o RF10 é uma importação separada, só para
 	dado recebido por ordem judicial, no leiaute da Instrução Normativa BCB
-	nº~636/2025 \cite{bcb2025in636}, e neste trabalho está previsto só com
-	dados sintéticos (decisão do autor). O Relatório de Inteligência Financeira
+	nº~636/2025 \cite{bcb2025in636}, e neste trabalho só aceita dados
+	sintéticos (decisão do autor). O Relatório de Inteligência Financeira
 	(RIF) do COAF chega por um sistema eletrônico de intercâmbio
 	\cite[art. 1º]{coaf2026portaria60}, e não foi encontrado leiaute público
 	dos dados dele.

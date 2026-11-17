@@ -62,21 +62,20 @@ atendidos assim:
 	(Seção~\ref{sec:requisitos-mercado}). A comparação mostrou o que falta a
 	elas no domínio deste trabalho e o que falta ao protótipo, organizado em
 	três horizontes do \textit{backlog}.
-	\item \textbf{Protótipo.} Das 56 histórias, 25 estão feitas, 6 em parte,
-	14 por fazer, 5 aguardam decisão do orientador e 6 ficaram fora desta
-	entrega. As 11 histórias \textit{Must have} estão feitas
+	\item \textbf{Protótipo.} Das 56 histórias, 32 estão feitas, 11 em
+	parte, 2 por fazer, 5 aguardam decisão do orientador e 6 ficaram fora
+	desta entrega. As 11 histórias \textit{Must have} estão feitas
 	(Seção~\ref{sec:requisitos-priorizacao}). O protótipo tem coleta só
 	passiva, cadeia de custódia com SHA-256 em cada captura, trilha de
-	auditoria encadeada, dez tipologias de contratações públicas por regras
-	explícitas, com alertas tratados como pistas, e extração por IA local, desligada por
+	auditoria encadeada, dez tipologias de contratações públicas, onze de
+	lavagem de dinheiro e um alerta de combinação, todos por regras
+	explícitas e tratados como pistas, e extração por IA local, desligada por
 	padrão (Capítulo~\ref{cap:desenvolvimento}). As ameaças tratadas estão
 	ligadas a testes automatizados (Seção~\ref{sec:desenv-ameacas}), e os
 	conectores foram conferidos contra as fontes reais
-	(Seção~\ref{sec:desenv-verificacao}). As tipologias de lavagem e a
-	importação de dados bancários sob ordem judicial estão especificadas no
-	\textit{backlog}, e ainda não estão implementadas.
-	% PENDENTE: atualizar quando as tipologias de lavagem em implementação
-	% terminarem.
+	(Seção~\ref{sec:desenv-verificacao}). A importação de dados bancários
+	sob ordem judicial existe como módulo separado, desligado por padrão e
+	testado só com dados sintéticos (Seção~\ref{sec:desenv-lavagem}).
 	\item \textbf{Avaliação.} O objetivo era planejar a avaliação com
 	usuários policiais, e o protocolo está pronto
 	(Seção~\ref{sec:avaliacao-protocolo}). A avaliação não foi executada. Ela
@@ -167,7 +166,9 @@ só entra por recorte, e não há OCR para editais escaneados. A extração por
 IA foi testada com três documentos sintéticos, o que não mede a sua
 qualidade. A importação do grafo no Maltego e no i2 não foi testada nos
 programas. A troca da chave de criptografia não recifra as capturas antigas.
-Na última rodada, os testes específicos de PostgreSQL não rodaram. Estão em
+A auditoria de dependências do \textit{front-end} falha por um aviso alto,
+sem versão corrigida, que só afeta dependências de desenvolvimento
+(Seção~\ref{sec:desenv-testes-ci}). Estão em
 tratamento o CPF completo nas capturas brutas e na comparação entre capturas
 e o CNPJ alfanumérico (Seção~\ref{sec:desenv-limitacoes}).
 % PENDENTE: atualizar quando a correção do CPF/CNPJ alfanumérico terminar.
@@ -175,8 +176,8 @@ e o CNPJ alfanumérico (Seção~\ref{sec:desenv-limitacoes}).
 \textbf{Dados abertos e lavagem de dinheiro.} Com dados abertos, as
 tipologias de lavagem só apontam indícios cadastrais. A movimentação
 financeira não é aberta e só entra pela importação separada do RF10, para
-dado recebido por ordem judicial, que neste trabalho está previsto só com
-dados sintéticos. O CNPJ aberto não tem o número de empregados nem o histórico de
+dado recebido por ordem judicial, que neste trabalho só aceita dados
+sintéticos. O CNPJ aberto não tem o número de empregados nem o histórico de
 sócios, e nenhuma fonte usada traz parentesco. A linha do tempo patrimonial
 só vale para quem foi candidato em ao menos duas eleições, com os valores
 que o próprio candidato declarou, e a desproporção é indício, e não prova
@@ -233,7 +234,8 @@ mais do que este trabalho entrega. As medidas a seguir são decisão do autor:
 como diários oficiais, tribunais de contas, juntas comerciais e cartórios,
 e as tipologias ainda não implementadas (Tabela~\ref{tab:backlog}). No
 escopo de lavagem, concluir as histórias que aguardam decisão do
-orientador (H46 e H50 a H53), depois da decisão sobre o CPF dos candidatos,
+orientador (H46 e H50 a H53) e o que ficou de fora das demais: a L2, o
+nível~2 da L5, a parte (b) da L7, o RIF e os alertas financeiros do RF10, depois da decisão sobre o CPF dos candidatos,
 e um conector distrital de remuneração, se a PCDF e o GDF não estiverem no
 Portal federal. O uso do RF10 com dados reais cabe só ao órgão, sob ordem
 judicial. Nas

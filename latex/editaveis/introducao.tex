@@ -4,6 +4,9 @@
 % (situação de 17/11/2026), docs/rsl1-protocolo.md, docs/rsl2-protocolo.md e
 % docs/referencias-verificadas.md (seção "Introdução (17/11/2026)").
 % Os números repetem os dos capítulos; não foram recalculados.
+% Escopo de lavagem de dinheiro e corrupção (17/11/2026): fontes em
+% docs/lavagem/fontes.md (F01 a F21) e conferência da RSL 1 em
+% docs/lavagem/rsl1-lavagem.md.
 % Decisão do autor (17/11/2026): a introdução passa a ser capítulo numerado,
 % como os demais capítulos do texto, para que as seções não saiam como "0.1".
 % ---------------------------------------------------------------------------
@@ -17,14 +20,55 @@
 \section{Contextualização}
 \label{sec:intro-contexto}
 
-A Lei nº 14.133/2021 estabelece as normas gerais de licitação e contratação
-das administrações públicas diretas, autárquicas e fundacionais da União, dos
-Estados, do Distrito Federal e dos Municípios \cite[art. 1º]{brasil2021lei14133}.
-A mesma lei acrescentou ao Código Penal um capítulo sobre os crimes em
-licitações e contratos administrativos \cite[art. 178]{brasil2021lei14133}.
-Entre esses crimes estão a contratação direta ilegal, a frustração do caráter
-competitivo da licitação e a fraude em licitação ou contrato
-\cite[art. 178]{brasil2021lei14133}.
+Lavagem de dinheiro é ocultar ou dissimular a natureza, a origem, a
+localização, a disposição, a movimentação ou a propriedade de bens, direitos
+ou valores provenientes, direta ou indiretamente, de infração penal
+\cite[art. 1º]{brasil1998lei9613}. Na redação dada pela Lei nº 12.683/2012,
+a lei não lista mais os crimes antecedentes: qualquer infração penal pode
+sê-lo \cite[art. 1º]{brasil1998lei9613}. O processo por lavagem independe do
+processo da infração antecedente, mas a denúncia precisa de indícios
+suficientes de que ela existiu \cite[art. 2º, II e § 1º]{brasil1998lei9613}.
+
+A corrupção é uma dessas possíveis infrações antecedentes (leitura do autor,
+já que a lei não lista nenhuma). O Código Penal define a corrupção passiva,
+que é solicitar ou receber vantagem indevida em razão da função, e a
+corrupção ativa, que é oferecer ou prometer vantagem indevida a funcionário
+público \cite[arts. 317 e 333]{brasil1940codigopenal}. Na improbidade
+administrativa, é enriquecimento ilícito o agente público adquirir, no
+exercício da função e em razão dela, bens decorrentes de vantagem indevida
+cujo valor seja desproporcional à evolução do seu patrimônio ou à sua renda,
+assegurada a ele a demonstração da licitude da origem
+\cite[art. 9º, VII]{brasil1992lei8429}. E a Lei nº 12.846/2013, de natureza
+administrativa e civil, inclui entre os atos lesivos à administração pública
+usar interposta pessoa física ou jurídica para ocultar os reais interesses ou
+a identidade dos beneficiários \cite[art. 5º, III]{brasil2013lei12846}.
+
+Num estudo de casos de lavagem de recursos da corrupção, o Grupo de Ação
+Financeira (GAFI) observou
+que todos os casos examinados usavam algum tipo de veículo societário,
+\textit{trust} ou entidade sem fins lucrativos \cite[§ 47]{fatf2011corruption}.
+O GAFI e o Grupo de Egmont listam indicadores de ocultação do beneficiário
+final, como um endereço registrado para muitas empresas, administradores que
+aparecem em muitas pessoas jurídicas e a troca de administradores ou sócios
+logo após a abertura
+\cite[anexo E]{fatfegmont2018}. No Brasil, as tipologias de lavagem
+publicadas pelo Conselho de Controle de Atividades Financeiras (COAF) incluem
+desvio de recursos públicos por empresas contratadas sem licitação e por
+convênios com organizações sem fins lucrativos
+\cite[tipologias 2.1, 2.7 e 2.8]{coaf2021casos}.
+
+Esses casos mostram que as contratações públicas são uma das portas de
+entrada da corrupção e da lavagem, e não a única (leitura do autor). A Lei nº 14.133/2021 estabelece as normas gerais de licitação e
+contratação das administrações públicas diretas, autárquicas e fundacionais
+da União, dos Estados, do Distrito Federal e dos Municípios
+\cite[art. 1º]{brasil2021lei14133}. A mesma lei acrescentou ao Código Penal
+um capítulo sobre os crimes em licitações e contratos administrativos, entre
+eles a contratação direta ilegal, a frustração do caráter competitivo da
+licitação e a fraude em licitação ou contrato
+\cite[art. 178]{brasil2021lei14133}. Neste trabalho, as tipologias sobre
+contratações sinalizam possíveis infrações antecedentes, e as tipologias de
+lavagem sinalizam possível ocultação, pela interposição de pessoas e
+empresas, ou enriquecimento incompatível com a renda (decisão do autor).
 
 A Constituição atribui à Polícia Federal as funções de polícia judiciária da União e às
 polícias civis, ressalvada a competência da União, as funções de polícia
@@ -57,16 +101,25 @@ esse modo de desenvolver.
 \label{sec:intro-problema}
 
 Dos dois eixos do levantamento decorrem três condições para uma ferramenta
-OSINT de apoio à polícia judiciária na apuração de fraude em contratações
-públicas (decisão do autor). Precisa ler as fontes abertas
-brasileiras de contratações e de empresas. Precisa gerar indícios que o
-investigador possa conferir. E precisa preservar cada dado coletado de modo
-que ele possa servir de prova no inquérito. Há ainda um limite legal: a
-infiltração virtual de agentes de polícia depende de ordem judicial, e é nula
-a prova obtida sem a observância dessas regras
-\cite[art. 10-A]{brasil2013lei12850}. Por isso, a coleta da ferramenta foi
-definida como só passiva, para não configurar infiltração virtual sem ordem
-judicial (Seção~\ref{sec:requisitos-mercado}).
+OSINT de apoio à polícia judiciária na apuração de corrupção e de lavagem de
+dinheiro, a partir de contratações públicas, empresas, candidaturas e bens
+declarados (decisão do autor). Precisa ler as fontes abertas brasileiras
+desses dados. Precisa gerar indícios que o investigador possa conferir. E
+precisa preservar cada dado coletado de modo que ele possa servir de prova
+no inquérito.
+
+Há dois limites. O primeiro é legal: a infiltração virtual de agentes de
+polícia depende de ordem judicial, e é nula a prova obtida sem a observância
+dessas regras \cite[art. 10-A]{brasil2013lei12850}. Por isso, a coleta da
+ferramenta foi definida como só passiva, para não configurar infiltração
+virtual sem ordem judicial (Seção~\ref{sec:requisitos-mercado}). O segundo é
+de dados: as informações de contas com o sigilo bancário afastado nos termos
+da Lei Complementar nº 105/2001 são prestadas às autoridades, quando
+solicitadas, num leiaute definido pelo Banco Central
+\cite[art. 1º]{bcb2025in636}, e não são dados abertos. Com dados abertos, a
+ferramenta só aponta indícios cadastrais de lavagem, como sócios, endereços,
+porte e bens declarados. A movimentação financeira fica numa importação
+separada, só para dado recebido por ordem judicial (decisão do autor).
 
 O trabalho investiga se a literatura e as ferramentas existentes atendem a
 essas condições e, se não atendem, como um protótipo pode reunir os controles
@@ -81,10 +134,12 @@ Tabelas~\ref{tab:qp-rsl1} e~\ref{tab:qp-rsl2}.
 
 \subsection{Objetivo geral}
 
-Desenvolver um protótipo de buscador OSINT para a polícia judiciária apurar
-fraude em contratações públicas brasileiras, com requisitos fundamentados
-numa revisão sistemática da literatura, na legislação e no levantamento com
-especialista, e com controles de preservação da prova desde a coleta.
+Desenvolver um protótipo de buscador OSINT para a polícia judiciária
+investigar corrupção e lavagem de dinheiro com dados abertos brasileiros,
+tendo as contratações públicas como uma das portas de entrada, com
+requisitos fundamentados numa revisão sistemática da literatura, na
+legislação e no levantamento com especialista, e com controles de
+preservação da prova desde a coleta.
 
 \subsection{Objetivos específicos}
 
@@ -104,8 +159,9 @@ especialista, e com controles de preservação da prova desde a coleta.
 	\item Comparar o buscador com ferramentas existentes, para identificar o
 	que falta a elas e ao protótipo.
 	\item Implementar um protótipo com coleta só passiva, cadeia de custódia em
-	cada captura, trilha de auditoria, alertas de tipologias de fraude tratados
-	como pistas e IA opcional e local.
+	cada captura, trilha de auditoria, alertas de tipologias de corrupção e
+	de lavagem de dinheiro detectáveis com dados abertos, tratados como
+	pistas, e IA opcional e local.
 	\item Planejar a avaliação do protótipo com usuários policiais.
 \end{enumerate}
 % PENDENTE: o objetivo 6 depende do capítulo de avaliação, em elaboração. Se
@@ -123,7 +179,11 @@ ferramentas.
 (Seção~\ref{sec:rsl1-selecao}). Nenhum deles é do Brasil ou de outro país da
 América Latina, e nenhum usa dados em português
 (Seção~\ref{sec:resultados-rsl1}). Nenhum trata de fraude ou corrupção em
-contratações públicas (Seção~\ref{sec:requisitos-mercado}). A preservação da
+contratações públicas (Seção~\ref{sec:requisitos-mercado}). Nenhum tem como
+objeto a lavagem de dinheiro, o beneficiário final ou as empresas de
+fachada: as menções à lavagem são de passagem, e o mais próximo da
+investigação financeira é o rastreamento de criptoativos
+(Seção~\ref{sec:requisitos-novos}). A preservação da
 evidência também é exceção: só 7 estudos tratam explicitamente da cadeia de
 custódia, e nenhum avalia se a evidência é aceita em juízo
 (Seção~\ref{sec:rsl1-qp5}). Só quatro estudos juntam cadeia de custódia e
@@ -140,7 +200,8 @@ descreve preservação da evidência com \textit{hash} nem trilha de auditoria
 das consultas. Na ferramenta de captura de evidências, a documentação
 consultada não mostra grafo de vínculos nem tipologias. Segundo a
 documentação consultada, nenhuma ferramenta comparada reúne esses recursos
-numa só ferramenta para a polícia judiciária.
+numa só ferramenta para a polícia judiciária. A comparação usou critérios
+de contratações públicas; as tipologias de lavagem não fizeram parte dela.
 
 \textbf{Desenvolvimento com IA.} A RSL 2 mostra que o ganho de produtividade
 com IA é condicional e que o código gerado não é seguro por padrão
@@ -163,8 +224,10 @@ As contribuições do trabalho são:
 	IA no desenvolvimento de software, com uma lista de práticas candidatas
 	para o desenvolvimento (Seção~\ref{sec:resultados-rsl2});
 	\item um \textit{backlog} priorizado, em que cada história aponta o
-	requisito que atende e a evidência que a sustenta, e uma comparação com
-	ferramentas existentes (Capítulo~\ref{cap:requisitos});
+	requisito que atende e a evidência que a sustenta, inclusive as
+	tipologias de lavagem de dinheiro detectáveis com dados abertos e os
+	limites desses dados, e uma comparação com ferramentas existentes
+	(Capítulo~\ref{cap:requisitos});
 	\item um protótipo de código aberto, sob a licença MIT, que reúne coleta
 	passiva, cadeia de custódia, trilha de auditoria, alertas explicados e IA
 	opcional e local, com o modelo de ameaças ligado aos testes automatizados

@@ -2,6 +2,8 @@
 % Capítulo de requisitos e backlog do protótipo.
 % Fontes: docs/requisitos-app.md, docs/backlog/backlog.json (tabelas geradas por
 % docs/backlog/gera_backlog.py), docs/triagem/sintese/tematica/A4.md e B1 a B4.
+% Escopo de lavagem (17/11/2026): docs/lavagem/proposta.md (histórias H40 a
+% H57), docs/lavagem/fontes.md e docs/lavagem/rsl1-lavagem.md.
 % ---------------------------------------------------------------------------
 \begingroup
 \setlength{\emergencystretch}{3em}
@@ -51,6 +53,43 @@ padrão, e as mitigações eficazes são ativas e em camadas
 (Seção~\ref{sec:resultados-rsl2}).
 % PENDENTE: o orientador (especialista e dono do produto) valida os
 % requisitos novos RF11 a RF15 e RNF12 e os três refinamentos.
+
+\textbf{Lavagem de dinheiro.} A ampliação do escopo para a lavagem de
+dinheiro (decisão do autor, a validar pelo orientador) acrescentou as
+histórias H40 a H57. Elas detalham o RF03 (laranjas, empresas de fachada e
+cadeias societárias), o RF04, que passa a ter também tipologias de lavagem,
+o RF05 e o RF10. A RSL~1 também não as sustenta. Uma busca por termos como
+\textit{money laundering}, \textit{beneficial owner} e \textit{shell
+company} no texto completo dos 57 estudos não achou nenhum que tenha a
+lavagem de dinheiro, o beneficiário final ou as empresas de fachada como
+objeto. As menções à lavagem são de passagem, em contexto ou em citações de
+outros trabalhos, e o mais próximo da investigação financeira continua sendo
+o rastreamento de criptoativos (RSL1-0908). O registro dessa busca está em
+\texttt{docs/lavagem/rsl1-lavagem.md}.
+
+Essas histórias se apoiam em quatro grupos de fontes:
+\begin{itemize}
+	\item a legislação: a Lei nº 9.613/1998 \cite{brasil1998lei9613}, a Lei
+	nº 8.429/1992 \cite{brasil1992lei8429}, a Lei nº 12.846/2013
+	\cite{brasil2013lei12846} e a Lei nº 9.504/1997 \cite{brasil1997lei9504};
+	\item normas e publicações oficiais: os sinais de alerta de lavagem do
+	Banco Central \cite{bcb2020cc4001}, o leiaute dos dados bancários com
+	sigilo afastado \cite{bcb2025in636} e as tipologias do COAF
+	\cite{coaf2021casos};
+	\item os indicadores e os estudos de caso do GAFI e do Grupo de Egmont,
+	que são literatura cinzenta oficial;
+	\item artigos revisados por pares fora do corpus da RSL~1, como
+	\citeonline{velasco2021}, que descreve padrões de risco num sistema
+	brasileiro de apoio à detecção de fraude em contratações públicas.
+\end{itemize}
+Os documentos do GAFI são dois. Um é um estudo sobre a lavagem de recursos
+da corrupção \cite{fatf2011corruption}. O outro, de \citeonline{fatfegmont2018}, trata
+da ocultação do beneficiário final. Os artigos de fora do
+corpus fundamentam o domínio, mas não entram na
+síntese da RSL~1. A ficha de cada tipologia, com a regra, os dados, o falso
+positivo esperado e a base, está em \texttt{docs/lavagem/tipologias-lavagem.md}.
+% PENDENTE: o orientador valida a ampliação do escopo, as histórias H40 a
+% H57 e o uso de artigos fora do corpus da RSL 1 como fundamentação do domínio.
 
 % ===========================================================================
 \section{Comparação com ferramentas existentes e diferencial}
@@ -130,7 +169,10 @@ RSL~1 reúne, numa só ferramenta para a polícia judiciária:
 O diferencial está na combinação, voltada à produção de prova para o
 inquérito. Isoladamente, cada recurso existe em alguma ferramenta.
 
-\textbf{Limites da comparação.} O protótipo é muito menor que as ferramentas
+\textbf{Limites da comparação.} Os critérios da comparação são de
+contratações públicas. As tipologias de lavagem de dinheiro (H40 a H57) não
+entraram nela, e a documentação das ferramentas não foi consultada sobre
+elas. O protótipo é muito menor que as ferramentas
 comparadas: tem quatro fontes de dados abertos, além da leitura de editais, e dez tipologias, enquanto a Alice cruza mais
 de 40 bases e aplica mais de 30 trilhas. A IA do protótipo é opcional e
 restrita à extração de entidades de textos coletados: roda num servidor
@@ -170,8 +212,13 @@ O objetivo não é substituir essas plataformas. É ocupar o espaço que a
 comparação mostrou vazio: uma ferramenta de código aberto, implantável pelo
 próprio órgão, que produza alertas sobre contratações públicas já com a
 evidência preservada para o inquérito.
+A ampliação para a lavagem de dinheiro abre um quarto grupo de histórias,
+fora da comparação: as tipologias de lavagem com dados abertos (H40 a H49 e
+H57), a linha do tempo patrimonial (H50 e H51), as tipologias de campanha
+(H52 e H53) e a importação separada de dados bancários recebidos por ordem
+judicial, só com dados sintéticos neste trabalho (H54 e H55).
 % PENDENTE: o orientador valida os horizontes e as prioridades das histórias
-% H31 a H38.
+% H31 a H38 e H40 a H57.
 
 % ===========================================================================
 \section{Épicos e histórias de usuário}
@@ -211,14 +258,19 @@ foram decisão do autor:
 	em juízo, e o que a lei exige (coleta passiva).
 	\item \textbf{\textit{Should have}:} o que a revisão pede e cabe no
 	protótipo sem mudar a arquitetura, como confirmar ou descartar cada
-	alerta e registrar a versão do conector na captura.
+	alerta e registrar a versão do conector na captura. No escopo de
+	lavagem, entram aqui as tipologias que usam dados já coletados ou uma
+	tabela nova de fonte já integrada (H40 a H43) e a linha do tempo
+	patrimonial (H50 e H51).
 	\item \textbf{\textit{Could have}:} requisitos do levantamento ou da
 	revisão que pedem nova fonte, novo componente ou mais esforço, como o
 	monitoramento contínuo e a extração com LLM.
 	\item \textbf{\textit{Won't have} (nesta entrega):} o que depende de dados
-	sigilosos, de definição legal ainda aberta ou de outro domínio de crime,
-	como as integrações sob ordem judicial, o anonimato operacional e a coleta
-	na dark web.
+	sigilosos sem especificação pública conferida, de definição legal ainda
+	aberta, de risco alto à proteção de dados ou de outro domínio de crime,
+	como a importação do RIF e de extratos telefônicos, o anonimato
+	operacional, a coleta na dark web e o cruzamento de doações com a
+	remuneração pelo CPF completo (H53).
 \end{itemize}
 
 O recorte do protótipo foi decidido antes da síntese da RSL~1, pelos dois
@@ -227,12 +279,26 @@ que já estava implementado. A divisão de esforço de 60, 20 e 20\% não foi
 usada, porque o esforço de cada história não foi estimado antes. A
 Tabela~\ref{tab:moscow-resumo} mostra quantas histórias há em cada
 categoria, e a Tabela~\ref{tab:backlog} mostra o \textit{backlog} completo.
-Das 39 histórias, 25 estão feitas, 6 estão em parte, 3 estão por fazer e 5
-ficaram fora desta entrega (Tabela~\ref{tab:backlog}). As 11 histórias
-\textit{Must have} estão feitas.
+Das 56 histórias, 25 estão feitas, 6 estão em parte, 14 estão por fazer, 5
+aguardam decisão do orientador e 6 ficaram fora desta entrega
+(Tabela~\ref{tab:backlog}). As 11 histórias \textit{Must have} estão
+feitas. Com o escopo de lavagem, a H20 foi substituída pela H51, e a H25 foi
+dividida: os dados bancários passaram para a H54 e a H55, e a H25 ficou com o
+RIF e os extratos telefônicos. As prioridades de H40 a H57 são decisão do
+autor, a validar pelo orientador. Aguardam decisão do orientador a H46
+(L9), a H50 e a H51 (L11, RF05), a H52 (L13) e a H53 (L12). A H46, a H50 e a
+H51 dependem de como identificar o candidato entre eleições e ligá-lo ao
+sócio e ao servidor, o que envolve o CPF publicado pelo TSE
+(Seção~\ref{sec:desenv-limitacoes}).
 % PENDENTE: a priorização é proposta do autor. O orientador, que fez o
 % levantamento inicial, valida as categorias como dono do produto.
 % PENDENTE: quando as histórias Should have forem implementadas, atualizar a
 % situação em docs/backlog/backlog.json e rodar docs/backlog/gera_backlog.py.
+% PENDENTE: H40 a H45, H47 a H49, H54, H55 e H57 estão em implementação e
+% constam como "a fazer"; atualizar a situação e as contagens acima, no
+% resumo, no abstract e nas considerações finais quando terminarem.
+% PENDENTE: a coerência do título com o protótipo depende de entrarem ao
+% menos as tipologias L1, L3, L4, L5, L7, L8, L10, L14, L15, a combinação, a
+% L6 e o RF05 (docs/lavagem/proposta.md, seção 5, item 1).
 
 \endgroup

@@ -1,0 +1,238 @@
+% ---------------------------------------------------------------------------
+% Capítulo de requisitos e backlog do protótipo.
+% Fontes: docs/requisitos-app.md, docs/backlog/backlog.json (tabelas geradas por
+% docs/backlog/gera_backlog.py), docs/triagem/sintese/tematica/A4.md e B1 a B4.
+% ---------------------------------------------------------------------------
+\begingroup
+\setlength{\emergencystretch}{3em}
+
+\chapter{Requisitos e \textit{backlog} do protótipo}
+\label{cap:requisitos}
+
+Este capítulo junta as duas fontes de requisitos do buscador: o levantamento
+com o especialista (Seção~\ref{sec:metodologia-requisitos}) e a síntese da
+RSL~1 (Seção~\ref{sec:resultados-rsl1}). Em seguida, organiza os requisitos em
+épicos e histórias de usuário e os prioriza para a entrega deste trabalho.
+
+% ===========================================================================
+\section{Requisitos acrescentados pela revisão}
+\label{sec:requisitos-novos}
+
+A síntese da RSL~1 consolidou os requisitos candidatos dos estudos em 27
+requisitos e comparou cada um com o levantamento inicial
+(Tabela~\ref{tab:rastreabilidade}). Dezoito já tinham um requisito
+correspondente. Os outros nove não tinham. Seis deles viraram requisitos
+novos (Tabela~\ref{tab:req-novos}). Os outros três (coleta na dark web,
+classificação automática de conteúdo e suporte a vários idiomas) ficaram
+fora desta entrega, como explica a Seção~\ref{sec:requisitos-priorizacao}.
+
+\input{editaveis/gerado/backlog}
+
+A revisão também refinou três requisitos existentes:
+\begin{itemize}
+	\item \textbf{RF07, cadeia de custódia:} a captura passa a registrar a
+	versão do conector, e a mesma fonte pode ser recoletada e comparada, para
+	reconstituir como a prova foi obtida.
+	\item \textbf{RNF04, conformidade legal:} cada caso ganha finalidade e
+	prazo de retenção definidos, o que aplica a minimização dos dados.
+	\item \textbf{RNF05, explicabilidade:} toda saída de IA traz a fonte e,
+	quando houver, o grau de confiança, e é tratada como pista, e não como
+	conclusão.
+\end{itemize}
+
+A revisão não deu respaldo a parte do levantamento: RF04 (alertas de
+tipologias de corrupção), RF05 (linha do tempo patrimonial), RF10
+(integrações sob ordem judicial), as fontes brasileiras do RF01 e RNF11
+(DevSecOps). Nenhum estudo incluído trata de corrupção em contratos
+públicos nem do contexto brasileiro. Esses requisitos continuam no projeto,
+justificados pelo levantamento com o especialista e pela legislação. O
+RNF11 também tem apoio na RSL~2: o código gerado por IA não é seguro por
+padrão, e as mitigações eficazes são ativas e em camadas
+(Seção~\ref{sec:resultados-rsl2}).
+% PENDENTE: o orientador (especialista e dono do produto) valida os
+% requisitos novos RF11 a RF15 e RNF12 e os três refinamentos.
+
+% ===========================================================================
+\section{Comparação com ferramentas existentes e diferencial}
+\label{sec:requisitos-mercado}
+
+Para situar o protótipo, ele foi comparado com sete ferramentas, escolhidas
+por decisão do autor em quatro grupos:
+\begin{itemize}
+	\item plataformas comerciais de análise de vínculos e OSINT voltadas a
+	órgãos policiais e de inteligência: Maltego, i2 Analyst's Notebook e
+	Palantir Gotham;
+	\item uma ferramenta OSINT de código aberto: SpiderFoot;
+	\item ferramentas do governo federal brasileiro para controle de
+	contratações públicas: Alice, desenvolvida pela CGU e usada também pelo
+	TCU, e o Observatório da Despesa Pública (ODP), da CGU;
+	\item uma ferramenta de captura de evidências da internet para
+	investigadores: OSIRT.
+\end{itemize}
+Os critérios de comparação vêm dos requisitos do buscador (Seção~\ref{sec:metodologia-requisitos}
+e Seção~\ref{sec:requisitos-novos}). A fonte de cada célula é a documentação
+oficial do fabricante ou do órgão, acessada em 13/11/2026. Essa documentação
+é literatura cinzenta: descreve o produto como o fabricante o apresenta e não
+passou por revisão por pares. Por isso, quando um recurso não aparece na
+documentação, a tabela registra ``não encontrado'', e não que o produto não o
+tenha. A comparação não incluiu testes práticos das ferramentas. Cada célula,
+com o trecho literal e a página de origem, está em
+\texttt{docs/mercado/concorrentes.json}.
+
+\input{editaveis/gerado/mercado}
+
+As Tabelas~\ref{tab:mercado} e~\ref{tab:mercado-modelo} mostram três grupos de cobertura:
+\begin{itemize}
+	\item \textbf{Plataformas de análise de vínculos} (Maltego, i2 Analyst's
+	Notebook e Gotham): cobrem o grafo de vínculos. A documentação consultada
+	não mostra fontes de dados brasileiras integradas nem tipologias de fraude
+	em contratações.
+	\item \textbf{Ferramentas de controle da CGU} (Alice e ODP): cobrem o
+	domínio. A Alice cruza os dados com ``mais de 40 bases de dados
+	diferentes'' e aplica mais de 30 trilhas de auditoria (tipologias de
+	risco). Mas são ferramentas de auditoria e controle interno: o manual
+	informa que o acesso direto à Alice é restrito às unidades de auditoria
+	interna e controle interno. A documentação consultada não descreve
+	preservação da evidência com \textit{hash} nem trilha de auditoria das
+	consultas, porque o produto do controle é o achado de auditoria, e não a
+	prova de um inquérito.
+	\item \textbf{Captura de evidências} (OSIRT): calcula o \textit{hash}
+	SHA-512 e registra a data e a hora de cada captura. A documentação
+	consultada não mostra grafo de vínculos nem tipologias.
+\end{itemize}
+
+A literatura mostra a mesma lacuna. Nenhum dos 57 estudos da RSL~1 trata de
+fraude ou corrupção em contratações públicas. Só quatro juntam cadeia de
+custódia e trilha de auditoria (RSL1-0466, RSL1-0816, RSL1-0854 e
+RSL1-0863), e nenhum desses quatro tem grafo de vínculos
+(Seção~\ref{sec:resultados-rsl1}).
+% PENDENTE: a contagem por domínio usa o campo tipo_crime da extração, que
+% ainda depende de R1 e R2.
+
+\textbf{Diferencial.} Nenhuma ferramenta comparada nem nenhum estudo da
+RSL~1 reúne, numa só ferramenta para a polícia judiciária:
+\begin{enumerate}
+	\item fontes de dados abertos brasileiras de contratações e de empresas,
+	lidas no layout oficial;
+	\item alertas de tipologias de fraude em contratações em que cada alerta
+	traz a regra, o motivo e as evidências, e cada evidência aponta para a
+	captura de origem;
+	\item cadeia de custódia em cada captura, com \textit{hash} SHA-256,
+	carimbo de tempo UTC e verificação da integridade a qualquer momento;
+	\item trilha de auditoria só de acréscimo, encadeada por HMAC (\textit{hash} com chave), em
+	que toda consulta é feita dentro de um caso e com justificativa;
+	\item coleta só passiva por desenho, para não configurar infiltração
+	virtual sem ordem judicial \cite[art. 10-A]{brasil2013lei12850};
+	\item implantação local em contêineres, com código aberto sob a licença
+	MIT, o que permite ao órgão auditar o código e manter os dados em
+	infraestrutura própria.
+\end{enumerate}
+O diferencial está na combinação, voltada à produção de prova para o
+inquérito. Isoladamente, cada recurso existe em alguma ferramenta.
+
+\textbf{Limites da comparação.} O protótipo é muito menor que as ferramentas
+comparadas: tem quatro fontes de dados abertos, além da leitura de editais, e dez tipologias, enquanto a Alice cruza mais
+de 40 bases e aplica mais de 30 trilhas. A IA do protótipo é opcional e
+restrita à extração de entidades de textos coletados: roda num servidor
+local, cada sugestão cita o trecho literal de onde saiu e só entra no caso se
+o analista aceitar (Capítulo~\ref{cap:desenvolvimento}). O protótipo não foi
+avaliado com usuários policiais. A comparação mostra uma combinação que falta, e não que o
+protótipo substitua essas ferramentas.
+
+\textbf{Caminho para competir.} A comparação também mostra o que falta ao
+protótipo. As histórias correspondentes estão no \textit{backlog}
+(Tabela~\ref{tab:backlog}), em três horizontes:
+\begin{enumerate}
+	\item \textbf{Dentro deste trabalho} (histórias \textit{Should have}):
+	confirmar ou descartar cada alerta (H12), ordenar os alertas por
+	severidade (H13), registrar a versão do conector na captura (H14), relatar
+	as falhas de coleta (H15), barrar código sem verificação no
+	\textit{pipeline} (H16), definir a retenção por caso (H17) e alertar
+	contratação de empresa sem situação cadastral ativa (H31), uma tipologia
+	que a Alice também aplica. Além disso, avaliar o protótipo com usuários
+	policiais, com questionário de usabilidade e tempo de tarefa comparado ao
+	trabalho manual, como recomenda a síntese da QP5 da RSL~1. Sem essa
+	avaliação, não há como afirmar que o protótipo se aproxima das
+	ferramentas comparadas.
+	\item \textbf{Aproximar-se das ferramentas de controle} (Alice e ODP), no
+	domínio de contratações: mais fontes, como o Portal da Transparência e o
+	TSE (H19); as tipologias do levantamento ainda não implementadas, como
+	fracionamento de compras, empresa sancionada, sócio servidor e aditivos
+	acima do limite legal (H32 a H35); monitoramento contínuo com aviso de
+	novidades (H18), como os informes diários da Alice; e análise do texto
+	dos editais com o trecho citado (H36).
+	\item \textbf{Aproximar-se das plataformas de vínculos} (Maltego, i2 e
+	Gotham): trabalho em equipe no caso (H37), exportação do grafo para i2 e
+	Maltego (H38), MFA e controle de acesso por caso (H23), banco de grafos
+	para escala (H29) e extração assistida por IA com a fonte citada (H22).
+\end{enumerate}
+O objetivo não é substituir essas plataformas. É ocupar o espaço que a
+comparação mostrou vazio: uma ferramenta de código aberto, implantável pelo
+próprio órgão, que produza alertas sobre contratações públicas já com a
+evidência preservada para o inquérito.
+% PENDENTE: o orientador valida os horizontes e as prioridades das histórias
+% H31 a H38.
+
+% ===========================================================================
+\section{Épicos e histórias de usuário}
+\label{sec:requisitos-historias}
+
+Os requisitos foram escritos como histórias de usuário no formato ``Como
+\textless papel\textgreater, quero \textless meio\textgreater, para
+\textless fim\textgreater'', o mais difundido segundo
+\citeonline[seção 1]{lucassen2016}. As histórias foram agrupadas em sete
+épicos. Um épico é uma história grande, quebrada em histórias menores que
+podem ser implementadas \cite[seção 2]{lucassen2016}. Cada história aponta o
+requisito que atende e a evidência que a sustenta: o levantamento com o
+especialista, a legislação ou a síntese da RSL~1 (para requisitos do
+produto) ou da RSL~2 (para o processo de desenvolvimento). Os papéis são o
+investigador, o delegado responsável, o auditor, o perito e o responsável
+pelo sistema.
+
+% ===========================================================================
+\section{Priorização}
+\label{sec:requisitos-priorizacao}
+
+As histórias foram priorizadas pelo método MoSCoW, uma das técnicas de
+priorização de requisitos mais usadas \cite{ais2026}. O método separa os
+requisitos em quatro categorias: \textit{Must have}, \textit{Should have},
+\textit{Could have} e \textit{Won't have} \cite[seção 1]{miranda2022}. Na
+formulação usual, as três primeiras recebem 60\%, 20\% e 20\% do esforço de
+desenvolvimento, e as de menor preferência só começam quando as de maior
+preferência terminam \cite[seções 1 e 2]{miranda2022}. Para que essa reserva
+proteja a entrega, cada categoria deve ter pelo menos cinco itens, e nenhum
+deve consumir mais de 25\% do esforço da categoria \cite[seção 7]{miranda2022}.
+
+A entrega considerada é a deste trabalho. Os critérios de classificação
+foram decisão do autor:
+\begin{itemize}
+	\item \textbf{\textit{Must have}:} o que sustenta os dois eixos do
+	levantamento, correlacionar dados abertos e produzir prova que se sustente
+	em juízo, e o que a lei exige (coleta passiva).
+	\item \textbf{\textit{Should have}:} o que a revisão pede e cabe no
+	protótipo sem mudar a arquitetura, como confirmar ou descartar cada
+	alerta e registrar a versão do conector na captura.
+	\item \textbf{\textit{Could have}:} requisitos do levantamento ou da
+	revisão que pedem nova fonte, novo componente ou mais esforço, como o
+	monitoramento contínuo e a extração com LLM.
+	\item \textbf{\textit{Won't have} (nesta entrega):} o que depende de dados
+	sigilosos, de definição legal ainda aberta ou de outro domínio de crime,
+	como as integrações sob ordem judicial, o anonimato operacional e a coleta
+	na dark web.
+\end{itemize}
+
+O recorte do protótipo foi decidido antes da síntese da RSL~1, pelos dois
+eixos do levantamento. Por isso, a priorização foi aplicada depois, sobre o
+que já estava implementado. A divisão de esforço de 60, 20 e 20\% não foi
+usada, porque o esforço de cada história não foi estimado antes. A
+Tabela~\ref{tab:moscow-resumo} mostra quantas histórias há em cada
+categoria, e a Tabela~\ref{tab:backlog} mostra o \textit{backlog} completo.
+Das 39 histórias, 25 estão feitas, 6 estão em parte, 3 estão por fazer e 5
+ficaram fora desta entrega (Tabela~\ref{tab:backlog}). As 11 histórias
+\textit{Must have} estão feitas.
+% PENDENTE: a priorização é proposta do autor. O orientador, que fez o
+% levantamento inicial, valida as categorias como dono do produto.
+% PENDENTE: quando as histórias Should have forem implementadas, atualizar a
+% situação em docs/backlog/backlog.json e rodar docs/backlog/gera_backlog.py.
+
+\endgroup

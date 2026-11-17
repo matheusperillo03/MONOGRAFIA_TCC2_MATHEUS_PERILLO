@@ -1,0 +1,404 @@
+% ---------------------------------------------------------------------------
+% Protocolo de avaliação do protótipo com usuários policiais.
+% Fonte: docs/avaliacao/protocolo-avaliacao.md (instrumentos em
+% docs/avaliacao/instrumentos.md; TCLE em docs/avaliacao/tcle-rascunho.md).
+% Referências novas em docs/avaliacao/novas.bib, a mesclar em bibliografia.bib;
+% conferência de cada uma em docs/avaliacao/referencias-novas.md.
+% Traduções de trechos em inglês: do autor.
+% ---------------------------------------------------------------------------
+
+\section{Protocolo de avaliação com usuários}
+\label{sec:avaliacao-protocolo}
+
+A síntese da QP5 da RSL~1 mostrou que a avaliação das ferramentas mede o
+modelo e quase nunca o trabalho do investigador, e que só 7 dos 57 estudos
+avaliam com usuários (Seção~\ref{sec:rsl1-qp5}). Esta seção descreve como o
+protótipo será avaliado com policiais: usabilidade e tempo de tarefa
+comparado ao mesmo trabalho feito à mão nos sites oficiais. O protocolo
+completo, os instrumentos e o rascunho do termo de consentimento estão em
+\texttt{docs/avaliacao/}.
+% PENDENTE: o orientador (R2) valida o protocolo, e a avaliação só começa
+% depois da decisão do sistema CEP/CONEP (Seção~\ref{sec:avaliacao-etica}).
+
+% ===========================================================================
+\subsection{Objetivo e perguntas de avaliação}
+\label{sec:avaliacao-objetivo}
+
+A avaliação usa a definição de usabilidade da ISO 9241-11:2018: o grau em
+que um sistema pode ser usado por usuários especificados para alcançar
+objetivos especificados com eficácia, eficiência e satisfação, num contexto
+de uso especificado \cite[3.1.1]{iso9241-11}. A norma define eficácia como a
+acurácia e a completude com que o usuário alcança os objetivos (3.1.12) e
+eficiência como os recursos usados em relação aos resultados, entre eles o
+tempo (3.1.13). A Tabela~\ref{tab:avaliacao-pa} liga cada pergunta de
+avaliação a essas dimensões e à medida usada.
+
+\begin{table}[htbp]
+\centering
+\caption{Perguntas de avaliação}
+\label{tab:avaliacao-pa}
+\small
+\begin{tabular}{p{0.8cm}p{6.6cm}p{2.4cm}p{4.2cm}}
+\hline
+\textbf{PA} & \textbf{Pergunta} & \textbf{Dimensão} & \textbf{Medida} \\ \hline
+PA1 & O policial conclui as tarefas no protótipo, e com que acerto? & Eficácia & Sucesso por tarefa, conferido com o gabarito; erros \\
+PA2 & Quanto tempo as tarefas levam no protótipo, comparadas ao trabalho manual nos sites oficiais? & Eficiência & Tempo por tarefa nas duas condições; pedidos de ajuda \\
+PA3 & Como o policial percebe a usabilidade do protótipo? & Satisfação & Escore SUS \\
+PA4 & O policial entende e confia nos recursos de prova (alerta como pista, custódia, trilha, trecho citado pela IA)? & Eficácia e satisfação & Sucesso nas tarefas T5 a T7; perguntas abertas \\
+PA5 & Que problemas de uso aparecem, e o que falta para o trabalho real? & Formativa & Observações; perguntas abertas \\ \hline
+\multicolumn{4}{p{14.4cm}}{\footnotesize Fonte: elaborada pelo autor, com as dimensões da ISO 9241-11:2018.}\\
+\end{tabular}
+\end{table}
+
+Com um a poucos participantes, a avaliação é formativa: encontra problemas e
+dá indícios, mas não permite generalizar.
+
+% ===========================================================================
+\subsection{Participantes}
+\label{sec:avaliacao-participantes}
+
+Os participantes são policiais civis em atividade (delegado, agente,
+escrivão ou perito) com experiência em investigação de crimes contra a
+administração pública ou em pesquisa de dados abertos. O participante
+principal é um delegado. A meta é de até cinco participantes, com mínimo de
+um.
+
+Nielsen e Landauer modelam a descoberta de problemas de usabilidade, em
+função do número de usuários testados, como um processo de Poisson. Para um
+projeto ``médio'', estimam a melhor relação benefício/custo com quatro
+avaliações \cite{nielsen1993}. Faulkner mostra a variação por trás dessa
+média: entre grupos de cinco usuários sorteados de 60, alguns acharam 99\%
+dos problemas, e outros só 55\%. Com dez usuários, o pior grupo achou 80\%
+\cite{faulkner2003}. As duas fontes tratam da descoberta de problemas, e não
+da comparação de tempos. Por isso, com um a cinco participantes, os
+problemas achados são parte dos existentes, e os tempos servem só para
+descrever. A meta de cinco é decisão do autor, limitada pelo número de
+policiais que se pode recrutar.
+
+O convite é individual, feito pelo autor ou pelo orientador, e não passa pela
+cadeia de comando: um delegado não convida os próprios subordinados. A
+Resolução CNS 510/2016 exige atenção ao consentimento de quem está sujeito a
+relação de autoridade ou de dependência \cite[art.~11 e art.~20]{cns2016res510}.
+% PENDENTE: R2 confirma o perfil, se a participação exige autorização da
+% instituição e se o delegado participou do levantamento de requisitos.
+
+% ===========================================================================
+\subsection{Desenho}
+\label{sec:avaliacao-desenho}
+
+Há duas condições: o protótipo (P) e o trabalho manual (M) nos sites
+oficiais (PNCP, consulta de CNPJ da Receita Federal e Portal da
+Transparência). Cada participante faz as duas, como num desenho
+\textit{crossover}, em que cada participante recebe mais de um tratamento.
+Esse desenho exige menos participantes e controla a variação entre eles,
+mas tem uma ameaça: o \textit{carryover}, a persistência do efeito de um
+tratamento quando outro é aplicado depois \cite{vegas2016crossover}. Aqui, o
+\textit{carryover} seria o participante lembrar, na segunda condição, a
+resposta que achou na primeira.
+
+Para reduzir esse efeito, cada condição usa um alvo diferente. Um alvo é um
+órgão contratante, com seus contratos publicados no PNCP num período fixo. A
+ordem das condições e a atribuição dos alvos se alternam entre os
+participantes num quadrado latino 2$\times$2
+(Tabela~\ref{tab:avaliacao-ordem}). O quadrado latino e o uso de alvos
+diferentes são decisão do autor. Com um só participante, não há
+contrabalanceamento entre participantes, e o efeito da ordem e o do alvo se
+confundem com o da condição.
+
+\begin{table}[htbp]
+\centering
+\caption{Ordem das condições e alvos por participante}
+\label{tab:avaliacao-ordem}
+\small
+\begin{tabular}{lll}
+\hline
+\textbf{Participante} & \textbf{1º bloco} & \textbf{2º bloco} \\ \hline
+P01 & M no alvo A & P no alvo B \\
+P02 & P no alvo A & M no alvo B \\
+P03 & M no alvo B & P no alvo A \\
+P04 & P no alvo B & M no alvo A \\
+P05 & \multicolumn{2}{l}{repete o esquema de P01} \\ \hline
+\multicolumn{3}{l}{\footnotesize Fonte: elaborada pelo autor.}\\
+\end{tabular}
+\end{table}
+
+\textbf{Dados públicos reais.} O participante simula uma investigação com
+dados públicos reais. Não é investigação sigilosa nem cenário fictício. Os
+alvos são escolhidos por critério neutro, e não por suspeita: dois órgãos
+com contratos no PNCP no mesmo período e em número parecido (decisão do
+autor). Nos registros e neste trabalho, os alvos aparecem só como ``alvo A''
+e ``alvo B''. Nenhum nome de órgão, empresa ou pessoa é registrado.
+% PENDENTE: R2 aprova o critério dos alvos e define a conduta se o
+% participante achar, na sessão, um indício real de irregularidade.
+
+\textbf{Pré-condições técnicas.} Os conectores foram testados só com dados
+sintéticos e transporte simulado (Seção~\ref{sec:desenv-limitacoes}). Antes
+de qualquer sessão, um piloto técnico com dados reais confere a coleta do
+PNCP, do CNPJ e do Portal da Transparência para os dois alvos, e só entram
+na sessão as tarefas que passarem nele. Toda sessão roda com o modo de
+desenvolvimento desligado e com um usuário de login pseudônimo, senha e MFA.
+% PENDENTE: R1 faz o piloto técnico. Pontos abertos: chave do Portal da
+% Transparência; recorte dos arquivos reais do CNPJ, maiores que o limite
+% por arquivo do conector (registrar o SHA-256 dos arquivos oficiais e o
+% método do recorte); servidor de modelo local para a T7; acesso por VPN,
+% porque as portas são publicadas só em 127.0.0.1.
+
+% ===========================================================================
+\subsection{Tarefas}
+\label{sec:avaliacao-tarefas}
+
+A Tabela~\ref{tab:avaliacao-tarefas} lista as oito tarefas, na ordem de uma
+investigação. Cada enunciado diz o objetivo, e não os passos na interface.
+Só T3 e T4 têm equivalente manual direto e são feitas nas duas condições. As
+demais exercitam recursos sem equivalente manual comparável e são medidas
+só no protótipo.
+
+Em toda tarefa se medem:
+\begin{itemize}
+	\item \textbf{tempo}, do fim da leitura do cartão até a resposta, com teto
+	de 15 minutos. Tarefa que chega ao teto é registrada como não concluída;
+	\item \textbf{sucesso} (completa, parcial ou falha), conferido com o
+	gabarito montado no piloto;
+	\item \textbf{erros}: resposta errada, ou caminho que precisa ser
+	desfeito;
+	\item \textbf{pedidos de ajuda}: dica ou intervenção. Uma intervenção
+	limita a tarefa a ``parcial''.
+\end{itemize}
+O teto e as definições de erro e de ajuda são decisão do autor. No
+protótipo, os carimbos de tempo da trilha de auditoria conferem o
+cronômetro.
+
+\begin{small}
+\begin{longtable}{p{0.7cm}p{5.0cm}p{0.9cm}p{3.2cm}p{4.4cm}}
+\caption{Tarefas da avaliação}\rotulounico{tab:avaliacao-tarefas}\\
+\hline
+\textbf{ID} & \textbf{Tarefa} & \textbf{Cond.} & \textbf{Funcionalidade} & \textbf{Critério de sucesso} \\ \hline\endhead
+T1 & Abrir um caso para o alvo, com finalidade, prazo de retenção e justificativa & P & Casos (H07, H17) & Caso criado com finalidade e prazo; justificativa na auditoria \\
+T2 & Reunir no caso os contratos do alvo e os dados cadastrais e de sanções das contratadas & P & Coleta multifonte (H01, H15, H19) & Coletas do PNCP, do CNPJ e do CEIS/CNEP concluídas; se alguma falhar, o participante diz qual e por quê \\
+T3 & Dizer quem são os sócios da contratada indicada e quantos dias ela existia na assinatura do contrato & P e M & Entidades, busca e grafo (H02, H03, H09) & Todos os sócios do gabarito e dias com erro de até 1 dia \\
+T4 & Dizer se alguma contratada tinha sanção vigente no CEIS ou no CNEP na assinatura, e qual & P e M & Tipologia T6 e evidências & Resposta igual ao gabarito \\
+T5 & Rodar as tipologias, dizer qual alerta analisaria primeiro e decidir dois alertas, com justificativa & P & Tipologias T1 a T10, severidade, decisão (H04, H12, H13) & Escolha justificada pela severidade ou pelo motivo; duas decisões com justificativa \\
+T6 & Mostrar que a captura de um alerta não mudou desde a coleta e que a trilha está íntegra & P & Custódia e auditoria (H05, H06, H14) & Verificações íntegras; o participante localiza o \textit{hash} e o instante da captura \\
+T7 & Num edital do caso, aceitar e recusar uma sugestão da IA, conferindo o trecho citado & P & Extração por IA local (H22) & Duas decisões; o participante mostra o trecho de cada sugestão \\
+T8 & Gerar o material do caso para anexar a um relatório & P & Relatório e exportação (H08, H38) & Relatório gerado; o participante aponta nele um alerta e a captura de origem \\ \hline
+\multicolumn{5}{p{14.8cm}}{\footnotesize Fonte: elaborada pelo autor. A tolerância de 1 dia em T3 é decisão do autor. T7 depende do piloto técnico.}\\
+\end{longtable}
+\end{small}
+
+% ===========================================================================
+\subsection{Instrumentos}
+\label{sec:avaliacao-instrumentos}
+
+\textbf{SUS.} A satisfação é medida pelo \textit{System Usability Scale}
+(SUS), criado por Brooke \cite{brooke1996sus,brooke2013sus}: dez
+afirmações, respondidas numa escala de 1 a 5. Lewis o descreve como o
+questionário padronizado mais usado para avaliar a usabilidade percebida
+\cite{lewis2018sus}. Bangor, Kortum e Miller, com cerca de dez anos de dados,
+o descrevem como uma ferramenta robusta e versátil \cite{bangor2008sus}.
+
+O protocolo usa a ``Escala de Usabilidade de Sistema -- versão brasileira'',
+de \citeonline{lourenco2022sus}. A adaptação passou por tradução,
+síntese, retrotradução, comitê de oito especialistas e pré-teste com 100
+estudantes, com alfa de Cronbach de 0,76. O texto dos itens é o da Tabela 1
+do artigo, a versão usada no teste. Os rótulos das pontas da escala
+(``Discordo totalmente'' e ``Concordo totalmente'') são decisão do autor,
+porque o artigo não os traz em português. O SUS é aplicado logo depois do
+bloco do protótipo, antes de qualquer conversa sobre o sistema (decisão do
+autor).
+% PENDENTE: R1 confere a licença do artigo antes de reproduzir os itens num
+% apêndice.
+
+\textbf{Perguntas abertas.} Depois do SUS, sete perguntas exploram as PA4 e
+PA5: o que foi fácil e difícil, o que muda em relação ao trabalho manual, se
+o participante entende os alertas, se confiaria na custódia e na trilha para
+o inquérito, como usaria a extração por IA e o que falta para uso real
+(decisão do autor).
+
+\textbf{Ficha por tarefa e perfil.} A ficha registra tempo, sucesso, erros,
+ajuda e observações, sem nomes. O perfil usa só categorias (cargo, faixa de
+tempo de serviço e familiaridade com os sites oficiais).
+
+% ===========================================================================
+\subsection{Procedimento da sessão}
+\label{sec:avaliacao-procedimento}
+
+A sessão dura cerca de 100 minutos e pode ser dividida em duas, uma por
+bloco (Tabela~\ref{tab:avaliacao-sessao}). Durante as tarefas, o
+participante não pensa em voz alta, para não alterar o tempo. Ao fim de
+cada tarefa, o pesquisador pergunta se algo atrapalhou. O pesquisador só
+ajuda quando o participante pede, ou quando ele fica parado por mais de três
+minutos, e então a dica conta como pedido de ajuda. Não há gravação de
+vídeo, de áudio nem de tela. Essas regras e os tempos são decisão do autor.
+
+\begin{table}[htbp]
+\centering
+\caption{Roteiro da sessão}
+\label{tab:avaliacao-sessao}
+\small
+\begin{tabular}{p{4.2cm}p{1.6cm}p{8.4cm}}
+\hline
+\textbf{Passo} & \textbf{Minutos} & \textbf{O que acontece} \\ \hline
+Preparo (antes) & -- & Ambiente limpo, coletas que dependem de arquivo, usuário pseudônimo, cartões e gabarito \\
+Acolhida e consentimento & 10 & Explicação do estudo e leitura do TCLE; sem consentimento, a sessão termina \\
+Perfil & 3 & Questionário sem identificação \\
+Treino & 7 & Passeio pelo caso de demonstração sintético \\
+1º bloco & até 45 & Condição e alvo conforme a Tabela~\ref{tab:avaliacao-ordem} \\
+Pausa & 5 & \\
+2º bloco & até 45 & A outra condição, no outro alvo \\
+SUS & 5 & Logo depois do bloco do protótipo \\
+Perguntas abertas & 10 & Respostas anotadas em texto, sem nomes \\
+Encerramento & 5 & Agradecimento; direito de retirar o consentimento \\
+Limpeza (depois) & -- & Extração dos carimbos de tempo; exclusão das exportações e dos volumes do ambiente \\ \hline
+\multicolumn{3}{l}{\footnotesize Fonte: elaborada pelo autor.}\\
+\end{tabular}
+\end{table}
+
+% ===========================================================================
+\subsection{Coleta e tratamento dos dados}
+\label{sec:avaliacao-dados}
+
+São dados da pesquisa: o código do participante, a condição, o alvo e a
+ordem; por tarefa, o tempo, o sucesso, os erros, a ajuda e as observações;
+as respostas do SUS e do perfil; e as respostas abertas, revisadas para não
+conter nomes. Não se registram nome, CPF, matrícula nem lotação do
+participante nos arquivos de análise; o termo assinado e o contato ficam à
+parte. Também não se registra nenhum dado de pessoa ou empresa real vista
+nas tarefas: a ficha diz só se a resposta bateu com o gabarito. Não há
+capturas de tela, gravações nem arquivos exportados.
+
+A base do protótipo não é dado da pesquisa. Ela contém dados pessoais de
+terceiros vindos de fontes públicas (sócios, servidores e doadores). A LGPD
+define dado pessoal como a informação relacionada a pessoa natural
+identificada ou identificável \cite[art.~5º, I]{brasil2018lei13709} e manda
+que o tratamento de dado de acesso público considere a finalidade, a
+boa-fé e o interesse público que justificaram sua disponibilização
+\cite[art.~7º, § 3º]{brasil2018lei13709}. Como guardar essa base não serve à
+finalidade da avaliação, os volumes do ambiente são apagados ao fim de cada
+sessão, depois de extraídos os carimbos de tempo (decisão do autor).
+
+Os dados da pesquisa, inclusive o gabarito, que tem dados públicos reais e
+fica cifrado e fora do repositório, são guardados pelo pesquisador por, no
+mínimo, cinco anos depois do fim da pesquisa
+\cite[XI.2, f]{cns2012res466} \cite[art.~28, IV]{cns2016res510}.
+% PENDENTE: R2 e o CEP confirmam a separação entre dado de pesquisa (guardado)
+% e base do protótipo (apagada) e o local da guarda.
+
+% ===========================================================================
+\subsection{Análise}
+\label{sec:avaliacao-analise}
+
+\textbf{SUS.} Nos itens ímpares, a contribuição é a resposta menos 1; nos
+pares, é 5 menos a resposta. A soma das contribuições, multiplicada por 2,5,
+dá o escore, de 0 a 100 \cite{brooke2013sus}. O escore não é um percentual,
+e os itens isolados não têm significado próprio \cite{brooke2013sus}. Por
+isso, a análise usa só o escore total. Para interpretar, usam-se as médias
+do SUS associadas a adjetivos por \citeonline{bangor2009sus}: 50,9 para
+``OK'', 71,4 para ``bom'' (\textit{good}) e 85,5 para ``excelente''
+(\textit{excellent}). Os mesmos autores relatam que a média dos estudos
+deles fica em torno de 70 e advertem que ``OK'' pode ser lido como aceitável
+quando não é \cite{bangor2009sus}. Com mais de um participante, relatam-se
+cada escore, a média, o mínimo e o máximo.
+
+\textbf{Tempos.} Cada tempo é relatado por participante, tarefa e condição,
+com o alvo e a ordem ao lado. A comparação é a razão entre o tempo no
+protótipo e o tempo manual, por tarefa e participante (decisão do autor).
+O tempo de tarefa tem distribuição assimétrica, e a média geométrica estima
+o centro com menos erro e menos viés que a mediana \cite{sauro2010tempos}.
+Com dois ou mais participantes, relatam-se a mediana e a média geométrica,
+só como descrição. Tarefa que chega ao teto aparece à parte e não entra na
+razão nem nas médias.
+
+\textbf{Sem inferência estatística.} Não há teste de hipótese, valor-p nem
+intervalo de confiança (decisão do autor). Com um a cinco participantes, sem
+amostra aleatória, e com ordem e alvo confundidos quando há um só
+participante, um teste daria uma precisão que os dados não têm. Os
+resultados são relatados como ``neste participante'' ou ``nestes
+participantes''.
+
+\textbf{Problemas de uso.} As observações e as respostas abertas viram uma
+lista de problemas, cada um com a tarefa, o número de participantes que o
+tiveram e a história do \textit{backlog} ligada a ele. Problemas novos viram
+histórias.
+
+% ===========================================================================
+\subsection{Ameaças à validade}
+\label{sec:avaliacao-ameacas}
+
+\begin{itemize}
+	\item \textbf{Amostra pequena e não aleatória:} os problemas achados são
+	parte dos existentes \cite{faulkner2003}, e os tempos não se
+	generalizam.
+	\item \textbf{Ordem, alvo e \textit{carryover}:} com um só participante,
+	ordem e alvo se confundem com a condição \cite{vegas2016crossover}. Alvos
+	diferentes reduzem a transferência de aprendizado, mas dois órgãos reais
+	nunca têm a mesma dificuldade.
+	\item \textbf{Preparo fora do tempo:} o recorte dos arquivos do CNPJ e
+	do TSE e a configuração das fontes são feitos antes da sessão e não
+	entram no tempo do protótipo. O ganho medido é, por isso, otimista.
+	\item \textbf{Pesquisador como avaliador:} o autor do protótipo conduz a
+	sessão. A RSL~1 mostrou que esse viés é comum e quase nunca discutido
+	(Seção~\ref{sec:resultados-rsl1}). Mitigação: critérios de sucesso e
+	gabarito definidos antes, ficha padronizada e o pedido explícito de
+	críticas.
+	\item \textbf{Familiaridade desigual:} o participante conhece os sites
+	oficiais há anos e o protótipo há minutos, o que favorece a condição
+	manual.
+	\item \textbf{Ambiente artificial e fontes instáveis:} a sessão é
+	simulação, na máquina do autor. A lentidão das fontes reais entra no
+	tempo e é anotada na ficha.
+	\item \textbf{Tradução do SUS:} a versão brasileira foi testada com
+	estudantes de uma só universidade, avaliando o WhatsApp, sem seleção
+	aleatória \cite{lourenco2022sus}. O artigo traz duas inconsistências: o
+	resumo fala em estrutura unidimensional, e a análise fatorial relata três
+	fatores; e o item~7 tem ``muito rapidamente'' no texto e só
+	``rapidamente'' na Tabela~1. O protocolo usa a Tabela~1.
+\end{itemize}
+% PENDENTE: se o delegado participou do levantamento de requisitos, registrar
+% como ameaça (tendência de avaliação favorável).
+
+% ===========================================================================
+\subsection{Aspectos éticos}
+\label{sec:avaliacao-etica}
+
+A avaliação coleta dados diretamente com os participantes: tempos, respostas
+e opiniões. A Resolução CNS 510/2016 se aplica a pesquisas ``cujos
+procedimentos metodológicos envolvam a utilização de dados diretamente
+obtidos com os participantes'' \cite[art.~1º]{cns2016res510}, e a Resolução
+CNS 466/2012 define pesquisa envolvendo seres humanos incluindo ``o manejo
+de seus dados, informações'' \cite[II.14]{cns2012res466}. Nenhuma exceção do
+parágrafo único do art.~1º da Resolução 510 parece se aplicar:
+\begin{itemize}
+	\item a pesquisa de opinião pública (inciso I) exige participantes não
+	identificados, e um delegado, ou poucos policiais, são identificáveis
+	mesmo sob código;
+	\item as informações de acesso público e de domínio público (incisos II e
+	III) são os dados usados nas tarefas, e não os dados colhidos com o
+	participante;
+	\item o § 1º diz que os trabalhos de conclusão de curso não se enquadram
+	na exceção das atividades de ensino (inciso VIII), ``devendo-se, nestes
+	casos, apresentar o protocolo de pesquisa ao sistema CEP/CONEP''
+	\cite[art.~1º, § 1º]{cns2016res510}.
+\end{itemize}
+A leitura literal indica, portanto, submissão ao sistema CEP/CONEP pela
+Plataforma Brasil \cite[art.~23]{cns2016res510}, com aprovação antes de
+qualquer sessão \cite[art.~28, I]{cns2016res510}. Isso vale também para um
+piloto com participante, porque a resolução manda considerar as pesquisas
+piloto como projetos de pesquisa \cite[art.~2º, XII]{cns2016res510}.
+% PENDENTE: R2 e o CEP confirmam a submissão, a resolução aplicável (466/2012
+% ou 510/2016), o CEP da UnB competente e a gradação do risco (o art. 21 da
+% Resolução 510 remete a resolução específica, não conferida).
+
+O consentimento é registrado por escrito, com os itens do art.~17 da
+Resolução 510/2016, e uma via assinada fica com o participante
+\cite[art.~17, § 3º]{cns2016res510}. O participante pode desistir a
+qualquer momento, sem prejuízo \cite[art.~9º, II]{cns2016res510}. Os riscos
+previstos são o constrangimento com o desempenho, a identificação, a pressão
+hierárquica e o tempo gasto. Os cuidados são a ficha que avalia o sistema e
+não a pessoa, o código no lugar do nome e o convite fora da cadeia de
+comando. Há também um risco a terceiros: pessoas e empresas reais podem
+receber alertas de ``possível coincidência'' sem estarem sob investigação. Os
+cuidados são os alvos por critério neutro, nenhum nome registrado, nada
+exportado e a base apagada ao fim da sessão. O participante recebe o
+resultado da avaliação \cite[art.~17, VI]{cns2016res510}.
+% PENDENTE: R2 define a conduta se o participante identificar um indício real
+% na sessão. Rascunho do TCLE em docs/avaliacao/tcle-rascunho.md.

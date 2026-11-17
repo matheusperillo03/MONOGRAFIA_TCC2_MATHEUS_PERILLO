@@ -1,0 +1,93 @@
+% Diagrama de componentes (UML 2) do buscador OSINT. Elementos e fontes no código:
+% docs/sistema/diagramas-fontes.md, seção 2.
+\begin{figure}[htbp]
+\centering
+\caption{Diagrama de componentes do buscador OSINT}
+\label{fig:uml-componentes}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\small,
+  comp/.style={draw, fill=white, minimum width=3.5cm, minimum height=1.15cm, align=center,
+    inner sep=3pt},
+  dep/.style={-{Straight Barb[length=6pt]}, dashed},
+  sub/.style={draw, rounded corners=2pt, inner sep=0.35cm},
+  titulo/.style={anchor=north west, font=\small\bfseries, inner sep=4pt},
+  rot/.style={font=\scriptsize, fill=white, inner sep=1pt, align=center},
+  icone/.pic={
+    \draw[fill=white] (0,0) rectangle (0.26,0.32);
+    \draw[fill=white] (-0.06,0.05) rectangle (0.07,0.12);
+    \draw[fill=white] (-0.06,0.19) rectangle (0.07,0.26);}
+]
+\newcommand{\cmp}[2]{{\scriptsize«componente»}\\\textbf{#1}\\{\scriptsize\texttt{#2}}}
+% ======================= front-end =======================
+\node[comp] (telas) at (2.6,13.8)  {\cmp{telas}{src/telas/}};
+\node[comp] (cmps)  at (7.8,13.8)  {\cmp{componentes}{src/componentes/}};
+\node[comp] (sess)  at (13.6,13.8) {\cmp{sessão}{src/sessao/}};
+\node[comp] (cli)   at (7.8,11.4)  {\cmp{cliente da API}{src/api/clienteHttp.ts}};
+\node[comp] (sim)   at (15.2,11.4) {\cmp{cliente simulado}{src/api/clienteMock.ts}};
+\draw[dep] (telas) -- (cmps);
+\draw[dep] (cmps) -- (sess);
+\draw[dep] (telas.north) -- ++(0,0.5) -| (sess.north);
+\draw[dep] (telas.south east) -- (cli.north west);
+\draw[dep] (cmps) -- (cli);
+\draw[dep] (sess.south west) -- ([xshift=0.8cm]cli.north);
+\draw[dep] (cli) -- node[rot, above=3pt]{import dinâmico,\\só com \texttt{VITE\_MOCK=1}} (sim);
+\node[sub, fit={(telas)(sess)(sim) ($(telas.north)+(0,1.2)$)}] (FE) {};
+\node[titulo] at (FE.north west) {Front-end (React, TypeScript), servido pelo nginx};
+% ======================= interface =======================
+\coordinate (bola) at (7.8,9.0);
+\draw (bola) circle (0.17);
+\draw ([yshift=0.33cm]bola) ++(-0.33,-0.33) arc[start angle=180, end angle=0, radius=0.33];
+\draw[-] (cli.south) -- ([yshift=0.33cm]bola);
+\node[rot, anchor=west, align=left] at ([xshift=0.5cm]bola) {API HTTP/JSON\\
+  (\texttt{Authorization: Bearer} e \texttt{X-Justificativa};\\ pelo nginx: \texttt{/api/} $\to$ \texttt{api:8000})};
+% ======================= back-end =======================
+\node[comp] (api)  at (7.8,6.4) {\cmp{api}{buscador/api/ (FastAPI)}};
+\draw[-] (api.north) -- ([yshift=-0.17cm]bola);
+\node[comp] (agd)  at (18.7,0.6) {\cmp{agendador}{agendador.py}};
+\draw[dep] ([yshift=0.15cm]api.east) -| node[rot, pos=0.25, above]{inicia a thread} ([xshift=-0.3cm]agd.north);
+\draw[dep] ([xshift=0.3cm]agd.north) |- node[rot, pos=0.75, below]{importação tardia} ([yshift=-0.15cm]api.east);
+% linha A
+\node[comp] (ia)   at (1.9,3.0)   {\cmp{ia}{buscador/ia/}};
+\node[comp] (col)  at (5.8,3.0)   {\cmp{coleta}{coleta.py}};
+\node[comp] (rel)  at (9.7,3.0)   {\cmp{relatório}{buscador/relatorio/}};
+\node[comp] (tip)  at (13.6,3.0)  {\cmp{tipologias}{buscador/tipologias/}};
+% linha B
+\node[comp] (res)  at (2.5,0.6)   {\cmp{resolução}{buscador/resolucao/}};
+\node[comp] (aud)  at (11.7,0.6)  {\cmp{auditoria}{buscador/auditoria/}};
+% linha C
+\node[comp] (con)  at (4.1,-1.8)  {\cmp{conectores}{buscador/conectores/}};
+\node[comp] (cus)  at (7.9,-1.8)  {\cmp{custódia}{buscador/custodia/}};
+\node[comp] (cri)  at (11.7,-1.8) {\cmp{cripto}{cripto.py}};
+\node[comp] (ace)  at (15.5,-1.8) {\cmp{acesso}{buscador/acesso/}};
+% linha D (sem dependências entre módulos de domínio)
+\node[comp] (gra)  at (4.1,-4.1)  {\cmp{grafo}{buscador/grafo/}};
+\node[comp] (mon)  at (7.9,-4.1)  {\cmp{monitoramento}{monitoramento.py}};
+\node[comp] (exp)  at (11.7,-4.1) {\cmp{exportação}{exportacao.py}};
+% dependências entre módulos de domínio
+\draw[dep] (ia) -- (res);
+\draw[dep] ([xshift=-1.2cm]col.south) -- ([xshift=-0.3cm]res.north east);
+\draw[dep] ([xshift=-0.45cm]col.south) -- ([xshift=0.6cm]con.north);
+\draw[dep] ([xshift=0.6cm]col.south) -- ([xshift=-0.4cm]cus.north);
+\draw[dep] (res) -- (con);
+\draw[dep] (rel) -- (tip);
+\draw[dep] (rel) -- (aud);
+\draw[dep] ([xshift=-0.6cm]rel.south) -- ([xshift=0.6cm]cus.north);
+\draw[dep] (cus) -- (cri);
+\draw[dep] (ace) -- (cri);
+\draw[dep] (agd) -- (aud);
+\node[sub, dashed, fit={(ia)(tip)(gra)(exp)(ace) ($(ia.north)+(0,0.7)$)}] (DOM) {};
+\node[titulo, font=\footnotesize\bfseries] at (DOM.north west) {Módulos de domínio (todos importados pela \texttt{api})};
+\draw[dep] (api) -- node[rot, right=2pt]{usa} (api |- DOM.north);
+\node[sub, fit={(api)(DOM)(agd) ($(api.north)+(0,1.0)$)}] (BE) {};
+\node[titulo] at (BE.north west) {Back-end: pacote \texttt{buscador} (Python)};
+% ícones de componente
+\foreach \n in {telas, cmps, sess, cli, sim, api, agd, ia, col, rel, tip, res, aud, con, cus, cri, ace, gra, mon, exp}
+  \pic at ([xshift=-0.36cm, yshift=-0.42cm]\n.north east) {icone};
+\end{tikzpicture}}
+\fonte{Elaborada pelo autor a partir das importações do código: \texttt{import} dos módulos de
+\texttt{buscador/} (back-end) e dos arquivos de \texttt{src/} (front-end), além de
+\texttt{nginx.conf}. Setas tracejadas: dependência (quem importa aponta para quem é importado).
+Módulos utilitários (\texttt{config}, \texttt{modelos}, \texttt{db}, \texttt{seguranca},
+\texttt{retencao}, \texttt{comparacao}) e importações só de funções auxiliares foram omitidos.}
+\end{figure}

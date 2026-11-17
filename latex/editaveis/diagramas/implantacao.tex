@@ -1,0 +1,126 @@
+% Diagrama de implantação (UML 2) do buscador OSINT no Docker Compose. Elementos e fontes:
+% docs/sistema/diagramas-fontes.md, seção 3.
+\begin{figure}[htbp]
+\centering
+\caption{Diagrama de implantação do buscador OSINT (Docker Compose)}
+\label{fig:uml-implantacao}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\small,
+  no/.style={draw, fill=white, rectangle split, rectangle split parts=2, align=left,
+    text width=#1, inner sep=3pt, font=\scriptsize},
+  no/.default=4.9cm,
+  vol/.style={draw, fill=white, align=left, text width=4.6cm, inner sep=3pt, font=\scriptsize},
+  ext/.style={draw, fill=white, align=left, text width=5.7cm, inner sep=3pt, font=\scriptsize},
+  cam/.style={-, thick},
+  rot/.style={font=\scriptsize, fill=white, inner sep=1pt, align=center},
+  moldura/.style={draw, inner sep=0.35cm},
+  titulo/.style={anchor=north west, font=\footnotesize, inner sep=4pt, align=left},
+  nota/.style={align=left, text width=#1, font=\scriptsize, inner sep=4pt},
+  nota/.default=4.2cm
+]
+\newcommand{\cubo}[1]{%
+  \draw (#1.north west) -- ++(0.22,0.22) -- ([xshift=0.22cm,yshift=0.22cm]#1.north east)
+        -- (#1.north east);
+  \draw ([xshift=0.22cm,yshift=0.22cm]#1.north east) -- ([xshift=0.22cm,yshift=0.22cm]#1.south east)
+        -- (#1.south east);}
+\newcommand{\dobra}[1]{%
+  \draw (#1.north west) -- ([xshift=-6pt]#1.north east) -- ([yshift=-6pt]#1.north east)
+        -- (#1.south east) -- (#1.south west) -- cycle;
+  \draw ([xshift=-6pt]#1.north east) |- ([yshift=-6pt]#1.north east);}
+% ------------------------- serviços externos (topo) -------------------------
+\node[ext, anchor=north] (pncp) at (0,0.7) {%
+  «serviço externo» \textbf{PNCP}\\
+  \texttt{https://pncp.gov.br/api/consulta}\\ \texttt{https://pncp.gov.br/api/pncp} (termos)};
+\node[ext, anchor=north] (ptr) at (6.6,0.7) {%
+  «serviço externo» \textbf{Portal da Transparência}\\
+  \texttt{https://api.portaldatransparencia}\\\texttt{.gov.br}; cabeçalho \texttt{chave-api-dados}};
+\node[ext, dashed, anchor=north] (ia) at (13.2,0.7) {%
+  «serviço» \textbf{Servidor de IA local} (opcional)\\
+  Ollama em \texttt{IA\_OLLAMA\_URL}; desligado por padrão (\texttt{IA\_EXTRACAO\_ATIVA=0});
+  só host local ou rede privada};
+% ------------------------- host: navegador -------------------------
+\node[draw, fill=white, align=center, font=\scriptsize, inner sep=3pt, anchor=north] (nav) at (0,-3.4)
+  {«ambiente de execução»\\ \textbf{Navegador do usuário}};
+% ------------------------- contêineres -------------------------
+\node[no, anchor=north] (fe) at (0,-6.3) {%
+  «contêiner» \textbf{frontend}\\ \texttt{osint-tcc-frontend}\\ imagem \texttt{nginx:alpine}
+  \nodepart{second}
+  usuário \texttt{nginx}; escuta \texttt{:8080}\\
+  «artefato» SPA (\texttt{dist/})\\
+  «artefato» \texttt{nginx.conf}: \texttt{/api/} $\to$ \texttt{api:8000}};
+\node[no, anchor=north] (api) at (6.6,-6.3) {%
+  «contêiner» \textbf{api}\\ \texttt{osint-tcc-api}\\ imagem \texttt{python:3.12-slim-bookworm}
+  \nodepart{second}
+  «artefato» \texttt{uvicorn buscador.main:app}, \texttt{:8000}; thread do agendador\\
+  usuário \texttt{osint}; \texttt{cap\_drop: ALL}; \texttt{no-new-privileges}; 1 GB\\[2pt]
+  \textbf{Segredos:} \texttt{AUDITORIA\_CHAVE\_HMAC}, \texttt{CUSTODIA\_CHAVE},
+  \texttt{POSTGRES\_APP\_PASSWORD} (em \texttt{DATABASE\_URL}),
+  \texttt{PORTAL\_TRANSPARENCIA\_CHAVE} (opcional)};
+\node[nota=5.0cm, anchor=north] (ptapi) at (13.9,-6.6) {Porta da API também publicada no host:
+  \texttt{127.0.0.1:8100} $\to$ \texttt{:8000}. Nenhuma porta é publicada fora de \texttt{127.0.0.1}.};
+\dobra{ptapi}
+\draw[dashed] (ptapi.west) -- (ptapi.west -| api.east);
+\node[no, anchor=north] (pg) at (6.6,-13.9) {%
+  «contêiner» \textbf{postgres}\\ \texttt{osint-tcc-postgres}\\ imagem \texttt{postgres:16-alpine}
+  \nodepart{second}
+  \texttt{:5432}, sem porta publicada no host; banco \texttt{osint}\\
+  «artefato» \texttt{01-papel-aplicacao.sh} (montado de \texttt{./docker/postgres-init} em
+  \texttt{/docker-entrypoint-initdb.d}, só leitura): cria \texttt{osint\_app}\\
+  papel \texttt{osint} (dono): tabelas e gatilhos da auditoria\\
+  papel \texttt{osint\_app} (aplicação): só \texttt{SELECT} e \texttt{INSERT} em
+  \texttt{auditoria}, \texttt{capturas}, \texttt{alerta\_decisoes}, \texttt{anotacoes} e
+  \texttt{tarefa\_eventos}; \texttt{SELECT}, \texttt{INSERT}, \texttt{UPDATE} e \texttt{DELETE}
+  nas demais\\[2pt]
+  \textbf{Segredos:} \texttt{POSTGRES\_PASSWORD}, \texttt{POSTGRES\_APP\_PASSWORD}};
+\node[no, anchor=north] (mig) at (13.9,-14.5) {%
+  «contêiner» \textbf{migracao}\\ \texttt{osint-tcc-migracao}\\ mesma imagem da \texttt{api}
+  \nodepart{second}
+  \texttt{python -m buscador.migrar}; roda uma vez e termina; cria tabelas e gatilhos e
+  concede privilégios a \texttt{osint\_app}\\
+  \texttt{cap\_drop: ALL}; \texttt{no-new-privileges}\\[2pt]
+  \textbf{Segredo:} \texttt{POSTGRES\_PASSWORD}};
+\node[vol, anchor=north] (vcap) at (0,-14.5) {%
+  «volume» \textbf{\texttt{osint-tcc-capturas}}\\ montado em \texttt{/app/dados}:\\
+  \texttt{capturas/<aa>/<sha256>.gcm} (AES-256-GCM)\\
+  \texttt{ancora/auditoria.json} (âncora da trilha)};
+\node[vol, anchor=north] (vpg) at (6.6,-22.9) {%
+  «volume» \textbf{\texttt{osint-tcc-postgres}}\\ montado em \texttt{/var/lib/postgresql/data}};
+% caminhos internos
+\draw[cam] (nav) -- node[rot, right=2pt]{HTTP \texttt{127.0.0.1:8090} $\to$ \texttt{:8080}} (fe);
+\coordinate (f1) at ([yshift=-0.9cm]fe.north east);
+\draw[cam] (f1) -- node[rot, above]{HTTP} (f1 -| api.west);
+\draw[cam] (api.south) -- node[rot, right=2pt]{SQL \texttt{:5432}, papel \texttt{osint\_app}} (pg.north);
+\coordinate (m1) at ([yshift=-0.9cm]mig.north);
+\draw[cam] (mig.west |- m1) -- node[rot, above]{SQL \texttt{:5432}}
+  node[rot, below]{papel \texttt{osint}} (m1 -| pg.east);
+\draw[cam, dashed] ([xshift=-1.6cm]api.south) -- ++(0,-0.45) -| node[rot, pos=0.25, above]{montagem} (vcap.north);
+\draw[cam, dashed] (pg.south) -- node[rot, right=2pt]{montagem} (vpg.north);
+% ------------------------- molduras -------------------------
+\node[moldura, fit={(fe)(api)(ptapi)(mig)(pg)(vcap)(vpg) ($(fe.north)+(0,1.05)$)}] (comp) {};
+\node[titulo, anchor=north east] at (comp.north east) {«ambiente de execução» \textbf{Docker Compose},
+  projeto \texttt{osint-tcc}\\ rede padrão do Compose (sem rede nomeada)};
+\node[moldura, fit={(comp)(nav) ($(nav.north)+(0,0.75)$)}] (host) {};
+\node[titulo] at (host.north west) {«dispositivo» \textbf{Máquina host} (Docker Engine)};
+\foreach \n in {fe, api, mig, pg, host, pncp, ptr, ia} \cubo{\n}
+% api -> serviços externos (passam pela fronteira do host)
+\coordinate (bus) at (0,-1.75);
+\draw[cam] (api.north) -- (api.north |- bus) -| node[rot, pos=0.6, right]{HTTPS} (pncp.south);
+\draw[cam] (api.north |- bus) -- node[rot, right, pos=0.4]{HTTPS} (ptr.south);
+\draw[cam, dashed] (api.north |- bus) -| node[rot, pos=0.4, above]{HTTP} (ia.south);
+% ------------------------- notas -------------------------
+\node[nota=5.7cm, anchor=north] (n55) at (13.9,-22.4) {Só com o arquivo extra
+  \texttt{docker-compose.postgres-porta.yml}: \texttt{5432} publicada em \texttt{127.0.0.1:55432}.};
+\dobra{n55}
+\coordinate (q55) at ([xshift=0.5cm,yshift=0.7cm]pg.south east);
+\draw[dashed] (n55.west) -| (q55) -- ([yshift=0.7cm]pg.south east);
+\node[nota=4.3cm, anchor=north] (nord) at (0,-22.4) {Ordem de subida (\texttt{depends\_on}):
+  postgres saudável $\to$ migracao concluída $\to$ api saudável $\to$ frontend.};
+\dobra{nord}
+\end{tikzpicture}}
+\fonte{Elaborada pelo autor a partir de \texttt{docker-compose.yml},
+\texttt{docker-compose.postgres-porta.yml}, \texttt{Dockerfile} e
+\texttt{docker/postgres-init/01-papel-aplicacao.sh} do back-end, de \texttt{Dockerfile} e
+\texttt{nginx.conf} do front-end e de \texttt{buscador/db.py} (privilégios do papel da aplicação).
+Segredos: só os nomes das variáveis, definidas no arquivo \texttt{.env}.}
+\end{figure}

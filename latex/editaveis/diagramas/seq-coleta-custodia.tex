@@ -1,0 +1,120 @@
+% Diagrama de sequência (UML 2): coleta com custódia.
+% Elementos e fontes no código: docs/sistema/diagramas-fontes.md.
+% Coordenadas geradas por script; para mudar, edite as coordenadas à mão.
+\begin{figure}[p]
+\centering
+\caption{Diagrama de sequência de uma coleta com registro na cadeia de custódia}
+\label{fig:uml-seq-coleta}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  vida/.style={draw, fill=white, align=center, inner sep=3pt, font=\footnotesize, minimum height=0.9cm},
+  rotvida/.style={align=center, font=\footnotesize, inner sep=1pt},
+  linhavida/.style={dashed, gray!70!black},
+  msgsinc/.style={-{Latex[length=5pt]}},
+  msgresp/.style={-{Straight Barb[length=5pt]}, dashed},
+  rotmsg/.style={font=\footnotesize, align=center, inner sep=1pt, fill=white},
+  frag/.style={draw, thin},
+  rotfrag/.style={font=\footnotesize\bfseries, inner sep=2.5pt},
+  rotguarda/.style={font=\footnotesize, inner sep=1pt, fill=white},
+  notaseq/.style={align=left, font=\scriptsize, inner sep=3pt},
+  ator/.pic={
+    \draw (0,0.32) circle (0.12);
+    \draw (0,0.2) -- (0,-0.12) (-0.22,0.1) -- (0.22,0.1)
+          (0,-0.12) -- (-0.17,-0.42) (0,-0.12) -- (0.17,-0.42);}
+]
+\providecommand{\dobra}[1]{}
+\renewcommand{\dobra}[1]{%
+  \draw (#1.north west) -- ([xshift=-5pt]#1.north east) -- ([yshift=-5pt]#1.north east)
+        -- (#1.south east) -- (#1.south west) -- cycle;
+  \draw ([xshift=-5pt]#1.north east) |- ([yshift=-5pt]#1.north east);}
+\pic at (0.00,0.55) {ator};
+\node[rotvida, anchor=north] at (0.00,-0.05) {Investigador};
+\draw[linhavida] (0.00,-0.75) -- (0.00,-29.94);
+\node[vida] at (2.50,-0.15) {Front-end\\{\scriptsize\texttt{AbaColeta}}};
+\draw[linhavida] (2.50,-0.75) -- (2.50,-29.94);
+\node[vida] at (5.40,-0.15) {API\\{\scriptsize\texttt{rotas\_casos}, \texttt{coleta}}};
+\draw[linhavida] (5.40,-0.75) -- (5.40,-29.94);
+\node[vida] at (9.40,-0.15) {Auditoria\\{\scriptsize\texttt{auditoria}}};
+\draw[linhavida] (9.40,-0.75) -- (9.40,-29.94);
+\node[vida] at (11.70,-0.15) {Resolução\\{\scriptsize\texttt{Resolvedor}}};
+\draw[linhavida] (11.70,-0.75) -- (11.70,-29.94);
+\node[vida] at (14.00,-0.15) {Conector};
+\draw[linhavida] (14.00,-0.75) -- (14.00,-29.94);
+\node[vida] at (16.40,-0.15) {Fonte\\{\scriptsize PNCP, Portal}\\{\scriptsize ou arquivo}};
+\draw[linhavida] (16.40,-0.75) -- (16.40,-29.94);
+\node[vida] at (18.60,-0.15) {Custódia\\{\scriptsize\texttt{Custodia}}};
+\draw[linhavida] (18.60,-0.75) -- (18.60,-29.94);
+\draw[msgsinc] (0.00,-1.94) -- (2.50,-1.94);
+\node[rotmsg, above=1pt] at (1.25,-1.94) {fonte e parâmetros\\(justificativa já na barra)};
+\draw[msgsinc] (2.50,-2.98) -- (5.40,-2.98);
+\node[rotmsg, above=1pt] at (3.95,-2.98) {\texttt{POST /casos/\{id\}/coletas}, via nginx \texttt{/api/}\\\texttt{Authorization: Bearer}, \texttt{X-Justificativa}};
+\draw[msgsinc] (5.40,-3.36) -- ++(0.35,0) -- ++(0,-1.14) -- (5.40,-4.50);
+\node[rotmsg, anchor=north west, align=left] at (5.85,-3.28) {sessão ativa e justificativa\\(\texttt{usuario\_atual},\\ \texttt{justificativa\_obrigatoria})};
+\draw[msgsinc] (5.40,-4.88) -- ++(0.35,0) -- ++(0,-1.14) -- (5.40,-6.02);
+\node[rotmsg, anchor=north west, align=left] at (5.85,-4.80) {\texttt{caso\_aberto}: papel $\geq$\\investigador e prazo\\de retenção em vigor};
+\draw[msgsinc] (5.40,-7.61) -- (9.40,-7.61);
+\node[rotmsg, above=1pt] at (7.40,-7.61) {registrar \texttt{caso.acesso\_negado}\\ou \texttt{caso.retencao\_recusa}};
+\draw[msgresp] (5.40,-8.27) -- (2.50,-8.27);
+\node[rotmsg, above=1pt] at (3.95,-8.27) {403};
+\draw[frag] (-0.45,-6.27) rectangle (22.35,-8.52);
+\node[rotfrag, anchor=north west] (fr) at (-0.45,-6.27) {break};
+\draw[frag] (fr.south west) -- ([xshift=-0.12cm]fr.south east) -- ([yshift=0.12cm]fr.south east) -- (fr.north east);
+\node[rotguarda, anchor=north west] at (0.75,-6.30) {[não é membro, papel insuficiente ou prazo vencido]};
+\draw[msgsinc] (5.40,-9.66) -- (9.40,-9.66);
+\node[rotmsg, above=1pt] at (7.40,-9.66) {linha em \texttt{coletas};\\registrar \texttt{coleta.iniciar}; commit; âncora};
+\draw[msgsinc] (5.40,-10.32) -- (14.00,-10.32);
+\node[rotmsg, above=1pt] at (9.70,-10.32) {\texttt{criar\_conector}; \texttt{coletar(parâmetros, registrar)}};
+\draw[msgsinc] (14.00,-13.01) -- (16.40,-13.01);
+\node[rotmsg, above=1pt] at (15.20,-13.01) {consulta HTTPS\\ou leitura};
+\draw[msgresp] (16.40,-13.67) -- (14.00,-13.67);
+\node[rotmsg, above=1pt] at (15.20,-13.67) {carga bruta};
+\draw[frag] (9.10,-11.67) rectangle (21.90,-13.92);
+\node[rotfrag, anchor=north west] (fr) at (9.10,-11.67) {loop};
+\draw[frag] (fr.south west) -- ([xshift=-0.12cm]fr.south east) -- ([yshift=0.12cm]fr.south east) -- (fr.north east);
+\node[rotguarda, anchor=north west] at (10.15,-11.70) {[Retentativa: até $N$ tentativas, espera $e \times n$ após falha transitória]};
+\draw[msgsinc] (14.00,-14.68) -- (18.60,-14.68);
+\node[rotmsg, above=1pt] at (16.30,-14.68) {\texttt{registrar(carga)}};
+\draw[msgsinc] (18.60,-15.06) -- ++(0.35,0) -- ++(0,-0.76) -- (18.60,-15.82);
+\node[rotmsg, anchor=north west, align=left] at (19.05,-14.98) {SHA-256 do\\conteúdo original};
+\draw[msgsinc] (18.60,-16.20) -- ++(0.35,0) -- ++(0,-1.14) -- (18.60,-17.34);
+\node[rotmsg, anchor=north west, align=left] at (19.05,-16.12) {AES-256-GCM\\(subchave HKDF,\\AAD = SHA-256)};
+\draw[msgsinc] (18.60,-17.72) -- ++(0.35,0) -- ++(0,-1.90) -- (18.60,-19.62);
+\node[rotmsg, anchor=north west, align=left] at (19.05,-17.64) {grava \texttt{.gcm}\\(temporário e\\\texttt{os.replace});\\\texttt{INSERT} em\\\texttt{capturas}};
+\draw[msgresp] (18.60,-20.28) -- (14.00,-20.28);
+\node[rotmsg, above=1pt] at (16.30,-20.28) {captura};
+\draw[frag] (8.95,-11.12) rectangle (22.05,-20.53);
+\node[rotfrag, anchor=north west] (fr) at (8.95,-11.12) {loop};
+\draw[frag] (fr.south west) -- ([xshift=-0.12cm]fr.south east) -- ([yshift=0.12cm]fr.south east) -- (fr.north east);
+\node[rotguarda, anchor=north west] at (10.00,-11.15) {[cada página ou arquivo]};
+\draw[msgresp] (14.00,-21.29) -- (5.40,-21.29);
+\node[rotmsg, above=1pt] at (9.70,-21.29) {registros e capturas};
+\draw[msgsinc] (5.40,-21.95) -- (11.70,-21.95);
+\node[rotmsg, above=1pt] at (8.55,-21.95) {\texttt{incorporar(registros)} em SAVEPOINT};
+\draw[msgresp] (11.70,-22.61) -- (5.40,-22.61);
+\node[rotmsg, above=1pt] at (8.55,-22.61) {entidades, arestas e sugestões};
+\draw[msgsinc] (5.40,-23.65) -- (9.40,-23.65);
+\node[rotmsg, above=1pt] at (7.40,-23.65) {registrar \texttt{coleta.executar}\\(HMAC encadeado); commit; âncora};
+\draw[msgresp] (5.40,-24.31) -- (2.50,-24.31);
+\node[rotmsg, above=1pt] at (3.95,-24.31) {200: capturas, entidades novas, tentativas};
+\draw[msgresp] (2.50,-24.97) -- (0.00,-24.97);
+\node[rotmsg, above=1pt] at (1.25,-24.97) {resultado};
+\draw[msgsinc] (5.40,-26.18) -- (9.40,-26.18);
+\node[rotmsg, above=1pt] at (7.40,-26.18) {registrar \texttt{coleta.nao\_configurada}};
+\draw[msgresp] (5.40,-26.84) -- (2.50,-26.84);
+\node[rotmsg, above=1pt] at (3.95,-26.84) {200, situação \texttt{nao\_configurado}};
+\draw[msgsinc] (5.40,-28.43) -- (9.40,-28.43);
+\node[rotmsg, above=1pt] at (7.40,-28.43) {registrar \texttt{coleta.falhou};\\capturas já guardadas confirmadas};
+\draw[msgresp] (5.40,-29.09) -- (2.50,-29.09);
+\node[rotmsg, above=1pt] at (3.95,-29.09) {422 ou 500};
+\draw[frag] (-0.30,-10.57) rectangle (22.20,-29.34);
+\node[rotfrag, anchor=north west] (fr) at (-0.30,-10.57) {alt};
+\draw[frag] (fr.south west) -- ([xshift=-0.12cm]fr.south east) -- ([yshift=0.12cm]fr.south east) -- (fr.north east);
+\draw[frag, dashed] (-0.30,-25.22) -- (22.20,-25.22);
+\draw[frag, dashed] (-0.30,-27.09) -- (22.20,-27.09);
+\node[rotguarda, anchor=north west] at (0.60,-10.60) {[sem erro]};
+\node[rotguarda, anchor=north west] at (-0.18,-25.25) {[fonte não configurada (\texttt{FonteNaoConfigurada})]};
+\node[rotguarda, anchor=north west] at (-0.18,-27.12) {[outra falha (conector, resolução ou gravação)]};
+\end{tikzpicture}}
+\fonte{Elaborada pelo autor a partir de \texttt{buscador/api/rotas\_casos.py} (\texttt{coletar}, \texttt{\_coletar\_registrando}), \texttt{buscador/api/deps.py}, \texttt{buscador/coleta.py}, \texttt{buscador/conectores/base.py} (\texttt{Retentativa}), \texttt{buscador/custodia/servico.py}, \texttt{buscador/cripto.py}, \texttt{buscador/auditoria/servico.py} e, no front-end, \texttt{src/telas/abas/AbaColeta.tsx} e \texttt{src/api/clienteHttp.ts}. ``Commit; âncora'': confirmação da transação seguida da cópia do topo da trilha para a âncora externa.}
+\end{figure}

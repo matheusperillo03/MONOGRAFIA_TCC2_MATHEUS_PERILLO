@@ -1,0 +1,119 @@
+% Diagrama de casos de uso (UML 2) do buscador OSINT. Elementos e fontes no código:
+% docs/sistema/diagramas-fontes.md, seção 1.
+\begin{figure}[p]
+\centering
+\caption{Diagrama de casos de uso do buscador OSINT, agrupados pelos épicos do backlog}
+\label{fig:uml-casos-de-uso}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\small,
+  uc/.style={ellipse, draw, text width=4.3cm, align=center, inner sep=-1pt,
+    minimum height=1.05cm, font=\small,
+    execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000}},
+  pacote/.style={draw, inner sep=0.22cm},
+  aba/.style={draw, anchor=south west, font=\scriptsize\bfseries, inner sep=2pt},
+  atorcx/.style={minimum width=0.7cm, minimum height=1.3cm, inner sep=0pt},
+  rotulo/.style={align=center, font=\small, inner sep=1pt},
+  assoc/.style={-},
+  gen/.style={-{Triangle[open, length=7pt, width=7pt]}},
+  nota/.style={align=left, text width=5.2cm, font=\scriptsize, inner sep=4pt},
+  ator/.pic={
+    \draw (0,0.45) circle (0.15);
+    \draw (0,0.3) -- (0,-0.15) (-0.28,0.15) -- (0.28,0.15)
+          (0,-0.15) -- (-0.22,-0.55) (0,-0.15) -- (0.22,-0.55);}
+]
+% ---------------- casos de uso ----------------
+\def\xe{5.3}
+\def\xd{12.4}
+% E2
+\node[uc] (gra) at (\xe,-0.6)   {Ver grafo de vínculos e caminho entre entidades};
+% E4
+\node[uc] (ver) at (\xe,-2.85)  {Verificar integridade da captura};
+\node[uc] (rel) at (\xe,-4.3)   {Gerar relatório e exportar o grafo};
+\node[uc] (rec) at (\xe,-5.75)  {Recoletar e comparar capturas};
+% E3
+\node[uc] (val) at (\xe,-8.0)   {Ver alertas por severidade};
+\node[uc] (exe) at (\xe,-9.45)  {Executar tipologias};
+\node[uc] (dec) at (\xe,-10.9)  {Confirmar ou descartar alerta, com justificativa};
+\node[uc] (ia)  at (\xe,-12.35) {Extrair com IA local e decidir sugestão};
+% E1
+\node[uc] (col) at (\xe,-14.6)  {Coletar de fonte aberta};
+% E7
+\node[uc] (mon) at (\xe,-16.85) {Marcar entidade para monitoramento};
+\node[uc] (exm) at (\xe,-18.3)  {Executar monitoramento e gerar avisos};
+% E5
+\node[uc] (bus) at (\xe,-20.55) {Buscar entidades por nome, CNPJ ou CPF};
+\node[uc] (ano) at (\xe,-22.0)  {Anotar e dividir tarefas};
+\node[uc] (cri) at (\xd,-21.3)  {Criar caso com finalidade e prazo de retenção};
+% E6
+\node[uc] (mem) at (\xe,-26.4)  {Gerenciar membros e papéis do caso};
+\node[uc] (ent) at (\xd,-24.25) {Entrar com senha e código TOTP};
+\node[uc] (cad) at (\xd,-25.7)  {Verificar cadeia da auditoria};
+\node[uc] (usu) at (\xd,-27.15) {Gerenciar usuários e perfis};
+\node[uc] (tri) at (\xd,-28.6)  {Consultar trilha de auditoria};
+% ---------------- pacotes (épicos) ----------------
+\node[pacote, fit=(gra)] (E2) {};
+\node[aba] at (E2.north west) {E2. Entidades e vínculos};
+\node[pacote, fit=(ver)(rec)] (E4) {};
+\node[aba] at (E4.north west) {E4. Prova e cadeia de custódia};
+\node[pacote, fit=(val)(ia)] (E3) {};
+\node[aba] at (E3.north west) {E3. Alertas e análise assistida};
+\node[pacote, fit=(col)] (E1) {};
+\node[aba] at (E1.north west) {E1. Coleta de dados abertos};
+\node[pacote, fit=(mon)(exm)] (E7) {};
+\node[aba] at (E7.north west) {E7. Monitoramento e evolução};
+\node[pacote, fit=(bus)(ano)(cri)] (E5) {};
+\node[aba] at (E5.north west) {E5. Casos e busca};
+\node[pacote, fit=(mem)(ent)(tri)] (E6) {};
+\node[aba] at (E6.north west) {E6. Segurança, auditoria e conformidade};
+% ---------------- fronteira do sistema ----------------
+\node[draw, thick, inner xsep=0.35cm, inner ysep=0.3cm,
+      fit={(E2.north west) ($(E2.north west)+(0,0.75)$) (E6.south west) (E6.east)}] (sis) {};
+\node[anchor=north, font=\small\bfseries] at (sis.north) {Buscador OSINT};
+% ---------------- atores ----------------
+\node[atorcx] (invest) at (0.6,-11.0) {}; \pic at (invest) {ator};
+\node[rotulo, left=1pt of invest] (investR) {Investigador\\{\scriptsize(papel no caso)}};
+\node[atorcx] (resp) at (0.6,-26.4) {}; \pic at (resp) {ator};
+\node[rotulo, left=1pt of resp] (respR) {Delegado\\responsável\\{\scriptsize(papel \texttt{responsavel})}};
+\node[atorcx] (leitor) at (17.1,-4.0) {}; \pic at (leitor) {ator};
+\node[rotulo, right=1pt of leitor] (leitorR) {Leitor\\{\scriptsize(papel no caso)}};
+\node[atorcx] (agend) at (17.1,-18.3) {}; \pic at (agend) {ator};
+\node[rotulo, right=1pt of agend] (agendR) {Agendador\\{\scriptsize(ator sistema)}};
+\node[atorcx] (usuario) at (17.1,-22.6) {}; \pic at (usuario) {ator};
+\node[rotulo, right=1pt of usuario] (usuarioR) {Usuário\\autenticado\\{\scriptsize(qualquer perfil)}};
+\node[atorcx] (admin) at (17.1,-26.0) {}; \pic at (admin) {ator};
+\node[rotulo, right=1pt of admin] (adminR) {Administrador\\{\scriptsize(perfil \texttt{admin})}};
+\node[atorcx] (deleg) at (21.4,-25.6) {}; \pic at (deleg) {ator};
+\node[rotulo, below=0pt of deleg] (delegR) {Delegado\\{\scriptsize(perfil)}};
+% ---------------- generalizações ----------------
+\draw[gen] (resp.north) -- (invest.south);
+\draw[gen] (admin.north) -- (usuario.south);
+\draw (deleg.north) |- (17.1,-24.7);
+% Investigador especializa Leitor: a linha contorna a fronteira por cima.
+\draw[gen] (invest.north) -- (0.6,1.5) -| (leitor.north);
+% ---------------- associações ----------------
+\foreach \u in {gra, ver, rel, val, bus} \draw[assoc] (leitor.west) -- (\u.east);
+\foreach \u in {rec, exe, dec, ia, col, mon, exm, ano} \draw[assoc] (invest.east) -- (\u.west);
+\draw[assoc] (resp.east) -- (mem.west);
+\draw[assoc] (agend.west) -- (exm.east);
+\foreach \u in {cri, ent, cad} \draw[assoc] (usuario.west) -- (\u.east);
+\draw[assoc] (admin.west) -- (usu.east);
+\draw[assoc] (admin.west) -- (tri.east);
+\draw[assoc] (delegR.south) |- (tri.east);
+% ---------------- nota ----------------
+\node[nota, text width=17.5cm, anchor=north west] (nt) at ($(sis.south west)+(-1.6,-0.5)$) {%
+  \textbf{Perfis globais} (\texttt{usuarios.perfil}): analista, delegado e admin; Delegado e
+  Administrador especializam Usuário autenticado. \textbf{Papéis no caso}
+  (\texttt{caso\_membros}): leitor $<$ investigador $<$ responsável; quem cria o caso é o primeiro
+  responsável, com qualquer perfil. Não há perfil de auditor nem de perito: a trilha é consultada
+  pelos perfis delegado e admin, e a recoleta (H14) exige o papel de investigador. Toda ação sobre
+  dado de caso exige justificativa (\texttt{X-Justificativa}) e acrescenta uma entrada à trilha de
+  auditoria.};
+\draw (nt.north west) -- ([xshift=-7pt]nt.north east) -- ([yshift=-7pt]nt.north east)
+      -- (nt.south east) -- (nt.south west) -- cycle;
+\draw ([xshift=-7pt]nt.north east) |- ([yshift=-7pt]nt.north east);
+\end{tikzpicture}}
+\fonte{Elaborada pelo autor a partir do código do back-end (\texttt{buscador/api/deps.py},
+\texttt{buscador/api/rotas\_*.py}, \texttt{buscador/agendador.py}, \texttt{buscador/config.py}) e do
+backlog (\texttt{docs/backlog/backlog.md}). Só aparecem casos de uso com rota implementada.}
+\end{figure}

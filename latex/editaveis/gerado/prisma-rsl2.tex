@@ -1,0 +1,54 @@
+% Gerado por docs/triagem/sintese/scripts/gera_tex.py. Não editar à mão.
+\begin{table}[htbp]
+\centering
+\caption{Fluxo de seleção da RSL 2: busca nas bases}
+\label{tab:prisma-rsl2}
+\small
+\begin{tabular}{p{2.2cm}p{9.5cm}r}
+\hline
+\textbf{Fase} & \textbf{Caixa} & \textbf{n} \\
+\hline
+Identificação & Registros das bases & 8.181 \\
+ & Scopus & 3.148 \\
+ & Web of Science & 1.914 \\
+ & IEEE Xplore (depois do filtro de tipo) & 1.577 \\
+ & ACM DL (depois do filtro de tipo) & 1.412 \\
+ & Fontes nacionais (SBES e JSERD) & 130 \\
+ & Removidos antes da triagem: duplicatas (3.857 pelo script, 1 apagada no Rayyan) & 3.858 \\
+Triagem & Registros triados (título, resumo e palavras-chave) & 4.323 \\
+ & Excluídos na etapa 1 & 3.208 \\
+ & Passaram para a etapa 2 & 1.115 \\
+ & Excluídos pelo recorte, pelo resumo e metadados (CI6 583, dos quais 21 pela trilha na Crossref/ACM DL; CI5 280) & 863 \\
+ & Estudos secundários, analisados à parte & 63 \\
+ & Relatos buscados (texto completo) & 189 \\
+ & Relatos não recuperados (CE6: UnB/CAPES e acesso aberto) & 12 \\
+ & Relatos lidos (elegibilidade) & 177 \\
+ & Excluídos no texto completo (CI5 35, CI2 23, CE4 9, CI6 8, CI1 5, CE2 2, CE1 1, CE3 1, CE5 1, CE7 1, CI3 1) & 87 \\
+Inclusão & Estudos primários incluídos & 90 \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor, no modelo de fluxograma do PRISMA 2020 \cite{page2021prisma}.}
+\end{table}
+\begin{table}[htbp]
+\centering
+\caption{Fluxo de seleção da RSL 2: \textit{snowballing}}
+\label{tab:snowball-rsl2}
+\small
+\begin{tabular}{p{11.7cm}r}
+\hline
+\textbf{Caixa} & \textbf{n} \\
+\hline
+Registros novos identificados (referências e citações) & 8.186 \\
+Excluídos pelos metadados & 5.418 \\
+Triados por título e resumo & 2.768 \\
+Excluídos na triagem & 2.501 \\
+Estudos secundários (analisados à parte) & 58 \\
+Relatos buscados & 209 \\
+Relatos não recuperados & 35 \\
+Relatos avaliados no texto completo & 174 \\
+Excluídos no texto completo & 134 \\
+\textbf{Estudos incluídos pelo \textit{snowballing}} & \textbf{40} \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor, na coluna ``outros métodos do modelo do PRISMA 2020 \cite{page2021prisma}.}
+\end{table}

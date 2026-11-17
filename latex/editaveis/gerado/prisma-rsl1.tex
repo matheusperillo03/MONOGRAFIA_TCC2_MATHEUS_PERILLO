@@ -1,0 +1,54 @@
+% Gerado por docs/triagem/sintese/scripts/gera_tex.py. Não editar à mão.
+\begin{table}[htbp]
+\centering
+\caption{Fluxo de seleção da RSL 1: busca nas bases}
+\label{tab:prisma-rsl1}
+\small
+\begin{tabular}{p{2.2cm}p{9.5cm}r}
+\hline
+\textbf{Fase} & \textbf{Caixa} & \textbf{n} \\
+\hline
+Identificação & Registros das bases & 1.928 \\
+ & Scopus: 882 + 65 da ampliação & 947 \\
+ & Web of Science: 494 + 44 & 538 \\
+ & IEEE Xplore: 266 exportados + 17 (eram 267 resultados) & 283 \\
+ & ACM DL: 137 + 8 & 145 \\
+ & Fontes nacionais (sem duplicados entre elas) & 15 \\
+ & Removidos antes da triagem: duplicatas (786 pelo script, 3 conferidas no Rayyan) & 789 \\
+Triagem & Registros triados (título, resumo e palavras-chave) & 1.139 \\
+ & Excluídos na etapa 1 & 689 \\
+ & Passaram para a etapa 2 & 450 \\
+ & Excluídos pelo recorte, pelo resumo e metadados (CI6 187, CI5 88, CI7 86) & 361 \\
+ & Estudos secundários, analisados à parte & 19 \\
+ & Relatos buscados (texto completo) & 70 \\
+ & Relatos não recuperados (CE4: UnB/CAPES e acesso aberto) & 21 \\
+ & Relatos lidos (elegibilidade) & 49 \\
+ & Excluídos no texto completo (CI5 13, CI6 6, CI1 4, CI2 2, CE1 1) & 26 \\
+Inclusão & Estudos primários incluídos & 23 \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor, no modelo de fluxograma do PRISMA 2020 \cite{page2021prisma}.}
+\end{table}
+\begin{table}[htbp]
+\centering
+\caption{Fluxo de seleção da RSL 1: \textit{snowballing}}
+\label{tab:snowball-rsl1}
+\small
+\begin{tabular}{p{11.7cm}r}
+\hline
+\textbf{Caixa} & \textbf{n} \\
+\hline
+Registros novos identificados (referências e citações) & 2.162 \\
+Excluídos pelos metadados & 1.066 \\
+Triados por título e resumo & 1.096 \\
+Excluídos na triagem & 930 \\
+Estudos secundários (analisados à parte) & 26 \\
+Relatos buscados & 140 \\
+Relatos não recuperados & 43 \\
+Relatos avaliados no texto completo & 97 \\
+Excluídos no texto completo & 63 \\
+\textbf{Estudos incluídos pelo \textit{snowballing}} & \textbf{34} \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor, na coluna ``outros métodos do modelo do PRISMA 2020 \cite{page2021prisma}.}
+\end{table}

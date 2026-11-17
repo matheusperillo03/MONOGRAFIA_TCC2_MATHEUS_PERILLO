@@ -1,0 +1,94 @@
+% Gerado por docs/backlog/gera_backlog.py. Não editar à mão.
+\begin{table}[htbp]
+\centering
+\caption{Requisitos novos propostos a partir da RSL 1}
+\label{tab:req-novos}
+\small
+\begin{tabular}{lp{9.2cm}p{3cm}}
+\hline
+\textbf{ID} & \textbf{Requisito} & \textbf{Origem} \\
+\hline
+RF11 & Busca e filtros: buscar entidades e evidências do caso por nome, identificador e tipo. & RSL 1, A4 TD14 \\
+RF12 & Alerta como pista: todo alerta exige confirmação ou descarte pelo investigador, com justificativa registrada na auditoria. & RSL 1, A4 TD18 e TA3 \\
+RF13 & Extração assistida por LLM: entidades e campos extraídos de documentos, sempre com trecho e fonte citados e validação de esquema. & RSL 1, A4 TD13 \\
+RF14 & Priorização de alertas: ordenar por severidade, com a política de erro (falso positivo ou falso negativo) declarada por tipologia. & RSL 1, A4 TD11 \\
+RF15 & Análise temporal e geográfica: linha do tempo e mapa dos eventos do caso. & RSL 1, A4 TD15 \\
+RNF12 & Resiliência da coleta: retentativa, controle de taxa, registro de falha por fonte e detecção de mudança de formato. & RSL 1, A4 TD4; A3 TA3 \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor, a partir da síntese da RSL 1 (Seção~\ref{sec:resultados-rsl1}).}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Histórias do \textit{backlog} por prioridade MoSCoW}
+\label{tab:moscow-resumo}
+\small
+\begin{tabular}{lrr}
+\hline
+\textbf{Prioridade} & \textbf{Histórias} & \textbf{Feitas no protótipo} \\
+\hline
+Must have & 11 & 11 \\
+Should have & 7 & 5 \\
+Could have & 15 & 8 \\
+Won't have (nesta entrega) & 6 & 1 \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor.}
+\end{table}
+
+\begin{small}
+\begin{longtable}{lp{7.9cm}p{1.3cm}cp{1.9cm}}
+\caption{\textit{Backlog} do protótipo}\rotulounico{tab:backlog}\\
+\hline
+\textbf{ID} & \textbf{História} & \textbf{Req.} & \textbf{MoSCoW} & \textbf{Situação} \\ \hline\endhead
+\multicolumn{5}{l}{\textbf{E1. Coleta de dados abertos}} \\
+H01 & Como investigador, quero coletar empresas e sócios dos dados abertos do CNPJ e contratos do PNCP, para reunir num caso dados oficiais de fontes diferentes. & RF01, RNF10 & M & feito \\
+H15 & Como investigador, quero saber, em cada coleta, quais fontes falharam e por quê, com retentativa automática, para não tirar conclusões de dados incompletos. & RNF12 & S & parcial \\
+H19 & Como investigador, quero coletar também do Portal da Transparência e do TSE, para cruzar contratos com sanções e doações de campanha. & RF01 & C & feito \\
+H25 & Como investigador, quero importar dados obtidos por ordem judicial (SIMBA, RIF do COAF, extratos telefônicos), separados do dado aberto, para analisá-los no mesmo caso. & RF10 & W & fora desta entrega \\
+H27 & Como investigador, quero coletar de serviços da dark web, para investigar mercados ilícitos. & novo & W & fora desta entrega \\
+\multicolumn{5}{l}{\textbf{E2. Entidades e vínculos}} \\
+H02 & Como investigador, quero que a mesma empresa ou pessoa seja unificada entre as fontes, com sugestão (e não fusão) quando só o nome coincide, para não confundir homônimos. & RF02 & M & feito \\
+H03 & Como investigador, quero ver o grafo de vínculos e o caminho entre duas entidades, para identificar sócios ocultos e cadeias societárias. & RF03 & M & feito \\
+\multicolumn{5}{l}{\textbf{E3. Alertas e análise assistida}} \\
+H04 & Como investigador, quero alertas de tipologia (T1 a T3) que mostrem a regra, o motivo e as evidências com a fonte, para entender por que cada alerta foi gerado. & RF04, RNF05 & M & feito \\
+H12 & Como investigador, quero marcar cada alerta como confirmado ou descartado, com justificativa registrada na auditoria, para que o alerta seja tratado como pista e a decisão fique com um humano. & RF12 & S & feito \\
+H13 & Como investigador, quero ver os alertas ordenados por severidade, com a política de erro de cada tipologia declarada, para priorizar o que analisar primeiro. & RF14 & S & feito \\
+H20 & Como investigador, quero a linha do tempo patrimonial de uma pessoa comparada com a renda declarada, para identificar indício de enriquecimento ilícito. & RF05 & C & a fazer \\
+H21 & Como investigador, quero ver os eventos do caso numa linha do tempo e, quando houver endereço, num mapa, para perceber padrões temporais e geográficos. & RF15 & C & a fazer \\
+H22 & Como investigador, quero extrair entidades de documentos com apoio de LLM, sempre com o trecho e a fonte citados, para acelerar a leitura sem perder a verificabilidade. & RF13, RNF05 & C & parcial \\
+H28 & Como investigador, quero classificar automaticamente textos e imagens por tipo de crime, para triar grandes volumes. & novo & W & fora desta entrega \\
+H30 & Como investigador, quero analisar conteúdo em vários idiomas, com gírias e jargão criminal, para não perder informação em fontes estrangeiras. & novo & W & fora desta entrega \\
+H31 & Como investigador, quero um alerta quando a empresa contratada não estiver com situação cadastral ativa no CNPJ, para identificar contratação irregular. & RF04 & S & feito \\
+H32 & Como investigador, quero um alerta de possível fracionamento de compras (várias contratações do mesmo objeto, com o mesmo fornecedor, abaixo do limite de dispensa), para identificar fuga à licitação. & RF04 & C & feito \\
+H33 & Como investigador, quero um alerta quando a empresa contratada estiver no cadastro de empresas sancionadas, para identificar contratação de empresa impedida. & RF04 & C & feito \\
+H34 & Como investigador, quero um alerta quando um sócio da empresa contratada for servidor do órgão contratante, para identificar conflito de interesse. & RF04 & C & feito \\
+H35 & Como investigador, quero um alerta de termos aditivos acima do limite legal, para identificar alteração indevida de contratos. & RF04 & C & feito \\
+H36 & Como investigador, quero que o texto de editais seja analisado em busca de cláusulas restritivas, com o trecho citado, para identificar direcionamento da licitação. & RF13 & C & parcial \\
+H39 & Como investigador, quero um alerta quando um doador de campanha (ou empresa de um sócio doador) for contratado pelo ente do candidato eleito, para identificar possível retribuição de doação. & RF04 & C & feito \\
+\multicolumn{5}{l}{\textbf{E4. Prova e cadeia de custódia}} \\
+H05 & Como investigador, quero que cada carga coletada seja guardada com hash SHA-256, carimbo de tempo UTC e origem, e que eu possa verificar a integridade depois, para que a prova se sustente em juízo. & RF07 & M & feito \\
+H08 & Como investigador, quero exportar o caso (entidades, alertas, evidências e custódia) em JSON e Markdown, para anexar ao relatório de investigação. & RF09 & M & feito \\
+H14 & Como perito, quero que a captura registre também a versão do conector e que eu possa recoletar a mesma fonte e comparar, para reconstituir como a prova foi obtida. & RF07 & S & feito \\
+H24 & Como analista, quero exportar o caso num formato padronizado de troca (por exemplo, CASE/UCO), para levar os dados a outras ferramentas. & RNF09 & C & a fazer \\
+H38 & Como analista, quero exportar o grafo do caso para i2 Analyst's Notebook e Maltego, para usar as ferramentas que o órgão já tem. & RNF09 & C & parcial \\
+\multicolumn{5}{l}{\textbf{E5. Casos e busca}} \\
+H07 & Como investigador, quero criar casos e fazer toda consulta dentro de um caso, com justificativa, para organizar a investigação e limitar a finalidade. & RF08 & M & feito \\
+H09 & Como investigador, quero buscar entidades do caso por nome, CNPJ ou CPF parcial e filtrar por tipo, para encontrar rapidamente o que interessa. & RF11 & M & feito \\
+H37 & Como investigador, quero anotar entidades e alertas e dividir tarefas do caso com a equipe, para trabalhar em conjunto na mesma investigação. & RF08 & C & feito \\
+\multicolumn{5}{l}{\textbf{E6. Segurança, auditoria e conformidade}} \\
+H06 & Como auditor, quero uma trilha só de acréscimo, encadeada por hash, de quem consultou o quê, quando e com qual justificativa, para detectar uso indevido. & RNF02 & M & feito \\
+H10 & Como responsável pelo sistema, quero que todo acesso seja feito por usuário identificado e com perfil, para controlar quem usa a ferramenta. & RNF01 & M & feito \\
+H11 & Como delegado responsável, quero que a ferramenta só faça coleta passiva de dados abertos, sem interagir com alvos, para não configurar infiltração virtual sem ordem judicial. & RNF04 & M & feito \\
+H16 & Como desenvolvedor, quero análise estática de segurança e os testes como barreira no pipeline de integração, para que código gerado por IA não entre sem verificação. & RNF11 & S & parcial \\
+H17 & Como delegado responsável, quero definir a finalidade e o prazo de retenção de cada caso, para aplicar a minimização dos dados coletados. & RNF04 & S & feito \\
+H23 & Como responsável pelo sistema, quero MFA, acesso por caso e criptografia em repouso, para proteger dados de investigação. & RNF01 & C & parcial \\
+H26 & Como investigador, quero coletar por infraestrutura não atribuível à polícia, para não alertar o alvo. & RNF03 & W & fora desta entrega \\
+\multicolumn{5}{l}{\textbf{E7. Monitoramento e evolução}} \\
+H18 & Como investigador, quero ser avisado quando mudar o quadro societário de uma empresa do caso ou surgir contrato novo, para acompanhar alvos sem refazer a coleta. & RF06 & C & feito \\
+H29 & Como investigador, quero consultas de vínculo em segundos sobre grafos com milhões de nós, para trabalhar com a base completa do CNPJ. & RNF06 & W & feito \\
+\hline
+\multicolumn{5}{p{14cm}}{\footnotesize Fonte: elaborada pelo autor. A evidência de cada história está em \texttt{docs/backlog/backlog.md}.}\\
+\end{longtable}
+\end{small}

@@ -1,0 +1,45 @@
+% Gerado por docs/mercado/gera_mercado.py. Não editar à mão.
+\begin{table}[htbp]
+\centering
+\caption[Comparação com ferramentas existentes: recursos]{Comparação do protótipo com ferramentas existentes: recursos}
+\label{tab:mercado}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{lcccccccc}
+\hline
+\textbf{Ferramenta} & \textbf{Fontes BR} & \textbf{Entidades} & \textbf{Grafo} & \textbf{Tipologias} & \textbf{Evidência} & \textbf{Auditoria} & \textbf{IA} & \textbf{Português} \\
+\hline
+Maltego & -- & $\circ$ & $\bullet$ & -- & $\circ$ & $\circ$ & $\circ$ & -- \\
+i2 ANB & -- & -- & $\bullet$ & -- & $\circ$ & -- & -- & -- \\
+Gotham & -- & $\circ$ & $\bullet$ & -- & -- & $\bullet$ & $\circ$ & -- \\
+SpiderFoot & -- & -- & $\circ$ & -- & -- & -- & -- & -- \\
+Alice & $\bullet$ & -- & -- & $\bullet$ & -- & -- & $\bullet$ & $\bullet$ \\
+ODP & $\circ$ & -- & $\circ$ & $\bullet$ & -- & -- & $\circ$ & $\bullet$ \\
+OSIRT & -- & -- & -- & -- & $\bullet$ & $\circ$ & -- & $\circ$ \\
+\textbf{Protótipo} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor, a partir da documentação oficial de cada produto, acessada em 13/11/2026 (lista em \texttt{docs/mercado/concorrentes.md}). $\bullet$ sim; $\circ$ parcial; -- não encontrado na documentação consultada, o que não significa que o produto não tenha o recurso.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption[Comparação com ferramentas existentes: coleta e licença]{Comparação do protótipo com ferramentas existentes: coleta, implantação e licença}
+\label{tab:mercado-modelo}
+\small
+\begin{tabular}{lp{3.4cm}p{3.4cm}p{4.2cm}}
+\hline
+\textbf{Ferramenta} & \textbf{Coleta} & \textbf{Implantação} & \textbf{Licença} \\
+\hline
+Maltego & parcial & ambos & comercial \\
+i2 ANB & parcial & parcial & comercial \\
+Gotham & -- & nuvem & comercial \\
+SpiderFoot & ativa e passiva & local & aberto (MIT) \\
+Alice & passiva & -- & uso interno \\
+ODP & -- & -- & uso interno \\
+OSIRT & passiva & local & comercial \\
+Protótipo & só passiva & local (contêiner) & aberto (MIT) \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor, a partir da documentação oficial de cada produto, acessada em 13/11/2026 (lista em \texttt{docs/mercado/concorrentes.md}). -- não encontrado na documentação consultada, o que não significa que o produto não tenha o recurso.}
+\end{table}

@@ -1,9 +1,9 @@
 % ---------------------------------------------------------------------------
 % Capítulo de Metodologia (rascunho)
-% Base: docs/rsl1-protocolo.md (v0.12), docs/rsl2-protocolo.md (v0.7),
+% Base: docs/rsl1-protocolo.md (v0.22), docs/rsl2-protocolo.md (v0.18),
 % docs/buscas/rsl1-definitivas-2026-11-10.md, docs/rsl1-calibracao.md,
 % docs/requisitos-app.md e docs/referencias-verificadas.md.
-% Situação descrita: 10/11/2026.
+% Situação descrita: 12/11/2026.
 % ---------------------------------------------------------------------------
 
 % As citações longas (por exemplo, KITCHENHAM; MADEYSKI; BUDGEN) não quebram
@@ -768,106 +768,13 @@ modelo de predição \cite{ouzzani2016}, seguindo a recomendação de usar uma
 ferramenta de mineração de texto na triagem \cite[diretriz 6]{polanin2019}. A
 ferramenta só ordena os registros: os dois revisores continuam decidindo todos
 eles, como pede a diretriz 7 de \citeonline{polanin2019}.
-% PENDENTE: o passo 1 da seção 11 do protocolo da RSL 2 (v0.7) ainda diz
-% "Importação no Rayyan e remoção de duplicatas", enquanto a RSL 1 (v0.11 em
-% diante) remove as duplicatas por script, fora do Rayyan, porque o Auto
-% Resolver só existe nos planos pagos. Alinhar o protocolo da RSL 2 e depois
-% descrever aqui o procedimento adotado.
+A remoção de duplicatas da RSL 2 usa o mesmo \textit{script} e as mesmas
+regras da RSL 1, e a detecção de duplicados do Rayyan serve de conferência.
 
-\textbf{Situação da seleção na RSL 1.} A remoção de duplicatas foi feita em
-10/11/2026. Dos 1.794 registros, saíram 729 duplicatas: 647 pelo DOI, 60 pelo
-título e ano e 22 na conferência manual. Ficaram 1.065 registros únicos,
-importados no Rayyan. A detecção de duplicados do Rayyan marcou 70 registros,
-e a conferência par a par mostrou que nenhum era duplicata. Os 1.065 registros
-seguem para a triagem.
-
-Para a calibração, 25 registros foram sorteados entre os 1.065, com semente
-fixa, para que o sorteio possa ser repetido. Antes da triagem dos revisores,
-os critérios foram aplicados a essa amostra numa aplicação piloto, feita com
-assistência de IA só a partir do registro (título, resumo, palavras-chave,
-tipo e veículo), para testar se os critérios estavam claros. Essa aplicação
-piloto não substitui as decisões dos revisores. Dela saíram as ambiguidades
-que deram origem às regras de aplicação apresentadas acima. Em seguida, o autor
-(R1) e o orientador (R2) vão triar os mesmos 25 registros no Rayyan, em modo cego, e o kappa da
-calibração será calculado sobre as decisões deles.
-% PENDENTE: confirmar com o autor como declarar o uso de IA na aplicação
-% piloto da calibração (docs/rsl1-calibracao.md registra "assistência de IA
-% (Claude)"), e se há norma da UnB ou da FGA sobre isso.
+\input{editaveis/rsl-execucao-selecao}
 
 % ---------------------------------------------------------------------------
-\subsection{Avaliação de qualidade}
-
-As duas revisões usam o instrumento de \citeonline[seção 3.5]{dyba2008}: 11
-critérios baseados no \textit{Critical Appraisal Skills Programme} (CASP) e em
-boas práticas de pesquisa empírica em engenharia de software, que cobrem
-rigor, credibilidade e relevância. Cada critério é respondido com sim ou não,
-como no original. A Tabela~\ref{tab:qualidade} mostra os critérios e como
-cada revisão os usa.
-% PENDENTE: em referencias-verificadas.md, a linha da tabela de 27/10/2026
-% ainda marca Dybå e Dingsøyr (2008) como "⚠️ retirada dos protocolos". A
-% seção "Checklist de qualidade (atualização de 09/11/2026)" registra a
-% leitura do texto completo e a revisão por pares. Atualizar a situação para
-% ✅ naquela tabela.
-
-\begin{table}[htbp]
-	\centering
-	\caption{Critérios de avaliação de qualidade}
-	\label{tab:qualidade}
-	\small
-	\begin{tabular}{p{1.8cm}p{8.8cm}p{1.4cm}p{1.4cm}}
-		\hline
-		\textbf{Critério} & \textbf{Pergunta} & \textbf{RSL 1} &
-		\textbf{RSL 2} \\
-		\hline
-		1 & O estudo relata pesquisa empírica, e não apenas lições aprendidas
-		baseadas em opinião de especialista? & AQ1 & Não usa \\
-		2 & Os objetivos estão claramente relatados, com a justificativa do
-		estudo? & AQ2 & AQ1 \\
-		3 & O contexto em que a pesquisa foi feita está adequadamente
-		descrito? & AQ3 & AQ2 \\
-		4 & O desenho da pesquisa é adequado aos objetivos? & AQ4 & AQ3 \\
-		5 & A amostra e a forma de identificá-la e recrutá-la estão
-		adequadamente descritas? & AQ5 & AQ4 \\
-		6 & Houve grupo de controle para comparar tratamentos? & AQ6 & AQ5 \\
-		7 & Os métodos de coleta de dados são adequados e estão descritos? &
-		AQ7 & AQ6 \\
-		8 & Os métodos de análise dos dados estão adequadamente descritos? &
-		AQ8 & AQ7 \\
-		9 & A relação entre pesquisador e participantes foi considerada de
-		forma adequada? & AQ9 & AQ8 \\
-		10 & Os achados estão claramente declarados, com resultados críveis e
-		conclusões justificadas? & AQ10 & AQ9 \\
-		11 & O estudo tem valor para a pesquisa ou para a prática? & AQ11 &
-		AQ10 \\
-		Acréscimo & O estudo informa o modelo e a versão (ou a data) da
-		ferramenta usada? & Não usa & AQ11 \\
-		\hline
-	\end{tabular}
-	\fonte{Elaborada pelo autor, com base em \citeonline[seção 3.5]{dyba2008}
-	e nos protocolos das revisões.}
-\end{table}
-
-As duas revisões adaptam o instrumento, e adaptações de um instrumento
-existente devem ser informadas \cite[item 11]{page2021ee}:
-
-\begin{itemize}
-	\item \textbf{RSL 1:} no original, o critério 1 serve para excluir estudos
-	que não relatam pesquisa empírica. Aqui ele é só um item da nota, porque o
-	CI2 admite propostas de ferramenta sem avaliação empírica.
-	\item \textbf{RSL 2:} o critério 1 não entra na nota, porque o CI2 já
-	exige evidência empírica. Entra um item sobre o modelo e a versão da
-	ferramenta (AQ11), porque o desempenho e o comportamento do GPT-3.5 e do
-	GPT-4 podem variar muito ao longo do tempo \cite{chen2024}.
-\end{itemize}
-
-Na RSL 1, o autor (R1) e o orientador (R2) avaliam cada estudo de forma independente e resolvem as
-divergências por consenso. A pontuação de cada estudo, de 0 a 11, serve para
-ponderar a síntese, e não para excluir estudos. Ponderar a importância de cada
-estudo na síntese é um dos usos da avaliação de qualidade relatados na
-engenharia de software, e o uso pretendido precisa ser declarado
-\cite[seção 2.3 e tabela 2]{kitchenham2023segress}.
-% PENDENTE: o protocolo da RSL 2 (seção 12) não diz se R1 e R2 avaliam a
-% qualidade de forma independente. Confirmar e registrar no protocolo.
+\input{editaveis/rsl-qualidade}
 
 % ---------------------------------------------------------------------------
 \subsection{Extração de dados}
@@ -926,6 +833,8 @@ achado relevante da RSL 1 vira um requisito candidato do buscador, e cada
 achado relevante da RSL 2 vira uma prática ou um requisito candidato para o
 processo de desenvolvimento.
 
+\input{editaveis/rsl-sintese-regras}
+
 % ---------------------------------------------------------------------------
 \subsection{Ameaças à validade}
 \label{sec:metodologia-ameacas}
@@ -965,8 +874,8 @@ processo de desenvolvimento.
 Os protocolos das duas revisões não foram registrados em base externa. Eles
 ficam versionados no repositório do trabalho, cada um com um histórico de
 versões que registra as mudanças, com data e motivo. Na data descrita neste
-capítulo, o protocolo da RSL 1 está na versão 0.12, e o da RSL 2, na versão
-0.7. O PRISMA 2020 pede que o relato informe o registro da revisão ou declare
+capítulo, o protocolo da RSL 1 está na versão 0.22, e o da RSL 2, na versão
+0.18. O PRISMA 2020 pede que o relato informe o registro da revisão ou declare
 que ela não foi registrada, e que indique onde o protocolo pode ser acessado
 \cite[itens 24a e 24b]{page2021prisma}. No SEGRESS, o registro é opcional para
 todos os tipos de revisão \cite[item 24a]{kitchenham2023segress}. O documento
@@ -1056,7 +965,9 @@ O levantamento segue três passos:
 	autor confere se há API ou dados abertos oficiais, os termos de uso e quais
 	campos são públicos.
 	\item \textbf{Recorte do protótipo.} O autor define quais requisitos entram
-	na implementação e quais ficam como trabalho futuro.
+	na implementação e quais ficam como trabalho futuro. Os requisitos são
+	escritos como histórias de usuário, agrupados em épicos e priorizados pelo
+	método MoSCoW (Capítulo~\ref{cap:requisitos}).
 \end{enumerate}
 
 % PENDENTE: citar a técnica de levantamento de requisitos usada (por exemplo,

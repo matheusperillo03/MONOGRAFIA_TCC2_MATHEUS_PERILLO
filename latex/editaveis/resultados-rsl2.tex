@@ -1,0 +1,460 @@
+% ---------------------------------------------------------------------------
+% Resultados da RSL 2 (assistentes e agentes de IA no desenvolvimento).
+% Base: docs/triagem/ (prisma-etapa2, snowball-leitura, qualidade, sintese).
+% Situação descrita: 12/11/2026.
+% ---------------------------------------------------------------------------
+
+\section{RSL 2: assistentes e agentes de IA no desenvolvimento de software}
+\label{sec:resultados-rsl2}
+
+A leitura do texto completo na etapa 2, o \textit{snowballing}, a avaliação
+de qualidade, a extração e a síntese desta revisão foram feitos pela IA como
+terceira opinião, com regras aceitas pelo autor (R1). O orientador (R2) ainda
+confirma essas regras, e a avaliação independente de R1 e R2, com o kappa de
+cada etapa, ainda não foi feita. Os resultados abaixo podem mudar quando isso
+acontecer. A unidade da síntese é o estudo, e não o relato: um estudo pode ter
+mais de um relato publicado. Os estudos incluídos são citados pelo
+identificador entre parênteses, por exemplo (RSL2-0487), e a lista completa
+está no Apêndice~\ref{ap:estudos}.
+% PENDENTE: R2 confirma as regras R2-A a R2-H (seleção), as do snowballing,
+% Q-A a Q-D (qualidade) e S-A a S-E (síntese). A avaliação independente de
+% R1 e R2 e o kappa da etapa 2 e da qualidade ainda não foram feitos.
+
+% ---------------------------------------------------------------------------
+\subsection{Seleção dos estudos}
+\label{sec:resultados-rsl2-selecao}
+
+\input{editaveis/gerado/prisma-rsl2}
+
+A Tabela~\ref{tab:prisma-rsl2} mostra o fluxo da busca nas bases. As bases
+devolveram 8.181 registros. Depois da remoção de 3.858 duplicatas, 4.323
+registros foram triados por título, resumo e palavras-chave, e 3.208 foram
+excluídos na etapa 1. Dos 1.115 que passaram, 863 saíram pelo recorte da
+etapa 2, decidido pelo resumo e pelos metadados: só ficaram estudos com
+evidência de desenvolvedores profissionais (CI5) publicados em periódico ou
+em conferência A* ou A no CORE 2023 (CI6)
+(Seção~\ref{sec:metodologia-selecao}). Outros 63 registros eram estudos
+secundários e foram separados para análise à parte. Foram buscados 189
+relatos, 12 não foram recuperados, 177 foram lidos e 87 foram excluídos no
+texto completo, o que deixou 90 relatos incluídos pela busca nas bases.
+
+O \textit{snowballing} (Tabela~\ref{tab:snowball-rsl2}) identificou 8.186
+registros novos e parou na terceira iteração, a primeira sem inclusão nova.
+Dele vieram mais 40 relatos, de modo que a revisão tem 130 relatos incluídos.
+Dois deles, SB2-1833 e SB2-1960, têm o mesmo autor, o mesmo caso e os mesmos
+resultados, publicados em dois periódicos. Por isso contam como um só estudo,
+com SB2-1960 proposto como relato principal, porque é o que traz a seção
+de limitações. A síntese trata, portanto, de 129 estudos. A avaliação de
+qualidade, que é feita por relato, continua com 130.
+% PENDENTE: R1 e R2 decidem o par SB2-1833/SB2-1960. Se o par for mantido, a
+% coluna do snowballing tem 40 relatos e 39 estudos; o fluxograma precisa
+% indicar isso.
+% PENDENTE: RSL2-4104 é extensão em periódico de um artigo dos mesmos autores
+% no ICSE 2025, com a mesma amostra. Uma busca pelos títulos não achou o
+% artigo do ICSE entre os incluídos; R1 confirma pelos autores que não há
+% dupla contagem.
+
+Duas limitações da seleção afetam a leitura dos resultados. A primeira são os
+relatos não recuperados: 12 na busca nas bases e 35 no
+\textit{snowballing}, que não puderam ser lidos \cite[item 23c]{page2021ee}.
+A segunda são os estudos secundários (63 na busca e 58 no
+\textit{snowballing}), cujo texto completo ainda não foi lido e que serão
+analisados à parte, como prevê o protocolo.
+
+% ---------------------------------------------------------------------------
+\subsection{Características dos estudos}
+\label{sec:resultados-rsl2-mapeamento}
+
+\input{editaveis/gerado/mapeamento-rsl2}
+
+O corpus é recente (Tabela~\ref{tab:map-rsl2-anodepublica}): 66 dos 129
+estudos (51\%) são de 2026, 32 de 2025 e 23 de 2024. Quatro estudos têm o ano
+2027 nos metadados. Há 79 estudos em periódicos e 50 em conferências. O país
+principal (o primeiro citado) mais frequente é os EUA (38 estudos), e cinco
+estudos são do Brasil.
+% PENDENTE: conferir se o ano 2027 de RSL2-0120, RSL2-0201, RSL2-0246 e
+% RSL2-0322 (OpenAlex ou base) é o ano do volume.
+
+Os desenhos são variados (Tabela~\ref{tab:map-rsl2-tipodeestudo}). Métodos
+mistos são o tipo mais comum (40 estudos), seguidos de entrevistas e estudos
+qualitativos (23) e de experimentos controlados (23). Há ainda 16
+\textit{surveys}, 15 estudos de campo ou de caso, 5 quase-experimentos e 7
+estudos de outros tipos. Metade dos estudos vem da indústria (65), 42 têm
+contexto misto, 15 são da academia e 7 de projetos de código aberto
+(Tabela~\ref{tab:map-rsl2-contextoqp}).
+
+O nível de autonomia responde à primeira parte da QP6
+(Tabela~\ref{tab:map-rsl2-nveldeautono}). Metade dos estudos (64) trata de
+mais de um nível. Assistentes conversacionais são o foco de 39 estudos,
+agentes autônomos de 14 e o completar código de 10. A leitura B4
+(Tabela~\ref{tab:temas-B4}, TA6) mostra que a evidência sobre ferramentas é
+heterogênea e datada. Copilot e ChatGPT predominam, muitos estudos usam
+ferramenta própria, e a versão ou a data de uso muitas vezes não é relatada
+(RSL2-0120, RSL2-2903, SB2-1143). Os agentes autônomos aparecem sobretudo em
+ferramentas internas de grandes empresas, em reparo, testes e revisão
+(RSL2-0150, SB2-0162, SB2-2613, RSL2-0322), sempre com decisão humana antes
+da integração. Nenhum estudo avalia um agente que integre código sem esse
+portão, de modo que a autonomia plena não foi estudada. O caso
+mais próximo de um projeto quase \textit{greenfield} com agente é RSL2-0487,
+com Claude Code, decomposição em itens atômicos e revisão cruzada entre
+modelos. Com desenvolvedores cegos, a preferência migrou do modo
+\textit{Agent} para o \textit{Ask} com confirmação (RSL2-0750).
+
+% ---------------------------------------------------------------------------
+\subsection{Qualidade dos estudos}
+\label{sec:resultados-rsl2-qualidade}
+
+As notas da RSL 2 estão nas Tabelas~\ref{tab:qualidade-resumo}
+e~\ref{tab:qualidade-itens}. A numeração dos critérios da RSL 2 difere da RSL
+1, e a correspondência está na Tabela~\ref{tab:qualidade}. Os 130 relatos
+têm nota média de 9,46 e mediana 10, numa escala de 0 a 11, com notas entre 4
+e 11. Há 79 relatos com nota 10 ou 11, 43 com nota de 7 a 9 e 8 com nota de 4
+a 6. As notas mais baixas (4 e 5) são de SB2-1833, SB2-1960, RSL2-1040,
+RSL2-1982, RSL2-2903 e RSL2-4029. Como prevê a
+Seção~\ref{sec:metodologia-qualidade}, a nota pondera a síntese e não exclui
+estudos.
+
+As notas se concentram no topo da escala, um efeito teto. O recorte da etapa
+2 já selecionou estudos bem relatados, com desenvolvedores profissionais,
+publicados em periódicos ou em conferências A* ou A. Por isso a nota diferencia pouco os estudos
+desta revisão, e a análise de sensibilidade só com notas $\geq$ 8
+(Seção~\ref{sec:resultados-rsl2-direcao}) quase não muda a contagem. Os três
+critérios com menos respostas ``sim'' indicam onde estão as fraquezas do
+corpus. O AQ5 (grupo de controle) tem 67 de 130 (52\%), porque muitos estudos
+são \textit{surveys} ou estudos qualitativos. O AQ8 (relação entre
+pesquisador e participantes) tem 69 de 130 (53\%). O AQ11, acréscimo desta
+revisão, tem 94 de 130 (72\%): cerca de um quarto dos relatos não informa o
+modelo e a versão (ou a data) da ferramenta usada, o que dificulta comparar
+e replicar os resultados.
+% PENDENTE: o código C38 da leitura B4 ("versão ou data não relatada", que
+% inclui a omissão parcial) tem uma lista de estudos maior que o número de
+% "não" no AQ11. R1 e R2 conferem se a diferença vem só da omissão parcial.
+
+% ---------------------------------------------------------------------------
+\subsection{Direção do efeito}
+\label{sec:resultados-rsl2-direcao}
+
+\input{editaveis/gerado/direcao-rsl2}
+
+A Tabela~\ref{tab:direcao-rsl2} conta os estudos pela direção do efeito
+relatado em cada dimensão \cite[quadro 1]{page2021ee}. A contagem dá a
+direção, não o tamanho do efeito, e um estudo ``positivo'' pode ter um efeito
+pequeno. Em produtividade (QP1), 89 estudos mediram o efeito: 51 têm direção
+positiva, 29 mista, 4 negativa e 5 nula. Em qualidade (QP2), 94 mediram, e a
+direção mista predomina (56), contra 22 positivos, 12 negativos e 4 nulos.
+Segurança (QP3) foi medida em só 23 estudos, dos quais 14 têm direção
+negativa, 4 mista, 3 positiva e 2 nula. Os três positivos (RSL2-0383,
+RSL2-0487 e SB2-0308) avaliam ferramentas de verificação ou
+\textit{pipelines} com análise estática, e não o uso da IA sozinho. Custo
+(QP4) foi medido em 7 estudos: 3 positivos (RSL2-0378, RSL2-0487 e
+SB2-2374), 2 negativos e 2 nulos. Os números entre parênteses repetem a
+contagem só com os estudos de nota $\geq$ 8. Por causa do efeito teto, o
+quadro não muda.
+% PENDENTE: o corte da análise de sensibilidade (nota >= 8) é decisão do
+% autor; R2 confirma.
+
+A Tabela~\ref{tab:direcao-medida-rsl2} separa produtividade e qualidade pelo
+tipo de medida: métrica objetiva (medido), autorrelato (percebido) ou as duas
+no mesmo estudo (ambos). As três linhas de cada dimensão somam os estudos que
+mediram. Em produtividade, quando o efeito é só percebido, há 18 estudos
+positivos, 11 mistos e nenhum negativo ou nulo. Quando é medido, há 13
+positivos, 5 mistos, 3 negativos e 5 nulos. Em qualidade, 27 dos 35 estudos
+com efeito só percebido têm direção mista, enquanto os medidos se dividem em
+11 positivos, 6 negativos, 14 mistos e 3 nulos. Nas duas dimensões, os
+resultados negativos e nulos aparecem sobretudo quando há medida objetiva, e
+a direção é mais favorável quando o efeito é percebido. Classificar a medida
+pelo desenho do estudo leva ao mesmo padrão. Esse contraste reaparece nos temas de produtividade (TA1 de B1) e
+de qualidade (TA4 de B2).
+% PENDENTE: a classificação de cada estudo como medido, percebido ou ambos é
+% decisão do autor (leituras B1 e B2, com trecho conferido); R1 e R2 conferem.
+
+% ---------------------------------------------------------------------------
+\subsection{QP1: produtividade}
+\label{sec:resultados-rsl2-qp1}
+
+\input{editaveis/gerado/temas-B1}
+
+A síntese da QP1 seguiu as três etapas de \citeonline{thomas2008}:
+códigos, temas descritivos e temas analíticos. A Tabela~\ref{tab:temas-B1}
+dá, para cada tema analítico, o número de estudos nos códigos do tema. Esse
+número mede a amplitude do tema, e não quantos estudos sustentam cada
+afirmação, que vem dos estudos citados no texto.
+
+O primeiro tema (TA1) é que o ganho existe, mas é condicional e menor do que
+se percebe. Medidas objetivas mostram menos tempo em tarefas curtas e bem
+definidas, como 22\% em RSL2-0772 e $-$63\% na tarefa de OAuth de SB2-2049.
+Desenhos controlados também acham efeito nulo (fase 2 de RSL2-0393, RSL2-0559,
+RSL2-4042) ou negativo (RSL2-0180, RSL2-1328). Em campo, as horas semanais
+caíram sem mudar o número de PRs nem o tempo de ciclo (RSL2-0205). Os valores
+mais altos, como 25 a 40 vezes em RSL2-0487 e 84\% em SB2-0308, vêm de casos
+únicos sem grupo de controle concorrente. A IA acelera tarefas isoladas, mas
+a evidência de que acelera a entrega é fraca. O segundo tema (TA2) mostra que
+o ganho depende de quem usa, da tarefa e da forma de interagir. Os ganhos se
+concentram em tarefas rotineiras, \textit{boilerplate} e tarefas delimitadas
+com verificação automática, como testes e correção guiada por análise
+estática (SB2-0162, SB2-0308, SB2-1193, SB2-2107). Em tarefas complexas, o
+ganho some ou o desenvolvedor abandona a ferramenta (RSL2-1385, RSL2-1181,
+RSL2-3990). Interação incremental supera a geração em uma só vez
+(\textit{one-shot}) em RSL2-2485, e \textit{prompt} predefinido supera
+\textit{prompt} improvisado em SB2-0471.
+
+O terceiro tema (TA3) é que custos ocultos consomem parte do ganho. Verificar,
+corrigir e reescrever a saída ocupou 22,4\% do tempo em RSL2-2593, e a
+validação e as correções dominaram o esforço em RSL2-0240. Descarte de código
+(RSL2-0246), microinterrupções (RSL2-0214) e o custo de escrever
+\textit{prompts} (RSL2-3768, SB2-0690) reduzem o saldo. Na revisão de código
+assistida, o tempo medido não cai (RSL2-2484, RSL2-4042, RSL2-3693). O quarto tema (TA4) é
+que as métricas são heterogêneas e muitas medem a ferramenta, não o
+resultado. A taxa de aceitação de sugestões vai de 22\% (SB2-0206) a 84,26\%
+(RSL2-2812) e prediz só a produtividade percebida (RSL2-3300). Métricas de
+entrega, como PRs por mês e tempo de ciclo, aparecem só em RSL2-0205, e
+empresas relatam não ter métricas para quantificar o ganho (SB2-1783).
+
+As contradições confirmam esses temas. A experiência modera o efeito em
+direções opostas: novatos ganham mais em RSL2-0120, RSL2-1982 e SB2-1818, mas
+não concluem a tarefa em SB2-0690. As duas fases de RSL2-0393 divergem: a
+observacional mede 30,7\% menos tempo com IA, e a randomizada é nula. SB2-1818 mede mais tempo com Bard junto com a percepção de mais
+rapidez. As lacunas são três. Faltam experimentos que meçam o tempo do desenvolvedor com
+agentes autônomos contra um grupo de controle humano (RSL2-0150, RSL2-1320,
+SB2-1193, entre outros). Os experimentos usam tarefas de laboratório de 10 a
+45 minutos (RSL2-1182, RSL2-2650, RSL2-0214, RSL2-3387, RSL2-1500). E efeitos
+de longo prazo medidos são raros (RSL2-0111, RSL2-0205).
+
+% ---------------------------------------------------------------------------
+\subsection{QP2: qualidade do software}
+\label{sec:resultados-rsl2-qp2}
+
+\input{editaveis/gerado/temas-B2}
+
+A Tabela~\ref{tab:temas-B2} lista os seis temas analíticos da QP2. O primeiro
+(TA1) é que não há ganho uniforme de correção. Medições com uma condição sem
+IA apontam nos três sentidos: correção maior (RSL2-0772, RSL2-1182,
+SB2-2049), menor (RSL2-2576, SB2-1255) e nula (RSL2-1500, RSL2-2650). A
+aprovação cai em tarefas difíceis ou pedidos longos (RSL2-2839, RSL2-2068,
+SB2-0279) e varia com o modelo e a versão (RSL2-0488, RSL2-3990, SB2-1605).
+O segundo (TA2) é que código que passa nos testes ainda pode ser pior de
+manter. Análises estáticas medem mais duplicação, complexidade e
+recomendações de manutenibilidade no código feito com IA (RSL2-1246,
+RSL2-0393, SB2-1605, SB2-2107). Testes gerados têm cobertura alta, mas podem
+ser tautológicos, ter asserções fracas ou ser burlados por correções
+automáticas (RSL2-0487, RSL2-0378, RSL2-0150, SB2-0162). Segurança e
+acessibilidade quase não entram nas avaliações de qualidade (RSL2-1840,
+RSL2-0225).
+
+O terceiro tema (TA3) é que a qualidade depende da verificação humana, e é
+ela que a IA enfraquece. Os estudos convergem em exigir revisão humana antes
+de integrar (RSL2-0761, SB2-1143, RSL2-1385, RSL2-0180). Medições mostram que
+essa verificação falha: participantes aceitam saídas erradas ou ignoram
+desinformação (SB2-1255, RSL2-2710), editam mais o que aceitaram sem
+verificar (RSL2-2593) e compreendem pior o código feito com IA (RSL2-0559,
+SB2-0258). A revisão por IA aponta mais problemas sem achar mais defeitos
+(RSL2-2484) e tem precisão baixa (SB2-0873). O quarto tema (TA4) repete o
+contraste da Tabela~\ref{tab:direcao-medida-rsl2}: a percepção de qualidade
+não coincide com a medição. Em RSL2-2650, a qualidade percebida foi maior com
+IA, sem diferença medida. Em RSL2-0111, parte dos usuários percebe qualidade
+maior, enquanto o indicador de depuração não mostra tendência. Muitos estudos
+sustentam a direção atribuída só em autorrelato (RSL2-0826, RSL2-2903,
+SB2-0846).
+
+O quinto tema (TA5) é que contexto, iteração com retorno da execução e escopo
+pequeno melhoram a saída. Há ganho medido com laço de correção guiado por
+testes (RSL2-1320, RSL2-3904), com \textit{logs} como contexto (SB2-2369) e
+com \textit{prompting} estruturado (SB2-1811). Sem contexto do projeto, as
+saídas erram ou ficam genéricas (SB2-0162, RSL2-4151). O sexto tema (TA6) é
+que a documentação gerada ajuda (RSL2-0613, SB2-0471), mas pede revisão de
+precisão e de verbosidade (RSL2-1500, RSL2-2650, RSL2-1878).
+
+Há contradições sobre manutenibilidade, com análise estática pior em
+RSL2-1246, SB2-1605 e SB2-2107 e boa em RSL2-0487, RSL2-0488 e RSL2-1840, e
+sobre tarefas complexas, em que SB2-2049 mede correção maior com IA e
+RSL2-2839, RSL2-2068 e SB2-0279 medem queda. As lacunas principais são três.
+Defeitos em produção e dívida técnica quase não são medidos (RSL2-0216,
+SB2-0308, RSL2-0111). Poucos estudos acompanham a qualidade ao longo do tempo
+(RSL2-0111, RSL2-0488, RSL2-4074). E a eficácia dos testes gerados em achar
+defeitos raramente é medida (RSL2-2484, RSL2-0378).
+% PENDENTE: o código C37 de B2 inclui RSL2-1593, cujo campo de qualidade só
+% registra que "7/11 ignoraram o código" (caso limítrofe da conferência por
+% script). R1 e R2 conferem.
+
+% ---------------------------------------------------------------------------
+\subsection{QP3 e QP4: segurança e custo}
+\label{sec:resultados-rsl2-qp3-qp4}
+
+\input{editaveis/gerado/temas-B3}
+
+A Tabela~\ref{tab:temas-B3} reúne os temas de segurança (TA1 a TA4) e de
+custo (TA5 e TA6). O primeiro tema (TA1) é que o código gerado não é seguro
+por padrão, e o usuário não percebe. Nenhum estudo mediu ganho de segurança só
+por usar IA. O único ganho apareceu com instrução explícita de segurança
+(RSL2-0792). As medições divergem entre piora (RSL2-2576, RSL2-1246,
+SB2-1605) e efeito nulo (RSL2-2812, SB2-2049, RSL2-0792), mas convergem num
+ponto: quem usa IA superestima a segurança do próprio código (RSL2-2576,
+SB2-2049, RSL2-1799). As falhas se concentram em classes conhecidas, como
+injeção, criptografia, credenciais e dependências (RSL2-1328, RSL2-1246,
+RSL2-0906). Com assistente envenenado, a adoção de código inseguro chega a
+100\% na condição de referência (\textit{baseline}) de RSL2-1328. O segundo
+tema (TA2) é que as mitigações que funcionam são ativas e em camadas, e os
+avisos passivos falham. Em RSL2-1328, a interface Skeleton reduziu o uso
+inseguro, e destaque e aviso não tiveram efeito significativo. A instrução
+de segurança melhorou o resultado em RSL2-0792 e RSL2-1799, mas falhou com o
+retorno do CodeQL em SB2-1605. A análise estática mede e filtra (RSL2-1246,
+RSL2-0487, SB2-0308), mas deixou passar correções incorretas (SB2-0597). A
+revisão humana é a mitigação mais recomendada (RSL2-0201, RSL2-2477,
+SB2-0308), mas seu efeito não foi medido isoladamente.
+
+O terceiro tema (TA3) é que a confidencialidade dos dados é o risco que mais
+muda a governança. O risco mais citado é a exposição de código e dados ao
+provedor (RSL2-0205, RSL2-2566, SB2-0678, SB2-1783). O único experimento
+sobre isso mediu mais compartilhamento de dados sensíveis com ChatGPT
+(RSL2-1182). As organizações reagem com proibições e listas aprovadas
+(RSL2-0225, SB2-0873), modelos internos (RSL2-0065, RSL2-2477, SB2-0308) e
+anonimização (RSL2-0246, RSL2-1546), sem avaliação quantitativa da
+anonimização. Proibir sem oferecer alternativa leva ao uso escondido
+(RSL2-0225, SB2-1783). O quarto tema (TA4) é que agentes ampliam a superfície
+de risco para o ambiente de desenvolvimento. O risco passa do trecho de
+código para ações no ambiente: remoção de testes e reversão de mudanças
+(RSL2-0150), comandos não pedidos que apagam \textit{logs} (RSL2-2485) e
+alterações não intencionais (RSL2-0750, SB2-0597). As mitigações relatadas
+são de engenharia do ambiente: \textit{sandbox} e validação determinística
+(RSL2-0150), menor privilégio e nenhum \textit{merge} automático (RSL2-3381).
+
+Quanto ao custo, o quinto tema (TA5) é que ele é medido em unidades
+diferentes e quase nunca em dinheiro. Os estudos usam \textit{tokens}
+(RSL2-0150, SB2-1193, SB2-2374), dólares (RSL2-0378, RSL2-0487, RSL2-3833),
+\textit{hardware} (RSL2-0729, SB2-0206), tempo de máquina (SB2-0844) e
+iterações (SB2-0162). Um agente genérico usou 12,11 vezes mais
+\textit{tokens} que uma ferramenta dedicada (SB2-2374), e o mesmo
+\textit{pipeline} custou US\$~0,24 com Devstral e US\$~6,17 com GPT-o1
+(RSL2-0378). A redução de 96 a 98\% relatada em RSL2-0487 compara o custo
+real com uma estimativa, e não com uma medida. O sexto tema (TA6) é que o
+custo oculto é o tempo humano de verificação (RSL2-0240, RSL2-0214,
+RSL2-2484). Nas organizações, licenças e retorno incerto são barreiras
+percebidas (RSL2-1668, SB2-1783, RSL2-2624).
+
+As contradições tratam do efeito medido sobre a segurança, que piora em
+alguns experimentos e não muda em outros, e do custo, visto como barreira em
+alguns estudos (RSL2-1668, SB2-1783) e como compensado pelos ganhos em outro,
+sem medida (RSL2-2477). As lacunas são claras. Nenhum estudo mediu consumo de
+energia, que só aparece como menção (RSL2-3733, SB2-0873). Nenhum mediu
+vulnerabilidades introduzidas por agentes autônomos. E vários experimentos de segurança usam assistentes envenenados de propósito ou
+modelos antigos (RSL2-1328, RSL2-2843, RSL2-1799, RSL2-2576), o que limita a
+generalização para as ferramentas comerciais atuais.
+
+% ---------------------------------------------------------------------------
+\subsection{QP5: processo e governança}
+\label{sec:resultados-rsl2-qp5}
+
+\input{editaveis/gerado/temas-B4}
+
+A leitura B4 cobre a QP5 e a QP6 (Tabela~\ref{tab:temas-B4}). Os temas TA1 e
+TA6 somam os 129 estudos porque incluem os códigos de mapeamento (ferramenta,
+autonomia e contexto), que todo estudo recebe. Esses números indicam
+cobertura, e não apoio a cada afirmação. O mesmo vale para TA5, cujo total
+vem em grande parte do código de revisão humana, e não dos estudos que tratam
+de segurança no processo.
+
+O primeiro tema (TA1) é que o portão humano permanece e a verificação muda de
+lugar. Nos agentes implantados, a extração sempre descreve uma decisão humana
+antes da integração (RSL2-0150, SB2-0162, SB2-2613, SB2-1193), e os
+desenvolvedores não querem aprovação nem \textit{commit} automáticos
+(RSL2-3381). Testes, análise estática, juiz LLM e revisão cruzada entre
+modelos passam a filtrar antes do humano (SB2-0597, RSL2-0383, RSL2-0487,
+SB2-0308). O segundo tema (TA2) é que a verificação vira o gargalo e falha
+quando é só declarada. O esforço sai da escrita e vai para verificar,
+integrar e reescrever \textit{prompts}, o que foi medido por telemetria
+(RSL2-0111), observado em experimento (RSL2-0240) e percebido em
+\textit{survey} (RSL2-4074). O comportamento observado contradiz o declarado:
+em RSL2-1799, 25 de 33 participantes disseram verificar o código, mas vários
+usaram MD5; outros aceitaram sugestões sem editar (RSL2-2216). Os estudos
+respondem com tarefas decompostas (RSL2-0487, RSL2-3990, RSL2-3768),
+delegação conforme a criticidade (RSL2-0761, SB2-1960, RSL2-4104) e tempo de
+revisão reservado na estimativa (RSL2-0240).
+
+O terceiro tema (TA3) é que a governança precisa ser escrita e rastreável.
+Políticas de uso são raras ou tardias (RSL2-0065, RSL2-2903, RSL2-2477).
+RSL2-0201 recomenda políticas internas, um roteiro de adoção e o alinhamento
+à ISO/IEC 42001. A rastreabilidade aparece em práticas concretas:
+\textit{prompts} versionados (RSL2-0488, RSL2-1546, RSL2-1186), registro de
+\textit{prompts} e saídas (RSL2-0201), autodeclaração do código gerado
+(RSL2-0657) e trajetória do agente no \textit{diff} (SB2-0162). Mas só 83
+(19\%) das organizações que permitem IA generativa têm um processo de
+documentação conhecido (SB2-0678). A responsabilidade continua humana
+(RSL2-2477, SB2-1143). O quarto tema (TA4) é que o desenvolvedor vira
+orquestrador, com risco de perder competência e interlocução. A mudança de
+papel é sobretudo percebida (SB2-1143, RSL2-4074, SB2-0207). Os riscos de
+dependência são observados em experimentos: dependência crescente ao longo
+da tarefa (SB2-1818), menor processamento de informação (SB2-2163) e perda
+de posse do código (RSL2-0559). O quinto tema (TA5) é que a segurança precisa
+ser pedida e verificada. Desenvolvedores revisam só a funcionalidade
+(RSL2-0792, RSL2-2843), e em RSL2-2843 91,9\% desconheciam ataques
+de envenenamento. Aparecem no processo \textit{checklists} de
+vulnerabilidade (RSL2-0906) e \textit{pipeline} com Fortify e revisão humana
+(SB2-0308).
+
+A principal contradição é a ordem da revisão. Vários estudos põem o LLM como
+primeira passada (RSL2-0322, RSL2-4151, SB2-0132, SB2-2369), mas RSL2-2484 o
+recomenda depois da revisão manual, porque ele ancora a atenção do revisor. A lacuna mais relevante
+para este trabalho é que as práticas de governança (\textit{prompts}
+versionados, rastreabilidade, autodeclaração e políticas) são propostas ou
+descritas, mas nenhum estudo mede o efeito delas. Também não há estudo sobre
+o desenvolvimento individual de um produto completo em contexto acadêmico,
+como num TCC. Os casos mais próximos, RSL2-0487 e SB2-1960, são casos únicos.
+Por fim, nenhum estudo mede a perda de habilidades ao longo do tempo em
+desenvolvimento real.
+
+% ---------------------------------------------------------------------------
+\subsection{Práticas candidatas para o desenvolvimento do protótipo}
+\label{sec:resultados-rsl2-praticas}
+
+A síntese termina na rastreabilidade para o trabalho
+(Seção~\ref{sec:metodologia-rsl}): os temas de B1 a B4 viram práticas
+candidatas para o processo de desenvolvimento do buscador. São candidatas, e
+não práticas comprovadas, porque nenhum estudo mediu o efeito das práticas de
+governança e nenhum tratou do desenvolvimento individual num TCC. A lista
+abaixo dá cada prática com os estudos que a apoiam.
+
+\begin{enumerate}
+	\item \textbf{Medir tempo e retrabalho no diário do desenvolvimento.}
+	Registrar o tempo por tarefa, os descartes e o retrabalho, e não confiar
+	na sensação de rapidez (B1, TA1 e TA3; B4, TA2): RSL2-0205, RSL2-0240,
+	RSL2-0246, RSL2-2593, SB2-1818, RSL2-4034.
+	\item \textbf{Testes, \textit{lint} e análise estática de segurança
+	(SAST) como portão na integração contínua,} antes da revisão humana (B2,
+	TA2; B3, TA2; B4, TA1 e TA5): RSL2-0487, SB2-0597, SB2-0308, RSL2-1186,
+	RSL2-2566, SB2-0162, RSL2-1328, SB2-2049, RSL2-0383.
+	\item \textbf{Testes escritos ou validados pelo autor como critério de
+	aceitação} do código gerado (B4, TA1): RSL2-0180, RSL2-0906, SB2-1605,
+	SB2-2107, RSL2-3904, SB2-1783.
+	\item \textbf{Revisão humana de cada \textit{diff}.} O agente não faz
+	\textit{commit}, \textit{merge} nem \textit{push} sem revisão, e a
+	revisão por outro modelo complementa a humana sem substituí-la (B2, TA3;
+	B4, TA1): RSL2-0150, RSL2-3381, SB2-0162, SB2-2613, RSL2-2485, RSL2-0750,
+	SB2-2374, RSL2-0322, RSL2-4151, SB2-0132, RSL2-2484, SB2-0873.
+	\item \textbf{Tarefas pequenas, com contexto e com execução no laço.}
+	Decompor cada funcionalidade em itens revisáveis, dar ao assistente o
+	contexto do repositório e validar por execução (B2, TA5; B4, TA2):
+	RSL2-0487, RSL2-3990, RSL2-3768, RSL2-1320, RSL2-3904, SB2-2369,
+	RSL2-2746, RSL2-2815.
+	\item \textbf{Requisitos de segurança explícitos no \textit{prompt} e
+	\textit{checklist} de revisão} para o código gerado (B3, TA1; B4, TA5):
+	RSL2-0792, SB2-2049, RSL2-2576, RSL2-0906, RSL2-2843.
+	\item \textbf{Nenhum dado real ou sigiloso nos \textit{prompts}.} Usar
+	dados sintéticos, já que o buscador trata dados de interesse policial
+	(B3, TA3; B4, TA3): RSL2-1182, SB2-1818, RSL2-4104, RSL2-1385, SB2-1143,
+	RSL2-0205, RSL2-2566.
+	\item \textbf{Agente em \textit{sandbox}.} Contêiner sem credenciais
+	reais, menor privilégio, \textit{commits} pequenos e testes protegidos
+	contra remoção (B3, TA4): RSL2-0150, RSL2-2485, RSL2-3381, RSL2-0750.
+	\item \textbf{Arquitetura definida pelo autor e trechos feitos sem IA}
+	(B4, TA2 e TA4): RSL2-0487, SB2-1960, RSL2-3381, RSL2-0393, RSL2-0180,
+	RSL2-1385, RSL2-0559.
+	\item \textbf{Política escrita de uso de IA e registro rastreável.}
+	Registrar ferramenta, modelo, versão, data, nível de autonomia,
+	\textit{prompts} e \textit{tokens} de cada sessão, e declarar no
+	\textit{commit} o código gerado (B3, TA5; B4, TA3 e TA6): RSL2-0201,
+	RSL2-0488, RSL2-1546, RSL2-1186, RSL2-0657, RSL2-0750, SB2-0933,
+	SB2-1193, SB2-2374.
+\end{enumerate}
+% PENDENTE: R1 e R2 decidem quais práticas entram no processo do protótipo.
+% Os IDs das práticas 1 e 8 vêm das sínteses dos temas citados (B1 e B3 não
+% listam estudos nas implicações).

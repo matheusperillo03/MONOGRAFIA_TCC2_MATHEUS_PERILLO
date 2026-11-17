@@ -1,0 +1,82 @@
+% Execução da seleção (usado na monografia e nos PDFs das RSLs).
+\subsubsection{Execução da seleção}
+
+\textbf{Duplicatas e calibração.} Na RSL 1, a busca nas bases e a ampliação
+do bloco B somaram 1.928 registros. Saíram 789 duplicatas, e ficaram 1.139
+para a triagem. Na RSL 2, dos 8.181 registros saíram 3.858 duplicatas, e
+ficaram 4.323. Antes da triagem dos revisores, os critérios foram aplicados a
+25 registros sorteados de cada revisão, com semente fixa, numa aplicação
+piloto feita com assistência de IA só a partir do registro, para testar se os
+critérios estavam claros. Dela saíram as regras de aplicação apresentadas
+acima. O autor (R1) e o orientador (R2) triaram os mesmos 25 registros de
+forma independente. As decisões dos dois coincidiram nas duas amostras
+(kappa = 1,0).
+% PENDENTE: a soma dos arquivos da RSL 1 dá 1.928 registros, mas o registro
+% de buscas diz "1.923" na seção de ampliação (docs/triagem/prisma-etapa2.md,
+% "Observações"). Corrigir o registro de buscas antes de desenhar o
+% fluxograma.
+
+\textbf{Etapa 1.} R1 e R2 triaram todos os registros por título, resumo e
+palavras-chave, no Rayyan, de forma independente e no modo cego. As decisões
+dos dois coincidiram em todos os registros: 1.139 de 1.139 na RSL 1 e 4.323
+de 4.323 na RSL 2 (kappa = 1,0 nas duas). Não houve divergência a resolver.
+Passaram para a etapa 2 os registros incluídos ou em dúvida: 450 na RSL 1 e
+1.115 na RSL 2.
+% PENDENTE: concordância perfeita em 5.462 decisões é incomum. Guardar a
+% exportação das decisões de cada revisor no Rayyan, para mostrar à banca
+% que a triagem foi independente.
+
+\textbf{Recorte da etapa 2.} O volume da etapa 2 é incompatível com a
+leitura dupla e independente do texto completo. Por decisão do autor, entraram
+critérios de inclusão aplicados só a partir da etapa 2. Mudanças nos
+critérios depois do início da revisão são permitidas desde que relatadas com
+o motivo \cite[item 24c]{page2021prisma}.
+\begin{itemize}
+	\item \textbf{RSL 1 (protocolo v0.16):} CI5, a ferramenta ou o sistema
+	relata avaliação; CI6, o uso por órgão policial, de investigação criminal
+	ou de inteligência é explícito no título, no resumo ou nas palavras-chave;
+	CI7, publicado a partir de 2015.
+	\item \textbf{RSL 2 (protocolo v0.12):} CI5, a evidência vem de
+	desenvolvedores profissionais ou de amostra mista de profissionais e
+	estudantes, e não só de \textit{benchmark}; CI6, periódico ou conferência
+	da trilha principal com nota A* ou A no CORE 2023.
+\end{itemize}
+Os registros foram classificados pelo resumo e pelos metadados. Os casos
+incertos foram para o texto completo, e os excluídos por esses critérios são
+relatados numa caixa própria do fluxograma.
+
+\textbf{Leitura do texto completo.} Os textos completos foram obtidos pelo
+acesso institucional da UnB (Portal de Periódicos da CAPES) e em acesso
+aberto. Os relatos que não foi possível obter são relatados como não
+recuperados. A leitura do texto completo foi feita pela IA, como terceira
+opinião, com as regras de aplicação R1-A a R1-D (RSL 1, v0.18) e R2-A a R2-H
+(RSL 2, v0.14), propostas a partir das dúvidas da leitura e aceitas por R1.
+% PENDENTE: R2 ainda confirma as regras R1-A a R1-D e R2-A a R2-H. A leitura
+% independente de R1 e R2 na etapa 2, e o kappa dessa etapa, ainda não foram
+% feitos. Se R2 mudar alguma regra, os números do fluxograma são recalculados
+% por script (docs/triagem/recorte-etapa2/).
+
+\textbf{\textit{Snowballing}.} Os estudos incluídos serviram de sementes para
+o \textit{snowballing} \textit{backward} e \textit{forward}, repetido até que
+uma iteração não trouxesse estudo novo \cite[seção 3.3]{wohlin2014}. A RSL 1
+parou na sexta iteração, e a RSL 2, na terceira. No lugar do Google Scholar,
+as referências e citações vieram do OpenAlex e da Semantic Scholar (RSL 1
+v0.19, RSL 2 v0.15). Os registros novos passaram pelos mesmos critérios, com
+exclusões automáticas pelos metadados (ano, idioma, tipo e veículo) e as
+mesmas regras do recorte. A triagem e a leitura do texto completo também
+foram feitas pela IA como terceira opinião, com as regras aceitas por R1.
+% PENDENTE: R2 ainda confirma as regras do snowballing (R1-E a R1-H e as
+% equivalentes da RSL 2).
+
+\textbf{Declaração do uso de IA.} O modelo de linguagem Claude (Anthropic)
+foi usado como assistente em todas as etapas das revisões: na aplicação
+piloto da calibração, como terceira opinião na etapa 1, e na leitura do texto
+completo, no \textit{snowballing}, na avaliação de qualidade, na extração e na
+síntese. Em cada etapa, as instruções dadas ao modelo, as decisões e um
+trecho literal do texto que sustenta cada decisão estão guardados no
+repositório. Os trechos e os números foram conferidos por \textit{script}
+contra o texto completo. Nenhuma regra nova foi aplicada sem a aprovação do
+autor, e as decisões do modelo não substituem a avaliação dos revisores
+prevista nos protocolos.
+% PENDENTE: confirmar com o autor esta declaração e se há norma da UnB ou da
+% FCTE sobre o uso de IA em trabalhos de conclusão.

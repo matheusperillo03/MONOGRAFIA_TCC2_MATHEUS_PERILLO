@@ -1,0 +1,104 @@
+% Avaliação de qualidade (usado na monografia e nos PDFs das RSLs).
+\subsection{Avaliação de qualidade}
+\label{sec:metodologia-qualidade}
+
+As duas revisões usam o instrumento de \citeonline[seção 3.5]{dyba2008}: 11
+critérios baseados no \textit{Critical Appraisal Skills Programme} (CASP) e em
+boas práticas de pesquisa empírica em engenharia de software, que cobrem
+rigor, credibilidade e relevância. Cada critério é respondido com sim ou não,
+como no original. A Tabela~\ref{tab:qualidade} mostra os critérios e como
+cada revisão os usa.
+% PENDENTE: em referencias-verificadas.md, a linha da tabela de 27/10/2026
+% ainda marca Dybå e Dingsøyr (2008) como "⚠️ retirada dos protocolos". A
+% seção "Checklist de qualidade (atualização de 09/11/2026)" registra a
+% leitura do texto completo e a revisão por pares. Atualizar a situação para
+% ✅ naquela tabela.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Critérios de avaliação de qualidade}
+	\label{tab:qualidade}
+	\small
+	\begin{tabular}{p{1.8cm}p{8.8cm}p{1.4cm}p{1.4cm}}
+		\hline
+		\textbf{Critério} & \textbf{Pergunta} & \textbf{RSL 1} &
+		\textbf{RSL 2} \\
+		\hline
+		1 & O estudo relata pesquisa empírica, e não apenas lições aprendidas
+		baseadas em opinião de especialista? & AQ1 & Não usa \\
+		2 & Os objetivos estão claramente relatados, com a justificativa do
+		estudo? & AQ2 & AQ1 \\
+		3 & O contexto em que a pesquisa foi feita está adequadamente
+		descrito? & AQ3 & AQ2 \\
+		4 & O desenho da pesquisa é adequado aos objetivos? & AQ4 & AQ3 \\
+		5 & A amostra e a forma de identificá-la e recrutá-la estão
+		adequadamente descritas? & AQ5 & AQ4 \\
+		6 & Houve grupo de controle para comparar tratamentos? & AQ6 & AQ5 \\
+		7 & Os métodos de coleta de dados são adequados e estão descritos? &
+		AQ7 & AQ6 \\
+		8 & Os métodos de análise dos dados estão adequadamente descritos? &
+		AQ8 & AQ7 \\
+		9 & A relação entre pesquisador e participantes foi considerada de
+		forma adequada? & AQ9 & AQ8 \\
+		10 & Os achados estão claramente declarados, com resultados críveis e
+		conclusões justificadas? & AQ10 & AQ9 \\
+		11 & O estudo tem valor para a pesquisa ou para a prática? & AQ11 &
+		AQ10 \\
+		Acréscimo & O estudo informa o modelo e a versão (ou a data) da
+		ferramenta usada? & Não usa & AQ11 \\
+		\hline
+	\end{tabular}
+	\fonte{Elaborada pelo autor, com base em \citeonline[seção 3.5]{dyba2008}
+	e nos protocolos das revisões.}
+\end{table}
+
+As duas revisões adaptam o instrumento, e adaptações de um instrumento
+existente devem ser informadas \cite[item 11]{page2021ee}:
+
+\begin{itemize}
+	\item \textbf{RSL 1:} no original, o critério 1 serve para excluir estudos
+	que não relatam pesquisa empírica. Aqui ele é só um item da nota, porque o
+	CI2 admite propostas de ferramenta sem avaliação empírica.
+	\item \textbf{RSL 2:} o critério 1 não entra na nota, porque o CI2 já
+	exige evidência empírica. Entra um item sobre o modelo e a versão da
+	ferramenta (AQ11), porque o desempenho e o comportamento do GPT-3.5 e do
+	GPT-4 podem variar muito ao longo do tempo \cite{chen2024}.
+\end{itemize}
+
+Na RSL 1, o autor (R1) e o orientador (R2) avaliam cada estudo de forma independente e resolvem as
+divergências por consenso. A pontuação de cada estudo, de 0 a 11, serve para
+ponderar a síntese, e não para excluir estudos. Ponderar a importância de cada
+estudo na síntese é um dos usos da avaliação de qualidade relatados na
+engenharia de software, e o uso pretendido precisa ser declarado
+\cite[seção 2.3 e tabela 2]{kitchenham2023segress}.
+% PENDENTE: o protocolo da RSL 2 (seção 12) não diz se R1 e R2 avaliam a
+% qualidade de forma independente. Confirmar e registrar no protocolo.
+
+\textbf{Regras de aplicação.} O instrumento original não trata estudos sem
+participantes humanos nem comparações com \textit{baseline}. Por decisão do
+autor, quatro regras foram registradas nos protocolos (RSL 1 v0.20, RSL 2
+v0.16):
+\begin{itemize}
+	\item \textbf{Q-A, amostra sem pessoas} (critério 5): sem participantes
+	humanos, a amostra é o conjunto de dados avaliado. A resposta é sim quando
+	o texto descreve a origem dos dados e como foram selecionados.
+	\item \textbf{Q-B, relação entre pesquisador e participantes} (critério 9):
+	sim quando o texto discute como os pesquisadores podem ter influenciado os
+	dados ou os resultados, por exemplo ao avaliar a própria ferramenta.
+	Aprovação ética, consentimento ou declaração padrão de conflito de
+	interesse, sozinhos, não bastam.
+	\item \textbf{Q-C, grupo de controle} (critério 6): sim quando há uma
+	condição de comparação medida no mesmo estudo, inclusive um
+	\textit{baseline} ou método concorrente rodado nos mesmos dados.
+	\item \textbf{Q-D, modelo e versão} (AQ11 da RSL 2): sim quando o estudo
+	nomeia o modelo ou o produto e a versão, ou a data de uso.
+\end{itemize}
+
+\textbf{Execução.} A avaliação de qualidade e a extração foram feitas na
+mesma leitura do texto completo, pela IA como terceira opinião, para não ler
+cada texto duas vezes. Cada resposta traz um trecho literal do estudo e o
+local, e um \textit{script} conferiu que todos os trechos estão no texto. Um
+piloto com 8 estudos mostrou que a regra Q-B estava frouxa. Ela foi apertada
+e os 8 estudos foram reavaliados.
+% PENDENTE: a avaliação independente de R1 e R2 e a conferência da extração
+% por R2 ainda não foram feitas. As regras Q-A a Q-D aguardam R2.

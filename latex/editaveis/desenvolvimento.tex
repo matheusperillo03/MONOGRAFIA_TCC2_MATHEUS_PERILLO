@@ -16,8 +16,12 @@ Este capítulo descreve o protótipo do buscador: a arquitetura, os casos de
 uso, o modelo de dados, os fluxos principais, a interface de programação, as
 decisões de arquitetura, o modelo de ameaças, a engenharia de testes e o processo de
 desenvolvimento com IA. O protótipo implementa a maior parte das histórias
-dos três horizontes do \textit{backlog}; a situação de cada uma está na
-Tabela~\ref{tab:backlog}. O código está em dois repositórios, sob a licença
+dos três horizontes de contratações públicas do \textit{backlog}. As
+histórias do escopo de lavagem de dinheiro (H40 a H57) ainda estão por
+fazer ou aguardam decisão do orientador. A situação de cada uma está na
+Tabela~\ref{tab:backlog}.
+% PENDENTE: atualizar quando as tipologias de lavagem em implementação
+% terminarem. O código está em dois repositórios, sob a licença
 MIT: um para o
 \textit{back-end} e outro para o \textit{front-end}. Os testes automatizados
 e a demonstração usam só dados sintéticos. Os conectores também foram
@@ -456,8 +460,9 @@ e os cabeçalhos do contrato da API. A lista completa está em
 % PENDENTE: o autor revisa o mapa de rastreabilidade (níveis 2 e 3), feito com IA.
 
 Sete requisitos não têm nenhum teste ligado. Quatro deles não foram
-implementados: RF05 e RF15 estão ``a fazer'', e RF10 e RNF03 estão fora desta
-entrega. Os outros três estão no sistema, mas sem teste automatizado:
+implementados: o RF05 aguarda decisão do orientador (H50 e H51); o RF15 está
+por fazer (H21); o RF10 tem duas histórias por fazer (H54 e H55) e uma fora
+desta entrega (H25); e o RNF03 está fora desta entrega (H26). Os outros três estão no sistema, mas sem teste automatizado:
 \begin{itemize}
 	\item \textbf{RNF07 (disponibilidade):} não tem história. Só há a política
 	de reinício dos contêineres no \texttt{docker-compose.yml}, sem teste de
@@ -692,6 +697,69 @@ O processo aplicou as práticas candidatas da RSL~2
 	sem a extração por IA.
 	\item \textbf{Avaliação com usuários:} o protótipo ainda não foi avaliado
 	com policiais, como recomenda a síntese da QP5 da RSL~1.
+	\item \textbf{Dados abertos e lavagem de dinheiro:} com dados abertos, as
+	tipologias de lavagem só apontam indícios cadastrais. Vários sinais de
+	alerta de lavagem divulgados pelo Banco Central dependem de dado
+	bancário, como depósitos em espécie relevantes em contas de servidores e
+	de pessoas expostas politicamente e movimentações atípicas de recursos
+	por agentes públicos \cite[art. 1º, I, n, e VII, a]{bcb2020cc4001}. Esse
+	dado não é aberto. Por isso, o RF10 é uma importação separada, só para
+	dado recebido por ordem judicial, no leiaute da Instrução Normativa BCB
+	nº~636/2025 \cite{bcb2025in636}, e neste trabalho está previsto só com
+	dados sintéticos (decisão do autor). O Relatório de Inteligência Financeira
+	(RIF) do COAF chega por um sistema eletrônico de intercâmbio
+	\cite[art. 1º]{coaf2026portaria60}, e não foi encontrado leiaute público
+	dos dados dele.
+	\item \textbf{O que o CNPJ aberto não traz:} os metadados dos dados
+	abertos do CNPJ não têm o número de empregados, não dizem se o endereço é
+	residencial ou comercial e trazem só o quadro atual de sócios, sem
+	histórico \cite{rfbcnpjmetadados}. Assim, o sinal ``sem empregados
+	registrados'', que o COAF associa a empresas recém-criadas com sócios de
+	vínculo público \cite[tipologia 2.7]{coaf2021casos}, não é verificável.
+	A troca de sócios só é vista entre duas coletas.
+	\item \textbf{Parentesco:} nenhuma das fontes usadas traz vínculo
+	familiar. O sobrenome igual não prova parentesco, e nenhuma regra o usa
+	(decisão do autor).
+	\item \textbf{Linha do tempo patrimonial (L11, RF05):} usa os bens que o
+	candidato declara no registro de candidatura
+	\cite[art. 11, § 1º, IV]{brasil1997lei9504}, publicados pelo TSE com o
+	valor informado pelo próprio candidato \cite{tse2026dadosabertos}. Só
+	cobre quem foi candidato, e a comparação exige ao menos duas eleições.
+	Nos arquivos do Distrito Federal, o mesmo título eleitoral aparece em 299
+	pessoas entre 2018 e 2022 e em 206 entre 2022 e 2026 (contagem do autor
+	nos arquivos do TSE). A declaração de bens do agente público fica
+	arquivada no serviço de pessoal e não é aberta
+	\cite[art. 13]{brasil1992lei8429}. Renda privada, herança e renda do
+	cônjuge não aparecem. E a desproporção, sozinha, é indício: a lei exige
+	que os bens decorram de vantagem indevida e assegura ao agente demonstrar
+	a licitude da origem \cite[art. 9º, VII]{brasil1992lei8429}.
+	\item \textbf{Decisões pendentes do orientador:}
+	\begin{itemize}
+		\item \textbf{CPF dos candidatos.} Os arquivos de candidatos do TSE
+		de 2018, 2022 e 2026 do Distrito Federal trazem o CPF completo, embora
+		o leiame do TSE transcreva a regra de não divulgação do CPF e declare a
+		variável não divulgável para as eleições de 2024
+		\cite{tse2026dadosabertos}. Hoje o conector do TSE nunca extrai essa
+		coluna para as entidades; o CPF completo que fica nas capturas brutas é
+		a pendência do item ``Fontes reais'', acima. A
+		proposta é lê-la só na ingestão e guardar apenas os 6 dígitos
+		centrais, o mesmo recorte do CPF descaracterizado do CNPJ aberto
+		\cite{rfbcnpjmetadados}, para comparar candidato, sócio e servidor
+		como possível coincidência, sem fusão (decisão do autor, a validar
+		pelo orientador). Isso muda a política atual, e dela dependem a L9 e o
+		alerta da L11.
+		\item \textbf{Cobertura da PCDF e do GDF.} As rotas de servidores e
+		de remuneração da API do Portal da Transparência são descritas como do
+		Poder Executivo Federal \cite{cguapiportal}. Não foi conferido se os
+		servidores da Polícia Civil do Distrito Federal (PCDF) e do Governo do
+		Distrito Federal (GDF) aparecem nelas. Se não aparecerem, a T7, a L8 e
+		a renda pública do RF05 não cobrem esse público sem um conector
+		distrital.
+	\end{itemize}
+	% PENDENTE: decisão do orientador sobre o uso do CPF dos candidatos (6
+	% dígitos centrais) e sobre o título eleitoral como chave entre eleições;
+	% conferir a cobertura da PCDF e do GDF no Portal federal ou indicar a
+	% fonte distrital oficial.
 \end{itemize}
 
 \endgroup

@@ -5,6 +5,8 @@
 % dos capítulos; não foram recalculados. A única fonte externa é a Portaria
 % SGD/MGI nº 7.076/2024 (docs/referencias-verificadas.md, seção
 % "Considerações finais (17/11/2026)").
+% Escopo de lavagem (17/11/2026): as citações novas vêm de docs/lavagem/fontes.md
+% e repetem as do desenvolvimento (Seção sec:desenv-limitacoes).
 % ---------------------------------------------------------------------------
 \begingroup
 \setlength{\emergencystretch}{3em}
@@ -20,8 +22,9 @@ revisões, as contribuições e as limitações, e indica os trabalhos futuros.
 \label{sec:consideracoes-objetivos}
 
 O objetivo geral era desenvolver um protótipo de buscador OSINT para a
-polícia judiciária apurar fraude em contratações públicas brasileiras, com
-requisitos fundamentados numa revisão sistemática, na legislação e no
+polícia judiciária investigar corrupção e lavagem de dinheiro com dados
+abertos brasileiros, tendo as contratações públicas como uma das portas de
+entrada, com requisitos fundamentados numa revisão sistemática, na legislação e no
 levantamento com especialista, e com controles de preservação da prova desde
 a coleta (Seção~\ref{sec:intro-objetivos}). O protótipo foi desenvolvido
 (Capítulo~\ref{cap:desenvolvimento}). Cada história do \textit{backlog} aponta
@@ -47,25 +50,33 @@ atendidos assim:
 	\item \textbf{Requisitos e \textit{backlog}.} A síntese da RSL 1 reuniu 27
 	requisitos candidatos. Dezoito já tinham correspondente no levantamento,
 	e seis dos outros nove viraram requisitos novos
-	(Seção~\ref{sec:requisitos-novos}). Os requisitos foram escritos como 39
+	(Seção~\ref{sec:requisitos-novos}). Os requisitos foram escritos como 56
 	histórias de usuário, em sete épicos, e priorizados pelo MoSCoW
 	(Seções~\ref{sec:requisitos-historias}
-	e~\ref{sec:requisitos-priorizacao}).
+	e~\ref{sec:requisitos-priorizacao}). Dessas, H40 a H57 vieram da
+	ampliação do escopo para a lavagem de dinheiro e se apoiam na
+	legislação, em publicações oficiais e nos indicadores do GAFI, porque a
+	RSL 1 não tem estudo sobre o tema.
 	\item \textbf{Comparação com ferramentas.} O buscador foi comparado com
 	sete ferramentas, pela documentação oficial de cada uma
 	(Seção~\ref{sec:requisitos-mercado}). A comparação mostrou o que falta a
 	elas no domínio deste trabalho e o que falta ao protótipo, organizado em
 	três horizontes do \textit{backlog}.
-	\item \textbf{Protótipo.} Das 39 histórias, 25 estão feitas, 6 em parte, 3
-	por fazer e 5 ficaram fora desta entrega. As 11 histórias \textit{Must
-	have} estão feitas (Seção~\ref{sec:requisitos-priorizacao}). O protótipo
-	tem coleta só passiva, cadeia de custódia com SHA-256 em cada captura,
-	trilha de auditoria encadeada, dez tipologias por regras explícitas, com
-	alertas tratados como pistas, e extração por IA local, desligada por
+	\item \textbf{Protótipo.} Das 56 histórias, 25 estão feitas, 6 em parte,
+	14 por fazer, 5 aguardam decisão do orientador e 6 ficaram fora desta
+	entrega. As 11 histórias \textit{Must have} estão feitas
+	(Seção~\ref{sec:requisitos-priorizacao}). O protótipo tem coleta só
+	passiva, cadeia de custódia com SHA-256 em cada captura, trilha de
+	auditoria encadeada, dez tipologias de contratações públicas por regras
+	explícitas, com alertas tratados como pistas, e extração por IA local, desligada por
 	padrão (Capítulo~\ref{cap:desenvolvimento}). As ameaças tratadas estão
 	ligadas a testes automatizados (Seção~\ref{sec:desenv-ameacas}), e os
 	conectores foram conferidos contra as fontes reais
-	(Seção~\ref{sec:desenv-verificacao}).
+	(Seção~\ref{sec:desenv-verificacao}). As tipologias de lavagem e a
+	importação de dados bancários sob ordem judicial estão especificadas no
+	\textit{backlog}, e ainda não estão implementadas.
+	% PENDENTE: atualizar quando as tipologias de lavagem em implementação
+	% terminarem.
 	\item \textbf{Avaliação.} O objetivo era planejar a avaliação com
 	usuários policiais, e o protocolo está pronto
 	(Seção~\ref{sec:avaliacao-protocolo}). A avaliação não foi executada. Ela
@@ -83,7 +94,9 @@ atendidos assim:
 América Latina, e nenhum usa dados em português
 (Seções~\ref{sec:rsl1-caracteristicas} e~\ref{sec:rsl1-qp5}). Nenhum trata de
 fraude ou corrupção em contratações públicas
-(Seção~\ref{sec:requisitos-mercado}). A avaliação mede o modelo, e quase
+(Seção~\ref{sec:requisitos-mercado}), e nenhum tem como objeto a lavagem de
+dinheiro, o beneficiário final ou as empresas de fachada
+(Seção~\ref{sec:requisitos-novos}). A avaliação mede o modelo, e quase
 nunca o trabalho do investigador: só 7 estudos avaliam com usuários. A
 preservação da evidência também é exceção: só 7 estudos tratam
 explicitamente da cadeia de custódia, e nenhum avalia se a evidência é
@@ -93,7 +106,7 @@ de ameaças com três alvos: o investigador, a ferramenta e os dados
 (Seção~\ref{sec:rsl1-qp3-qp4}). Nenhum estudo relata teste de segurança da
 própria ferramenta. A revisão confirma o núcleo probatório do levantamento,
 a cadeia de custódia com a trilha de auditoria, e não dá respaldo às
-tipologias de corrupção nem às fontes brasileiras, que continuam no projeto
+tipologias de corrupção e de lavagem nem às fontes brasileiras, que continuam no projeto
 pelo levantamento e pela legislação (Seção~\ref{sec:rsl1-rastreabilidade}).
 
 \textbf{RSL 2.} O ganho de produtividade existe, mas é condicional e menor do
@@ -159,6 +172,23 @@ tratamento o CPF completo nas capturas brutas e na comparação entre capturas
 e o CNPJ alfanumérico (Seção~\ref{sec:desenv-limitacoes}).
 % PENDENTE: atualizar quando a correção do CPF/CNPJ alfanumérico terminar.
 
+\textbf{Dados abertos e lavagem de dinheiro.} Com dados abertos, as
+tipologias de lavagem só apontam indícios cadastrais. A movimentação
+financeira não é aberta e só entra pela importação separada do RF10, para
+dado recebido por ordem judicial, que neste trabalho está previsto só com
+dados sintéticos. O CNPJ aberto não tem o número de empregados nem o histórico de
+sócios, e nenhuma fonte usada traz parentesco. A linha do tempo patrimonial
+só vale para quem foi candidato em ao menos duas eleições, com os valores
+que o próprio candidato declarou, e a desproporção é indício, e não prova
+(Seção~\ref{sec:desenv-limitacoes}). Duas decisões do orientador estão
+pendentes: o uso do CPF dos candidatos, reduzido aos 6 dígitos centrais,
+para ligar candidato, sócio e servidor; e a fonte da remuneração dos
+servidores da PCDF e do GDF, já que a API do Portal da Transparência
+descreve as rotas de servidores como do Poder Executivo Federal e a
+cobertura desses órgãos não foi conferida.
+% PENDENTE: decisões do orientador sobre o CPF dos candidatos e sobre a
+% cobertura da PCDF e do GDF no Portal federal.
+
 \textbf{Avaliação.} O protótipo ainda não foi avaliado com policiais
 (Capítulo~\ref{cap:avaliacao}). Sem essa avaliação, não há como afirmar que
 ele apoia o trabalho do investigador nem que se aproxima das ferramentas
@@ -201,7 +231,12 @@ mais do que este trabalho entrega. As medidas a seguir são decisão do autor:
 
 \textbf{Fontes e tipologias.} Acrescentar as demais fontes do levantamento,
 como diários oficiais, tribunais de contas, juntas comerciais e cartórios,
-e as tipologias ainda não implementadas (Tabela~\ref{tab:backlog}). Nas
+e as tipologias ainda não implementadas (Tabela~\ref{tab:backlog}). No
+escopo de lavagem, concluir as histórias que aguardam decisão do
+orientador (H46 e H50 a H53), depois da decisão sobre o CPF dos candidatos,
+e um conector distrital de remuneração, se a PCDF e o GDF não estiverem no
+Portal federal. O uso do RF10 com dados reais cabe só ao órgão, sob ordem
+judicial. Nas
 fontes já ligadas, falta baixar o edital pelo próprio conector, ler os
 editais escaneados por OCR, buscar no CNPJ as outras empresas de um sócio do
 caso e ler arquivos do TSE acima do teto atual

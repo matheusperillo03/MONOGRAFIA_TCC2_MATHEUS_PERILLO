@@ -1,12 +1,17 @@
 % Resumo (NBR 6028). Números iguais aos dos capítulos (situação de 17/11/2026).
-% "39 histórias": número de linhas da Tabela tab:backlog (gerado/backlog.tex),
-% igual à soma da Tabela tab:moscow-resumo (11 + 7 + 15 + 6).
+% "56 histórias": número de linhas da Tabela tab:backlog (gerado/backlog.tex),
+% igual à soma da Tabela tab:moscow-resumo (11 + 13 + 24 + 8).
+% Palavras-chave: "lavagem de dinheiro" entrou no lugar de "contratações
+% públicas", para seguir o título (decisão do autor, 17/11/2026).
+% PENDENTE: atualizar a frase sobre as tipologias de lavagem quando a
+% implementação em andamento terminar.
 % PENDENTE: atualizar os números se R2 mudar alguma regra das revisões, e a
 % frase final se a avaliação com usuários for executada.
 \begin{resumo}
  Este trabalho desenvolve um protótipo de buscador de inteligência de fontes
- abertas (OSINT) para a polícia judiciária apurar fraude em contratações
- públicas brasileiras. Os requisitos partiram de um levantamento com
+ abertas (OSINT) para a polícia judiciária investigar corrupção e lavagem de
+ dinheiro com dados abertos brasileiros, a partir de contratações públicas,
+ empresas, candidaturas e bens declarados. Os requisitos partiram de um levantamento com
  especialista e foram confrontados com a legislação e com uma revisão
  sistemática da literatura (RSL 1). Uma segunda revisão (RSL 2) orientou o
  processo de desenvolvimento. As duas revisões são relatadas segundo o PRISMA
@@ -15,8 +20,9 @@
  1.928 registros recuperados, restaram 1.139 após a remoção de duplicatas, e
  57 estudos primários foram incluídos, 23 da busca nas bases e 34 do
  \textit{snowballing}. Nenhum estudo é do Brasil ou de outro país da América
- Latina, nenhum trata de fraude ou corrupção em contratações públicas, e só 7
- tratam explicitamente da cadeia de custódia. A RSL 2 trata dos
+ Latina, nenhum trata de fraude ou corrupção em contratações públicas,
+ nenhum tem a lavagem de dinheiro como objeto, e só 7 tratam explicitamente
+ da cadeia de custódia. A RSL 2 trata dos
  efeitos de assistentes e agentes baseados em modelos de linguagem de grande
  porte no desenvolvimento de software. Dos 8.181 registros, restaram 4.323
  após a remoção de duplicatas, e 130 relatos, correspondentes a 129 estudos,
@@ -26,12 +32,15 @@
  direção negativa. A comparação com sete ferramentas existentes, feita pela
  documentação oficial, não encontrou nenhuma que reúna fontes abertas
  brasileiras de contratações, tipologias de fraude e preservação da prova
- para o inquérito. Os requisitos foram escritos como 39 histórias de usuário,
+ para o inquérito. Os requisitos foram escritos como 56 histórias de usuário,
  priorizadas pelo método MoSCoW. O protótipo, de código aberto, tem coleta só
  passiva, cadeia de custódia com \textit{hash} SHA-256 e carimbo de tempo em
  cada captura, trilha de auditoria só de acréscimo, dez tipologias de fraude
- por regras explícitas, cujos alertas são pistas que o investigador confirma
- ou descarta, e extração de entidades por IA opcional e local. Foi
+ em contratações por regras explícitas, cujos alertas são pistas que o
+ investigador confirma ou descarta, e extração de entidades por IA opcional
+ e local. As tipologias de lavagem com dados abertos, que só dão indícios
+ cadastrais, e a importação separada de dados bancários sob ordem judicial,
+ só com dados sintéticos, estão no \textit{backlog}. Foi
  desenvolvido com agentes de IA, aplicando parte das práticas candidatas da
  RSL 2, e tem
  342 testes automatizados no \textit{back-end} e 234 no \textit{front-end}.
@@ -41,12 +50,13 @@
  protótipo tem testes automatizados com dados sintéticos e teve os conectores
  conferidos contra as fontes reais, mas ainda não foi avaliado com policiais. Conclui-se que a literatura
  e as ferramentas analisadas não cobrem a combinação de domínio de
- contratações públicas e preservação da prova, e que o protótipo mostra que
- essa combinação pode ser implementada.
+ contratações públicas e preservação da prova, que a literatura revisada não
+ trata de lavagem de dinheiro, e que o protótipo mostra que essa combinação
+ pode ser implementada.
 
  \vspace{\onelineskip}
 
  \noindent
  \textbf{Palavras-chave}: inteligência de fontes abertas. investigação
- criminal. contratações públicas. cadeia de custódia. revisão sistemática.
+ criminal. lavagem de dinheiro. cadeia de custódia. revisão sistemática.
 \end{resumo}

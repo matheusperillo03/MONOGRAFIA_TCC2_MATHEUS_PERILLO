@@ -29,12 +29,12 @@ RNF12 & Resiliência da coleta: retentativa, controle de taxa, registro de falha
 \textbf{Prioridade} & \textbf{Histórias} & \textbf{Feitas no protótipo} \\
 \hline
 Must have & 11 & 11 \\
-Should have & 7 & 5 \\
-Could have & 15 & 8 \\
-Won't have (nesta entrega) & 6 & 1 \\
+Should have & 13 & 5 \\
+Could have & 24 & 8 \\
+Won't have (nesta entrega) & 8 & 1 \\
 \hline
 \end{tabular}
-\fonte{Elaborada pelo autor.}
+\fonte{Elaborada pelo autor. MoSCoW de H40 a H57: decisão do autor, a validar pelo orientador.}
 \end{table}
 
 \begin{small}
@@ -46,16 +46,19 @@ Won't have (nesta entrega) & 6 & 1 \\
 H01 & Como investigador, quero coletar empresas e sócios dos dados abertos do CNPJ e contratos do PNCP, para reunir num caso dados oficiais de fontes diferentes. & RF01, RNF10 & M & feito \\
 H15 & Como investigador, quero saber, em cada coleta, quais fontes falharam e por quê, com retentativa automática, para não tirar conclusões de dados incompletos. & RNF12 & S & parcial \\
 H19 & Como investigador, quero coletar também do Portal da Transparência e do TSE, para cruzar contratos com sanções e doações de campanha. & RF01 & C & feito \\
-H25 & Como investigador, quero importar dados obtidos por ordem judicial (SIMBA, RIF do COAF, extratos telefônicos), separados do dado aberto, para analisá-los no mesmo caso. & RF10 & W & fora desta entrega \\
+H25 & Como investigador, quero importar outros dados obtidos por ordem judicial (RIF do COAF, extratos telefônicos), separados do dado aberto, para analisá-los no mesmo caso. & RF10 & W & fora desta entrega \\
 H27 & Como investigador, quero coletar de serviços da dark web, para investigar mercados ilícitos. & novo & W & fora desta entrega \\
+H50 & Como investigador, quero coletar os bens declarados ao TSE pelos candidatos do caso em cada eleição, com a custódia de cada arquivo, para montar a linha do tempo patrimonial. & RF01, RF05 & S & aguarda orientador \\
+H54 & Como investigador, quero importar dados bancários recebidos por ordem judicial no leiaute oficial do Banco Central, com validação de cada arquivo e conferência do período e das contas autorizados, para analisá-los no caso sem digitação. & RF10 & C & a fazer \\
 \multicolumn{5}{l}{\textbf{E2. Entidades e vínculos}} \\
 H02 & Como investigador, quero que a mesma empresa ou pessoa seja unificada entre as fontes, com sugestão (e não fusão) quando só o nome coincide, para não confundir homônimos. & RF02 & M & feito \\
 H03 & Como investigador, quero ver o grafo de vínculos e o caminho entre duas entidades, para identificar sócios ocultos e cadeias societárias. & RF03 & M & feito \\
+H41 & Como investigador, quero um alerta quando a mesma pessoa administrar muitas empresas abertas em pouco tempo, para identificar possível laranja profissional. & RF03 & S & a fazer \\
+H42 & Como investigador, quero um alerta quando o controle de uma empresa do caso passar por várias pessoas jurídicas ou terminar em sócio estrangeiro, para identificar cadeias societárias em camadas. & RF03 & S & a fazer \\
 \multicolumn{5}{l}{\textbf{E3. Alertas e análise assistida}} \\
 H04 & Como investigador, quero alertas de tipologia (T1 a T3) que mostrem a regra, o motivo e as evidências com a fonte, para entender por que cada alerta foi gerado. & RF04, RNF05 & M & feito \\
 H12 & Como investigador, quero marcar cada alerta como confirmado ou descartado, com justificativa registrada na auditoria, para que o alerta seja tratado como pista e a decisão fique com um humano. & RF12 & S & feito \\
 H13 & Como investigador, quero ver os alertas ordenados por severidade, com a política de erro de cada tipologia declarada, para priorizar o que analisar primeiro. & RF14 & S & feito \\
-H20 & Como investigador, quero a linha do tempo patrimonial de uma pessoa comparada com a renda declarada, para identificar indício de enriquecimento ilícito. & RF05 & C & a fazer \\
 H21 & Como investigador, quero ver os eventos do caso numa linha do tempo e, quando houver endereço, num mapa, para perceber padrões temporais e geográficos. & RF15 & C & a fazer \\
 H22 & Como investigador, quero extrair entidades de documentos com apoio de LLM, sempre com o trecho e a fonte citados, para acelerar a leitura sem perder a verificabilidade. & RF13, RNF05 & C & parcial \\
 H28 & Como investigador, quero classificar automaticamente textos e imagens por tipo de crime, para triar grandes volumes. & novo & W & fora desta entrega \\
@@ -67,6 +70,18 @@ H34 & Como investigador, quero um alerta quando um sócio da empresa contratada 
 H35 & Como investigador, quero um alerta de termos aditivos acima do limite legal, para identificar alteração indevida de contratos. & RF04 & C & feito \\
 H36 & Como investigador, quero que o texto de editais seja analisado em busca de cláusulas restritivas, com o trecho citado, para identificar direcionamento da licitação. & RF13 & C & parcial \\
 H39 & Como investigador, quero um alerta quando um doador de campanha (ou empresa de um sócio doador) for contratado pelo ente do candidato eleito, para identificar possível retribuição de doação. & RF04 & C & feito \\
+H40 & Como investigador, quero um alerta quando muitas empresas estiverem registradas no mesmo endereço, mesmo sem contrato público, para identificar possível domicílio de fachada. & RF04, RF03 & S & a fazer \\
+H43 & Como investigador, quero um alerta quando um MEI, microempresa ou empresa de pequeno porte receber em contratos públicos, no ano, mais que o limite de receita do seu regime, para identificar empresa de fachada. & RF04 & S & a fazer \\
+H45 & Como investigador, quero um alerta quando uma empresa recém-aberta contratada tiver sócio que possivelmente é servidor, eleito ou PEP, para identificar desvio por empresa criada para contratar. & RF04 & C & a fazer \\
+H46 & Como investigador, quero um alerta quando um eleito ou PEP for possivelmente sócio de empresa contratada pelo próprio ente durante o mandato, para identificar autocontratação. & RF04 & C & aguarda orientador \\
+H47 & Como investigador, quero um alerta quando a contratada compartilhar sócio-administrador ou endereço com empresa sancionada, ou tiver sócio expulso da administração, para identificar empresa sucessora de sancionada. & RF04 & C & a fazer \\
+H48 & Como investigador, quero um alerta de combinação quando a mesma entidade acumular vários alertas, com a lista de cada um e das evidências, para priorizar o que tem mais sinais juntos. & RF14, RF12 & C & a fazer \\
+H49 & Como investigador, quero sinais fracos (contato compartilhado, sócio em faixa etária atípica, excesso de CNAEs) que só pesem no alerta de combinação, para não gerar alertas isolados de baixo valor. & RF04 & C & a fazer \\
+H51 & Como investigador, quero ver a evolução dos bens declarados de um candidato entre eleições, e a renda pública conhecida quando houver, com alerta só quando a variação superar a renda, para identificar indício de enriquecimento ilícito. & RF05 & S & aguarda orientador \\
+H52 & Como investigador, quero um alerta quando o candidato pagar, com recursos de campanha, empresa de atividade sem relação com campanha, recém-aberta ou com sinais de fachada, para identificar desvio de recursos de campanha. & RF04 & C & aguarda orientador \\
+H53 & Como investigador, quero um alerta quando um servidor doar a campanha valor desproporcional à sua remuneração pública, para identificar possível doação por interposta pessoa. & RF04 & W & aguarda orientador \\
+H56 & Como investigador, quero saber se o sócio de uma contratada recebe benefício social, para identificar possível laranja. & RF03 & W & fora desta entrega \\
+H57 & Como investigador, quero um alerta quando uma entidade sem fins lucrativos que recebe convênio for recém-aberta, estiver no CEPIM ou tiver dirigente que possivelmente é eleito, PEP, servidor do concedente ou sócio de empresas do mesmo ramo, para identificar desvio por convênio. & RF04, RF03 & C & a fazer \\
 \multicolumn{5}{l}{\textbf{E4. Prova e cadeia de custódia}} \\
 H05 & Como investigador, quero que cada carga coletada seja guardada com hash SHA-256, carimbo de tempo UTC e origem, e que eu possa verificar a integridade depois, para que a prova se sustente em juízo. & RF07 & M & feito \\
 H08 & Como investigador, quero exportar o caso (entidades, alertas, evidências e custódia) em JSON e Markdown, para anexar ao relatório de investigação. & RF09 & M & feito \\
@@ -85,10 +100,12 @@ H16 & Como desenvolvedor, quero análise estática de segurança e os testes com
 H17 & Como delegado responsável, quero definir a finalidade e o prazo de retenção de cada caso, para aplicar a minimização dos dados coletados. & RNF04 & S & feito \\
 H23 & Como responsável pelo sistema, quero MFA, acesso por caso e criptografia em repouso, para proteger dados de investigação. & RNF01 & C & parcial \\
 H26 & Como investigador, quero coletar por infraestrutura não atribuível à polícia, para não alertar o alvo. & RNF03 & W & fora desta entrega \\
+H55 & Como delegado responsável, quero que o dado sob ordem judicial fique numa base separada, com chave própria, marcado com o número da decisão, fora das exportações por padrão e com cada leitura auditada, para não misturá-lo ao dado aberto. & RF10, RNF02, RNF04 & C & a fazer \\
 \multicolumn{5}{l}{\textbf{E7. Monitoramento e evolução}} \\
 H18 & Como investigador, quero ser avisado quando mudar o quadro societário de uma empresa do caso ou surgir contrato novo, para acompanhar alvos sem refazer a coleta. & RF06 & C & feito \\
 H29 & Como investigador, quero consultas de vínculo em segundos sobre grafos com milhões de nós, para trabalhar com a base completa do CNPJ. & RNF06 & W & feito \\
+H44 & Como investigador, quero um alerta quando nenhum fundador continuar na empresa ou o quadro societário mudar pouco antes de um contrato, para identificar troca de laranjas. & RF03, RF06 & C & a fazer \\
 \hline
-\multicolumn{5}{p{14cm}}{\footnotesize Fonte: elaborada pelo autor. A evidência de cada história está em \texttt{docs/backlog/backlog.md}.}\\
+\multicolumn{5}{p{14cm}}{\footnotesize Fonte: elaborada pelo autor. A evidência de cada história está em \texttt{docs/backlog/backlog.md}. MoSCoW de H40 a H57: decisão do autor, a validar pelo orientador.}\\
 \end{longtable}
 \end{small}

@@ -2,8 +2,9 @@
 \begin{resumo}[Abstract]
  \begin{otherlanguage*}{english}
    This work develops a prototype open source intelligence (OSINT) search
-   tool for the Brazilian judicial police to investigate fraud in public
-   procurement. The requirements came from an elicitation with an expert and
+   tool for the Brazilian judicial police to investigate corruption and money
+   laundering with Brazilian open data, starting from public procurement,
+   companies, candidacies and declared assets. The requirements came from an elicitation with an expert and
    were checked against the legislation and a systematic literature review
    (SLR 1). A second review (SLR 2) guided the development process. Both
    reviews are reported following PRISMA 2020 and SEGRESS. SLR 1 covers OSINT
@@ -11,8 +12,8 @@
    retrieved, 1,139 remained after duplicate removal, and 57 primary studies
    were included, 23 from the database search and 34 from snowballing. No
    study is from Brazil or any other Latin American country, none addresses
-   fraud or corruption in public procurement, and only 7 explicitly address
-   the chain of custody. SLR 2 covers the effects of
+   fraud or corruption in public procurement, none has money laundering as
+   its subject, and only 7 explicitly address the chain of custody. SLR 2 covers the effects of
    assistants and agents based on large language models on software
    development. Of the 8,181 records, 4,323 remained after duplicate removal,
    and 130 reports, corresponding to 129 studies, were included. On
@@ -22,12 +23,16 @@
    report a negative direction. A comparison with seven existing tools, based
    on their official documentation, found none that combines Brazilian open
    procurement data sources, fraud typologies and evidence preservation for
-   the police inquiry. The requirements were written as 39 user stories,
+   the police inquiry. The requirements were written as 56 user stories,
    prioritized with the MoSCoW method. The open source prototype has passive
    collection only, a chain of custody with a SHA-256 hash and a timestamp for
-   each capture, an append-only audit trail, ten fraud typologies based on
-   explicit rules, whose alerts are leads that the investigator confirms or
-   dismisses, and optional, local AI-based entity extraction. It was
+   each capture, an append-only audit trail, ten procurement fraud
+   typologies based on explicit rules, whose alerts are leads that the
+   investigator confirms or dismisses, and optional, local AI-based entity
+   extraction. The money laundering typologies with open data, which only
+   yield registry-based indications, and a separate import of bank data
+   obtained under court order, with synthetic data only, are in the
+   backlog. It was
    developed with AI agents, applying some of the candidate practices from
    SLR 2, and has 342
    automated back-end tests and 234 front-end tests. The review results are
@@ -35,13 +40,14 @@
    confirmation by the two reviewers. The prototype has automated tests with synthetic
    data and its connectors were checked against the real sources, but it has not yet been evaluated with police officers. The conclusion is that the literature and the tools
    analyzed do not cover the combination of the public procurement domain and
-   evidence preservation, and that the prototype shows that this combination
-   can be implemented.
+   evidence preservation, that the reviewed literature does not address
+   money laundering, and that the prototype shows that this combination can
+   be implemented.
 
    \vspace{\onelineskip}
 
    \noindent
    \textbf{Keywords}: open source intelligence. criminal investigation.
-   public procurement. chain of custody. systematic review.
+   money laundering. chain of custody. systematic review.
  \end{otherlanguage*}
 \end{resumo}

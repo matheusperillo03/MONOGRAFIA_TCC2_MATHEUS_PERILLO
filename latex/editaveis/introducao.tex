@@ -1,9 +1,221 @@
-\chapter*[Introdução]{Introdução}
-\addcontentsline{toc}{chapter}{Introdução}
+% ---------------------------------------------------------------------------
+% Capítulo de Introdução.
+% Base: capítulos de metodologia, resultados, requisitos e desenvolvimento
+% (situação de 17/11/2026), docs/rsl1-protocolo.md, docs/rsl2-protocolo.md e
+% docs/referencias-verificadas.md (seção "Introdução (17/11/2026)").
+% Os números repetem os dos capítulos; não foram recalculados.
+% Decisão do autor (17/11/2026): a introdução passa a ser capítulo numerado,
+% como os demais capítulos do texto, para que as seções não saiam como "0.1".
+% ---------------------------------------------------------------------------
+\begingroup
+\setlength{\emergencystretch}{3em}
 
-Este documento apresenta considerações gerais e preliminares relacionadas 
-à redação de relatórios de Projeto de Graduação da Faculdade UnB Gama 
-(FGA). São abordados os diferentes aspectos sobre a estrutura do trabalho, 
-uso de programas de auxilio a edição, tiragem de cópias, encadernação, etc.
+\chapter{Introdução}
+\label{cap:introducao}
 
-Este template é uma adaptação do ABNTeX2\footnote{\url{https://github.com/abntex/abntex2/}}.
+% ===========================================================================
+\section{Contextualização}
+\label{sec:intro-contexto}
+
+A Lei nº 14.133/2021 estabelece as normas gerais de licitação e contratação
+das administrações públicas diretas, autárquicas e fundacionais da União, dos
+Estados, do Distrito Federal e dos Municípios \cite[art. 1º]{brasil2021lei14133}.
+A mesma lei acrescentou ao Código Penal um capítulo sobre os crimes em
+licitações e contratos administrativos \cite[art. 178]{brasil2021lei14133}.
+Entre esses crimes estão a contratação direta ilegal, a frustração do caráter
+competitivo da licitação e a fraude em licitação ou contrato
+\cite[art. 178]{brasil2021lei14133}.
+
+A Constituição atribui à Polícia Federal as funções de polícia judiciária da União e às
+polícias civis, ressalvada a competência da União, as funções de polícia
+judiciária e a apuração de infrações penais, exceto as militares
+\cite[art. 144, § 1º, IV, e § 4º]{brasil1988constituicao}. O levantamento
+de requisitos deste trabalho partiu de uma sugestão do orientador para um
+aplicativo OSINT de investigação de corrupção e lavagem de dinheiro na
+Polícia Civil do Distrito Federal. Ele tem dois eixos: correlacionar dados
+abertos heterogêneos (pessoas, empresas, contratos, bens, redes) e produzir
+prova que se sustente em juízo (Seção~\ref{sec:metodologia-requisitos}).
+
+Parte desses dados é aberta. A inteligência de fontes abertas (OSINT, do
+inglês \textit{open source intelligence}) é um tipo de inteligência que
+aproveita a natureza aberta da coleta, do processamento e da correlação de
+dados do ciberespaço para gerar conhecimento \cite{pastorgalindo2020}. Revisões recentes tratam das aplicações de
+inteligência artificial (IA) à OSINT \cite{browne2024} e das implicações
+éticas, legais e sociais da OSINT com IA \cite{ghioni2024}. Nenhuma das duas
+restringe o escopo ao uso por órgãos policiais e de inteligência
+(Seção~\ref{sec:metodologia-rsl}).
+
+Ao mesmo tempo, modelos de linguagem de grande porte (LLMs) são aplicados a
+tarefas de engenharia de software \cite{hou2024}, inclusive como agentes
+\cite{liu2026} e como assistentes dos desenvolvedores \cite{mohamed2026}. Este trabalho
+usou agentes de codificação para desenvolver o protótipo
+(Seção~\ref{sec:desenv-processo}). Por isso, também reuniu a evidência sobre
+esse modo de desenvolver.
+
+% ===========================================================================
+\section{Problema}
+\label{sec:intro-problema}
+
+Dos dois eixos do levantamento decorrem três condições para uma ferramenta
+OSINT de apoio à polícia judiciária na apuração de fraude em contratações
+públicas (decisão do autor). Precisa ler as fontes abertas
+brasileiras de contratações e de empresas. Precisa gerar indícios que o
+investigador possa conferir. E precisa preservar cada dado coletado de modo
+que ele possa servir de prova no inquérito. Há ainda um limite legal: a
+infiltração virtual de agentes de polícia depende de ordem judicial, e é nula
+a prova obtida sem a observância dessas regras
+\cite[art. 10-A]{brasil2013lei12850}. Por isso, a coleta da ferramenta foi
+definida como só passiva, para não configurar infiltração virtual sem ordem
+judicial (Seção~\ref{sec:requisitos-mercado}).
+
+O trabalho investiga se a literatura e as ferramentas existentes atendem a
+essas condições e, se não atendem, como um protótipo pode reunir os controles
+que faltam. Investiga também como desenvolver esse protótipo com assistentes
+e agentes de IA sem perder o controle sobre a qualidade e a segurança do
+código. As perguntas de pesquisa de cada revisão estão nas
+Tabelas~\ref{tab:qp-rsl1} e~\ref{tab:qp-rsl2}.
+
+% ===========================================================================
+\section{Objetivos}
+\label{sec:intro-objetivos}
+
+\subsection{Objetivo geral}
+
+Desenvolver um protótipo de buscador OSINT para a polícia judiciária apurar
+fraude em contratações públicas brasileiras, com requisitos fundamentados
+numa revisão sistemática da literatura, na legislação e no levantamento com
+especialista, e com controles de preservação da prova desde a coleta.
+
+\subsection{Objetivos específicos}
+
+\begin{enumerate}
+	\item Identificar e caracterizar, numa revisão sistemática (RSL 1), as
+	ferramentas, técnicas e requisitos de sistemas de busca OSINT voltados a
+	órgãos policiais e de inteligência, inclusive o uso de IA e os desafios
+	legais, éticos e de segurança.
+	\item Sintetizar, numa segunda revisão sistemática (RSL 2), as evidências
+	empíricas sobre os efeitos de assistentes e agentes baseados em LLMs no
+	desenvolvimento de software, nas dimensões de produtividade, qualidade,
+	segurança, custo e processo, e derivar delas práticas para o
+	desenvolvimento do protótipo.
+	\item Confrontar o levantamento de requisitos com a evidência da RSL 1 e
+	organizar o resultado em histórias de usuário, agrupadas em épicos e
+	priorizadas pelo método MoSCoW.
+	\item Comparar o buscador com ferramentas existentes, para identificar o
+	que falta a elas e ao protótipo.
+	\item Implementar um protótipo com coleta só passiva, cadeia de custódia em
+	cada captura, trilha de auditoria, alertas de tipologias de fraude tratados
+	como pistas e IA opcional e local.
+	\item Planejar a avaliação do protótipo com usuários policiais.
+\end{enumerate}
+% PENDENTE: o objetivo 6 depende do capítulo de avaliação, em elaboração. Se
+% a avaliação com usuários for executada, trocar "Planejar a avaliação" por
+% "Avaliar"; se não for, manter e registrar como trabalho futuro.
+
+% ===========================================================================
+\section{Justificativa}
+\label{sec:intro-justificativa}
+
+A justificativa vem de duas lacunas, uma na literatura e outra nas
+ferramentas.
+
+\textbf{Lacuna na literatura.} A RSL 1 incluiu 57 estudos primários
+(Seção~\ref{sec:rsl1-selecao}). Nenhum deles é do Brasil ou de outro país da
+América Latina, e nenhum usa dados em português
+(Seção~\ref{sec:resultados-rsl1}). Nenhum trata de fraude ou corrupção em
+contratações públicas (Seção~\ref{sec:requisitos-mercado}). A preservação da
+evidência também é exceção: só 7 estudos tratam explicitamente da cadeia de
+custódia, e nenhum avalia se a evidência é aceita em juízo
+(Seção~\ref{sec:rsl1-qp5}). Só quatro estudos juntam cadeia de custódia e
+trilha de auditoria, e nenhum desses quatro tem grafo de vínculos
+(Seção~\ref{sec:requisitos-mercado}).
+
+\textbf{Lacuna nas ferramentas.} A comparação com sete ferramentas usou a
+documentação oficial de cada uma (Seção~\ref{sec:requisitos-mercado}). As
+plataformas de análise de vínculos não mostram, na documentação consultada,
+fontes brasileiras integradas nem tipologias de fraude em contratações. As
+ferramentas de controle da Controladoria-Geral da União (CGU) cobrem o
+domínio, mas são ferramentas de auditoria, e a documentação consultada não
+descreve preservação da evidência com \textit{hash} nem trilha de auditoria
+das consultas. Na ferramenta de captura de evidências, a documentação
+consultada não mostra grafo de vínculos nem tipologias. Segundo a
+documentação consultada, nenhuma ferramenta comparada reúne esses recursos
+numa só ferramenta para a polícia judiciária.
+
+\textbf{Desenvolvimento com IA.} A RSL 2 mostra que o ganho de produtividade
+com IA é condicional e que o código gerado não é seguro por padrão
+(Seções~\ref{sec:resultados-rsl2-qp1} e~\ref{sec:resultados-rsl2-qp3-qp4}).
+Um protótipo para uso policial, desenvolvido com agentes de IA, precisa de
+práticas que controlem esses riscos. A RSL 2 também não encontrou estudo
+sobre o desenvolvimento individual de um produto completo em contexto
+acadêmico (Seção~\ref{sec:resultados-rsl2-qp5}).
+
+% ===========================================================================
+\section{Contribuições}
+\label{sec:intro-contribuicoes}
+
+As contribuições do trabalho são:
+\begin{itemize}
+	\item uma revisão sistemática sobre ferramentas OSINT para órgãos policiais
+	e de inteligência, com a rastreabilidade de cada achado para os requisitos
+	do buscador (Seção~\ref{sec:resultados-rsl1});
+	\item uma revisão sistemática sobre os efeitos de assistentes e agentes de
+	IA no desenvolvimento de software, com uma lista de práticas candidatas
+	para o desenvolvimento (Seção~\ref{sec:resultados-rsl2});
+	\item um \textit{backlog} priorizado, em que cada história aponta o
+	requisito que atende e a evidência que a sustenta, e uma comparação com
+	ferramentas existentes (Capítulo~\ref{cap:requisitos});
+	\item um protótipo de código aberto, sob a licença MIT, que reúne coleta
+	passiva, cadeia de custódia, trilha de auditoria, alertas explicados e IA
+	opcional e local, com o modelo de ameaças ligado aos testes automatizados
+	(Capítulo~\ref{cap:desenvolvimento});
+	\item o registro do processo de desenvolvimento com agentes de IA, com
+	modelo, versão, duração e \textit{tokens} de cada execução
+	(Seção~\ref{sec:desenv-processo}).
+\end{itemize}
+
+Os resultados das duas revisões são provisórios. A leitura do texto completo,
+o \textit{snowballing}, a avaliação de qualidade, a extração e a síntese foram
+feitos pela IA como terceira opinião, com regras aceitas pelo autor (R1). O
+orientador (R2) ainda confirma essas regras, e a avaliação independente dos
+dois revisores na etapa 2 ainda não foi feita
+(Seções~\ref{sec:resultados-rsl1} e~\ref{sec:resultados-rsl2}). Os testes
+automatizados do protótipo usam só dados sintéticos, e as fontes reais
+passaram só por um teste de fumaça. O protótipo ainda não foi avaliado com
+policiais
+(Capítulo~\ref{cap:desenvolvimento} e Seção~\ref{sec:desenv-limitacoes}).
+% PENDENTE: atualizar este parágrafo quando R2 confirmar as regras e a
+% leitura independente de R1 e R2 for feita.
+
+% ===========================================================================
+\section{Organização do trabalho}
+\label{sec:intro-organizacao}
+
+O Capítulo~\ref{cap:metodologia} descreve a classificação da pesquisa, as
+etapas do trabalho, o método das duas revisões sistemáticas, a forma de
+registro que as torna verificáveis e o levantamento de requisitos. Inclui a
+declaração do uso de IA nas revisões.
+
+O Capítulo~\ref{cap:resultados-rsl} apresenta os resultados das duas
+revisões: a seleção dos estudos, as características, a qualidade e a síntese
+de cada questão de pesquisa. A RSL 1 termina na rastreabilidade dos achados
+para os requisitos do buscador, e a RSL 2, nas práticas candidatas para o
+desenvolvimento.
+
+O Capítulo~\ref{cap:requisitos} junta os requisitos do levantamento e da RSL
+1, compara o buscador com ferramentas existentes, escreve os requisitos como
+histórias de usuário e os prioriza.
+
+O Capítulo~\ref{cap:desenvolvimento} descreve o protótipo: a arquitetura, os
+casos de uso, o modelo de dados, os fluxos, a interface de programação, as
+decisões de arquitetura, o modelo de ameaças, a verificação, o processo de
+desenvolvimento com IA e as limitações.
+
+% PENDENTE: quando a avaliação for executada, incluir os resultados aqui.
+O Capítulo~\ref{cap:avaliacao} apresenta o planejamento da avaliação do protótipo
+com usuários policiais.
+
+O Capítulo~\ref{cap:consideracoes} retoma os objetivos, os principais
+achados, as contribuições, as limitações e os trabalhos futuros.
+
+\endgroup

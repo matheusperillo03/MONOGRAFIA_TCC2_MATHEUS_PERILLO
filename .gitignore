@@ -22,3 +22,10 @@
 
 # Exportações das bases (RIS/BibTeX/CSV): ficam só no computador local
 docs/exportacoes/
+
+# Pasta docs fora do repositório por decisão do autor (17/11/2026); será liberada depois.
+docs/
+
+# Arquivos locais
+.DS_Store
+.claude/

@@ -1,63 +1,69 @@
 % Gerado por docs/sistema/gera_api_tex.py a partir do OpenAPI do back-end. Não editar à mão.
 \begin{small}
-\begin{longtable}{lp{6.4cm}p{6.6cm}}
+\begin{longtable}{@{}p{1.5cm}p{5.7cm}p{7.4cm}@{}}
 \caption{Endpoints da API do protótipo}\rotulounico{tab:api}\\
 \hline
 \textbf{Método} & \textbf{Caminho} & \textbf{Descrição} \\ \hline\endhead
-GET & \texttt{/casos/\{caso\_id\}/alertas} & Alertas do caso por severidade (alta primeiro), com a política de erro da tipologia (RF14) e a situação de cada um (RF12). \\
-POST & \texttt{/casos/\{caso\_id\}/alertas/executar} & Executa as tipologias T1 a T10 e reconcilia os alertas do caso (RF04). \\
-POST & \texttt{/casos/\{caso\_id\}/alertas/\{alerta\_id\}/decisao} & Confirma ou descarta o alerta, com justificativa (RF12, H12). \\
-GET & \texttt{/casos/\{caso\_id\}/anotacoes} & Anotações do caso, da mais recente para a mais antiga; com ``alvo\_tipo`` e ``alvo\_id``, só as de uma entidade ou de um alerta. \\
-POST & \texttt{/casos/\{caso\_id\}/anotacoes} & Anota uma entidade ou um alerta do caso. \\
-GET & \texttt{/casos/\{caso\_id\}/avisos} & Avisos de novidade do caso, do mais recente para o mais antigo. \\
-POST & \texttt{/casos/\{caso\_id\}/avisos/\{aviso\_id\}/lido} & Marca um aviso de novidade como lido (H18). \\
-GET & \texttt{/casos/\{caso\_id\}/caminho} & Caminho entre duas entidades, por busca bidirecional no banco (RF03, H29). \\
-POST & \texttt{/casos/\{caso\_id\}/capturas/\{captura\_id\}/extracao-ia} & Roda o modelo local sobre o texto da captura. \\
-GET & \texttt{/casos/\{caso\_id\}/capturas/\{captura\_id\}/texto} & O texto do documento capturado, para conferir o trecho citado ao lado do original. \\
-GET & \texttt{/casos} & Só os casos de que o usuário é membro (H23). \\
-POST & \texttt{/casos} & Cria um caso com finalidade e prazo de retenção obrigatórios; o criador vira responsável (H17, H23). \\
-GET & \texttt{/casos/\{caso\_id\}} & Detalhe do caso, com o papel do usuário e as contagens. \\
-GET & \texttt{/casos/\{caso\_id\}/coletas} & Histórico das coletas do caso, da mais recente para a mais antiga (RNF12, H15). \\
-POST & \texttt{/casos/\{caso\_id\}/coletas} & Executa uma coleta passiva numa fonte, grava as capturas na custódia e resolve as entidades (RF01, RF07). \\
-GET & \texttt{/casos/\{caso\_id\}/coletas/\{coleta\_id\}/comparacao} & Compara as capturas de uma coleta com as de outra do mesmo caso e da mesma fonte. \\
-POST & \texttt{/casos/\{caso\_id\}/coletas/\{coleta\_id\}/recoletar} & Repete uma coleta do caso (mesma fonte e mesmos parâmetros) e compara as capturas novas com as da coleta original (RF07, H14). \\
-GET & \texttt{/casos/\{caso\_id\}/entidades} & Busca entidades do caso por nome, identificador e tipo (RF11). \\
-GET & \texttt{/casos/\{caso\_id\}/entidades/\{entidade\_id\}} & Detalhe da entidade, com fontes e vínculos. \\
-GET & \texttt{/casos/\{caso\_id\}/exportacao} & Grafo do caso em GraphML, CSV de entidades, CSV de vínculos ou ZIP com os três. \\
-GET & \texttt{/casos/\{caso\_id\}/extracoes-ia} & Execuções da extração no caso (inclusive as que falharam), da mais recente para a mais antiga, com modelo, versão, parâmetros e os itens recusados de cada uma. \\
-GET & \texttt{/casos/\{caso\_id\}/grafo} & Vizinhança de uma entidade em N níveis, consultada no banco (RF03, H29). \\
-GET & \texttt{/casos/\{caso\_id\}/membros} & Membros do caso e seus papéis (H23). \\
-POST & \texttt{/casos/\{caso\_id\}/membros} & Acrescenta um membro ao caso ou muda o papel de quem já é membro. \\
-POST & \texttt{/casos/\{caso\_id\}/membros/\{usuario\}/remover} & Tira o membro do caso (ele deixa de ver o caso na hora). \\
-GET & \texttt{/casos/\{caso\_id\}/monitoramentos} & Entidades monitoradas no caso (H18). \\
-POST & \texttt{/casos/\{caso\_id\}/monitoramentos} & Marca uma entidade do caso para acompanhamento. \\
-POST & \texttt{/casos/\{caso\_id\}/monitoramentos/\{monitoramento\_id\}/executar} & Executa o monitoramento agora (o agendador faz o mesmo na periodicidade escolhida). \\
-POST & \texttt{/casos/\{caso\_id\}/monitoramentos/\{monitoramento\_id\}/situacao} & Ativa ou desativa o monitoramento e, opcionalmente, muda a periodicidade. \\
-GET & \texttt{/casos/\{caso\_id\}/relatorio} & Relatório do caso em JSON ou Markdown: entidades, alertas e decisões, coletas, custódia (RF09). \\
-GET & \texttt{/casos/\{caso\_id\}/sugestoes-ia} & Sugestões da extração por IA, pendentes ou decididas (H22). \\
-POST & \texttt{/casos/\{caso\_id\}/sugestoes-ia/\{sugestao\_id\}/decisao} & O investigador aceita ou recusa a sugestão, com justificativa. \\
-GET & \texttt{/casos/\{caso\_id\}/tarefas} & Tarefas do caso (H37). \\
-POST & \texttt{/casos/\{caso\_id\}/tarefas} & Cria uma tarefa do caso, com histórico (H37). \\
-GET & \texttt{/casos/\{caso\_id\}/tarefas/\{tarefa\_id\}} & Detalhe da tarefa, com o histórico de alterações (H37). \\
-POST & \texttt{/casos/\{caso\_id\}/tarefas/\{tarefa\_id\}} & Altera os campos enviados (título, descrição, responsável, situação, prazo). \\
-GET & \texttt{/auditoria} & Trilha de auditoria (delegado e administrador) (RNF02). \\
-GET & \texttt{/auditoria/verificar} & Verifica o encadeamento por HMAC da trilha e a âncora (RNF02). \\
-POST & \texttt{/auth/login} & Primeira etapa: usuário e senha. \\
-POST & \texttt{/auth/logout} & Encerra a sessão atual na hora. \\
-POST & \texttt{/auth/mfa} & Segunda etapa: o código TOTP, com o token pendente em ``Authorization``. \\
-POST & \texttt{/auth/senha} & Troca a própria senha (exige a atual) e encerra as outras sessões do usuário. \\
-GET & \texttt{/auth/sessao} & Situação da sessão atual (etapa, expiração). \\
-GET & \texttt{/capturas/\{captura\_id\}} & Metadados de custódia de uma captura: hash, origem, instante, conector e versão (RF07). \\
-GET & \texttt{/capturas/\{captura\_id\}/comparar} & Compara a captura com outra da mesma origem (RF07, H14). \\
-GET & \texttt{/capturas/\{captura\_id\}/verificar} & Recalcula o SHA-256 da captura (decifrando, se cifrada) e compara com o registrado (RF07). \\
-GET & \texttt{/health} & Verificação de saúde do serviço, usada pelo Docker Compose. \\
-GET & \texttt{/ia} & Diz se a extração por IA está ligada e com qual provedor e modelo (não é dado de caso). \\
-GET & \texttt{/me} & Dados do usuário autenticado (login e perfil). \\
-GET & \texttt{/tipologias} & Catálogo das tipologias (T1 a T10): regra, base, política de erro e a configuração em vigor. \\
-GET & \texttt{/usuarios} & Lista as contas de usuário (só administrador). \\
-POST & \texttt{/usuarios} & Cria a conta com uma senha inicial. \\
-POST & \texttt{/usuarios/\{usuario\}} & Ativa ou desativa, muda o perfil, redefine a senha ou apaga o segundo fator (o usuário cadastra outro no próximo login). \\
+GET & \caminhoapi{/casos/{caso_id}/alertas} & Alertas do caso por severidade (alta primeiro), com a política de erro da tipologia (RF14) e a situação de cada um (RF12). \\
+POST & \caminhoapi{/casos/{caso_id}/alertas/executar} & Executa as tipologias de fraude (T1 a T10), de lavagem (L) e a combinação, e reconcilia os alertas do caso (RF04). \\
+POST & \caminhoapi{/casos/{caso_id}/alertas/{alerta_id}/decisao} & Confirma ou descarta o alerta, com justificativa (RF12, H12). \\
+GET & \caminhoapi{/casos/{caso_id}/anotacoes} & Anotações do caso, da mais recente para a mais antiga; com \texttt{alvo\_tipo} e \texttt{alvo\_id}, só as de uma entidade ou de um alerta. \\
+POST & \caminhoapi{/casos/{caso_id}/anotacoes} & Anota uma entidade ou um alerta do caso. \\
+GET & \caminhoapi{/casos/{caso_id}/avisos} & Avisos de novidade do caso, do mais recente para o mais antigo. \\
+POST & \caminhoapi{/casos/{caso_id}/avisos/{aviso_id}/lido} & Marca um aviso de novidade como lido (H18). \\
+GET & \caminhoapi{/casos/{caso_id}/caminho} & Caminho entre duas entidades, por busca bidirecional no banco (RF03, H29). \\
+POST & \caminhoapi{/casos/{caso_id}/capturas/{captura_id}/extracao-ia} & Roda o modelo local sobre o texto da captura. \\
+GET & \caminhoapi{/casos/{caso_id}/capturas/{captura_id}/texto} & O texto do documento capturado, para conferir o trecho citado ao lado do original. \\
+GET & \caminhoapi{/casos} & Só os casos de que o usuário é membro (H23). \\
+POST & \caminhoapi{/casos} & Cria um caso com finalidade e prazo de retenção obrigatórios; o criador vira responsável (H17, H23). \\
+GET & \caminhoapi{/casos/{caso_id}} & Detalhe do caso, com o papel do usuário e as contagens. \\
+GET & \caminhoapi{/casos/{caso_id}/coletas} & Histórico das coletas do caso, da mais recente para a mais antiga (RNF12, H15). \\
+POST & \caminhoapi{/casos/{caso_id}/coletas} & Executa uma coleta passiva numa fonte, grava as capturas na custódia e resolve as entidades (RF01, RF07). \\
+GET & \caminhoapi{/casos/{caso_id}/coletas/{coleta_id}/comparacao} & Compara as capturas de uma coleta com as de outra do mesmo caso e da mesma fonte. \\
+POST & \caminhoapi{/casos/{caso_id}/coletas/{coleta_id}/recoletar} & Repete uma coleta do caso (mesma fonte e mesmos parâmetros) e compara as capturas novas com as da coleta original (RF07, H14). \\
+GET & \caminhoapi{/casos/{caso_id}/entidades} & Busca entidades do caso por nome, identificador e tipo (RF11). \\
+GET & \caminhoapi{/casos/{caso_id}/entidades/{entidade_id}} & Detalhe da entidade, com fontes e vínculos. \\
+GET & \caminhoapi{/casos/{caso_id}/exportacao} & Grafo do caso em GraphML, CSV de entidades, CSV de vínculos ou ZIP com os três. \\
+GET & \caminhoapi{/casos/{caso_id}/extracoes-ia} & Execuções da extração no caso (inclusive as que falharam), da mais recente para a mais antiga, com modelo, versão, parâmetros e os itens recusados de cada uma. \\
+GET & \caminhoapi{/casos/{caso_id}/grafo} & Vizinhança de uma entidade em N níveis, consultada no banco (RF03, H29). \\
+GET & \caminhoapi{/casos/{caso_id}/importacao-judicial/decisoes} & Decisões judiciais registradas no caso; cada leitura fica na auditoria (RF10). \\
+POST & \caminhoapi{/casos/{caso_id}/importacao-judicial/decisoes} & Registra a decisão judicial que autoriza a importação (processo, juízo, data, período, contas e escopo); só perfil autorizado (RF10). \\
+POST & \caminhoapi{/casos/{caso_id}/importacao-judicial/decisoes/{decisao_id}/importacoes} & Importa uma pasta no leiaute da IN BCB 636/2025 sob a decisão; linhas fora do leiaute são rejeitadas e as fora do escopo vão para quarentena (RF10). \\
+GET & \caminhoapi{/casos/{caso_id}/importacao-judicial/importacoes} & Importações feitas no caso, com contagens de linhas aceitas, rejeitadas e em quarentena (RF10). \\
+GET & \caminhoapi{/casos/{caso_id}/importacao-judicial/registros} & Leitura do dado sigiloso: cada chamada fica na auditoria, com os filtros e a contagem. \\
+GET & \caminhoapi{/casos/{caso_id}/membros} & Membros do caso e seus papéis (H23). \\
+POST & \caminhoapi{/casos/{caso_id}/membros} & Acrescenta um membro ao caso ou muda o papel de quem já é membro. \\
+POST & \caminhoapi{/casos/{caso_id}/membros/{usuario}/remover} & Tira o membro do caso (ele deixa de ver o caso na hora). \\
+GET & \caminhoapi{/casos/{caso_id}/monitoramentos} & Entidades monitoradas no caso (H18). \\
+POST & \caminhoapi{/casos/{caso_id}/monitoramentos} & Marca uma entidade do caso para acompanhamento. \\
+POST & \caminhoapi{/casos/{caso_id}/monitoramentos/{monitoramento_id}/executar} & Executa o monitoramento agora (o agendador faz o mesmo na periodicidade escolhida). \\
+POST & \caminhoapi{/casos/{caso_id}/monitoramentos/{monitoramento_id}/situacao} & Ativa ou desativa o monitoramento e, opcionalmente, muda a periodicidade. \\
+GET & \caminhoapi{/casos/{caso_id}/relatorio} & Relatório do caso em JSON ou Markdown: entidades, alertas e decisões, coletas, custódia (RF09). \\
+GET & \caminhoapi{/casos/{caso_id}/sugestoes-ia} & Sugestões da extração por IA, pendentes ou decididas (H22). \\
+POST & \caminhoapi{/casos/{caso_id}/sugestoes-ia/{sugestao_id}/decisao} & O investigador aceita ou recusa a sugestão, com justificativa. \\
+GET & \caminhoapi{/casos/{caso_id}/tarefas} & Tarefas do caso (H37). \\
+POST & \caminhoapi{/casos/{caso_id}/tarefas} & Cria uma tarefa do caso, com histórico (H37). \\
+GET & \caminhoapi{/casos/{caso_id}/tarefas/{tarefa_id}} & Detalhe da tarefa, com o histórico de alterações (H37). \\
+POST & \caminhoapi{/casos/{caso_id}/tarefas/{tarefa_id}} & Altera os campos enviados (título, descrição, responsável, situação, prazo). \\
+GET & \caminhoapi{/auditoria} & Trilha de auditoria (delegado e administrador) (RNF02). \\
+GET & \caminhoapi{/auditoria/verificar} & Verifica o encadeamento por HMAC da trilha e a âncora (RNF02). \\
+POST & \caminhoapi{/auth/login} & Primeira etapa: usuário e senha. \\
+POST & \caminhoapi{/auth/logout} & Encerra a sessão atual na hora. \\
+POST & \caminhoapi{/auth/mfa} & Segunda etapa: o código TOTP, com o token pendente em \texttt{Authorization}. \\
+POST & \caminhoapi{/auth/senha} & Troca a própria senha (exige a atual) e encerra as outras sessões do usuário. \\
+GET & \caminhoapi{/auth/sessao} & Situação da sessão atual (etapa, expiração). \\
+GET & \caminhoapi{/capturas/{captura_id}} & Metadados de custódia de uma captura: hash, origem, instante, conector e versão (RF07). \\
+GET & \caminhoapi{/capturas/{captura_id}/comparar} & Compara a captura com outra da mesma origem (RF07, H14). \\
+GET & \caminhoapi{/capturas/{captura_id}/verificar} & Recalcula o SHA-256 da captura (decifrando, se cifrada) e compara com o registrado (RF07). \\
+GET & \caminhoapi{/health} & Verificação de saúde do serviço, usada pelo Docker Compose. \\
+GET & \caminhoapi{/ia} & Diz se a extração por IA está ligada e com qual provedor e modelo (não é dado de caso). \\
+GET & \caminhoapi{/importacao-judicial/estado} & Diz se o módulo está ligado. \\
+GET & \caminhoapi{/me} & Dados do usuário autenticado (login e perfil). \\
+GET & \caminhoapi{/tipologias} & Catálogo das tipologias (T1 a T10 e as de lavagem, L): regra, base, política de erro e a configuração em vigor. \\
+GET & \caminhoapi{/usuarios} & Lista as contas de usuário (só administrador). \\
+POST & \caminhoapi{/usuarios} & Cria a conta com uma senha inicial. \\
+POST & \caminhoapi{/usuarios/{usuario}} & Ativa ou desativa, muda o perfil, redefine a senha ou apaga o segundo fator (o usuário cadastra outro no próximo login). \\
 \hline
-\multicolumn{3}{p{14cm}}{\footnotesize Fonte: gerada pelo autor a partir do OpenAPI do back-end (FastAPI). A descrição é a primeira frase da documentação de cada rota no código; para as rotas sem documentação, foi escrita pelo autor a partir do código (\texttt{docs/sistema/api-descricoes.json}).}\\
+\multicolumn{3}{p{15cm}}{\footnotesize Fonte: gerada pelo autor a partir do OpenAPI do back-end (FastAPI). A descrição é a primeira frase da documentação de cada rota no código; para as rotas sem documentação, foi escrita pelo autor a partir do código (\texttt{docs/sistema/api-descricoes.json}).}\\
 \end{longtable}
 \end{small}

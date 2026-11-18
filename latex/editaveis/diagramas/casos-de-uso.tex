@@ -38,6 +38,7 @@
 \node[uc] (ia)  at (\xe,-12.35) {Extrair com IA local e decidir sugestão};
 % E1
 \node[uc] (col) at (\xe,-14.6)  {Coletar de fonte aberta};
+\node[uc] (imp) at (\xd,-14.6)  {Registrar decisão judicial e importar dado bancário (RF10, módulo opcional)};
 % E7
 \node[uc] (mon) at (\xe,-16.85) {Marcar entidade para monitoramento};
 \node[uc] (exm) at (\xe,-18.3)  {Executar monitoramento e gerar avisos};
@@ -58,7 +59,7 @@
 \node[aba] at (E4.north west) {E4. Prova e cadeia de custódia};
 \node[pacote, fit=(val)(ia)] (E3) {};
 \node[aba] at (E3.north west) {E3. Alertas e análise assistida};
-\node[pacote, fit=(col)] (E1) {};
+\node[pacote, fit=(col)(imp)] (E1) {};
 \node[aba] at (E1.north west) {E1. Coleta de dados abertos};
 \node[pacote, fit=(mon)(exm)] (E7) {};
 \node[aba] at (E7.north west) {E7. Monitoramento e evolução};
@@ -100,13 +101,16 @@
 \draw[assoc] (admin.west) -- (usu.east);
 \draw[assoc] (admin.west) -- (tri.east);
 \draw[assoc] (delegR.south) |- (tri.east);
+\draw[assoc] (deleg.east) -- ++(0.7,0) |- (imp.east);
 % ---------------- nota ----------------
 \node[nota, text width=17.5cm, anchor=north west] (nt) at ($(sis.south west)+(-1.6,-0.5)$) {%
   \textbf{Perfis globais} (\texttt{usuarios.perfil}): analista, delegado e admin; Delegado e
   Administrador especializam Usuário autenticado. \textbf{Papéis no caso}
   (\texttt{caso\_membros}): leitor $<$ investigador $<$ responsável; quem cria o caso é o primeiro
   responsável, com qualquer perfil. Não há perfil de auditor nem de perito: a trilha é consultada
-  pelos perfis delegado e admin, e a recoleta (H14) exige o papel de investigador. Toda ação sobre
+  pelos perfis delegado e admin, e a recoleta (H14) exige o papel de investigador. O registro da
+  decisão judicial (RF10) exige perfil autorizado (padrão: delegado) e a importação, o papel de
+  investigador; o módulo fica desligado por padrão. Toda ação sobre
   dado de caso exige justificativa (\texttt{X-Justificativa}) e acrescenta uma entrada à trilha de
   auditoria.};
 \draw (nt.north west) -- ([xshift=-7pt]nt.north east) -- ([yshift=-7pt]nt.north east)

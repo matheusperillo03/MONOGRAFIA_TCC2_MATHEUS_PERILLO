@@ -64,6 +64,7 @@
 \node[comp] (gra)  at (4.1,-4.1)  {\cmp{grafo}{buscador/grafo/}};
 \node[comp] (mon)  at (7.9,-4.1)  {\cmp{monitoramento}{monitoramento.py}};
 \node[comp] (exp)  at (11.7,-4.1) {\cmp{exportação}{exportacao.py}};
+\node[comp] (ij)   at (15.5,-4.1) {\cmp{importação judicial}{buscador/importacao\_judicial/}};
 % dependências entre módulos de domínio
 \draw[dep] (ia) -- (res);
 \draw[dep] ([xshift=-1.2cm]col.south) -- ([xshift=-0.3cm]res.north east);
@@ -76,18 +77,20 @@
 \draw[dep] (cus) -- (cri);
 \draw[dep] (ace) -- (cri);
 \draw[dep] (agd) -- (aud);
-\node[sub, dashed, fit={(ia)(tip)(gra)(exp)(ace) ($(ia.north)+(0,0.7)$)}] (DOM) {};
+\draw[dep] (ij) -- (cri);
+\node[sub, dashed, fit={(ia)(tip)(gra)(exp)(ace)(ij) ($(ia.north)+(0,0.7)$)}] (DOM) {};
 \node[titulo, font=\footnotesize\bfseries] at (DOM.north west) {Módulos de domínio (todos importados pela \texttt{api})};
 \draw[dep] (api) -- node[rot, right=2pt]{usa} (api |- DOM.north);
 \node[sub, fit={(api)(DOM)(agd) ($(api.north)+(0,1.0)$)}] (BE) {};
 \node[titulo] at (BE.north west) {Back-end: pacote \texttt{buscador} (Python)};
 % ícones de componente
-\foreach \n in {telas, cmps, sess, cli, sim, api, agd, ia, col, rel, tip, res, aud, con, cus, cri, ace, gra, mon, exp}
+\foreach \n in {telas, cmps, sess, cli, sim, api, agd, ia, col, rel, tip, res, aud, con, cus, cri, ace, gra, mon, exp, ij}
   \pic at ([xshift=-0.36cm, yshift=-0.42cm]\n.north east) {icone};
 \end{tikzpicture}}
 \fonte{Elaborada pelo autor a partir das importações do código: \texttt{import} dos módulos de
 \texttt{buscador/} (back-end) e dos arquivos de \texttt{src/} (front-end), além de
 \texttt{nginx.conf}. Setas tracejadas: dependência (quem importa aponta para quem é importado).
 Módulos utilitários (\texttt{config}, \texttt{modelos}, \texttt{db}, \texttt{seguranca},
-\texttt{retencao}, \texttt{comparacao}) e importações só de funções auxiliares foram omitidos.}
+\texttt{retencao}, \texttt{comparacao}, \texttt{privacidade}) e importações só de funções auxiliares foram omitidos.
+O componente \texttt{importacao\_judicial} só é carregado com o módulo ligado e usa uma base de dados separada.}
 \end{figure}

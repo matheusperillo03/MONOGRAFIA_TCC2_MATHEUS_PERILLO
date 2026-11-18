@@ -9,19 +9,20 @@ Gerado a partir do modelo do back-end. Cada tabela traz as colunas, o tipo, se a
 Trilha de auditoria somente de acréscimo, encadeada por HMAC-SHA256, protegida por gatilhos contra UPDATE, DELETE e TRUNCATE; registra cada ação no sistema (RNF02).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-seq & inteiro & não & PK & Número sequencial da entrada, gerado pelo banco; ordena a cadeia e entra no cálculo do hash. \\
-versao & inteiro & não &  & Versão do formato da cadeia. O código só aceita 2 (HMAC-SHA256 com chave fora do banco). \\
-quando & texto(40) & não &  & Data e hora da ação, ISO 8601 em UTC com sufixo Z. \\
-usuario & texto(100) & não &  & Login de quem executou a ação; o agendador interno grava 'agendador'. \\
-acao & texto(60) & não &  & Nome da ação no formato objeto.ação, por exemplo caso.ver, coleta.executar, alerta.decidir, caso.acesso\_negado. \\
-caso\_id & texto(32) & sim &  & ID do caso afetado (aponta para casos, sem chave estrangeira); nulo em ações fora de caso, como login e logout. \\
-justificativa & texto & sim &  & Justificativa informada na requisição; nula em ações sem justificativa, como login e logout. \\
-detalhes & JSON & não &  & JSON com os dados da ação (inclui o perfil do usuário). Textos longos e objetos grandes são substituídos por tamanho e SHA-256. \\
-hash\_anterior & texto(64) & não &  & Hash da entrada anterior, em hexadecimal; a primeira entrada usa 64 zeros. \\
-hash & texto(64) & não &  & HMAC-SHA256 do JSON canônico da entrada sem o hash, com chave fora do banco; o topo é copiado para uma âncora externa. \\
+\nometeste{seq} & inteiro & não & PK & Número sequencial da entrada, gerado pelo banco; ordena a cadeia e entra no cálculo do hash. \\
+\nometeste{versao} & inteiro & não &  & Versão do formato da cadeia. O código só aceita 2 (HMAC-SHA256 com chave fora do banco). \\
+\nometeste{quando} & texto(40) & não &  & Data e hora da ação, ISO 8601 em UTC com sufixo Z. \\
+\nometeste{usuario} & texto(100) & não &  & Login de quem executou a ação; o agendador interno grava 'agendador'. \\
+\nometeste{acao} & texto(60) & não &  & Nome da ação no formato objeto.ação, por exemplo caso.ver, coleta.executar, alerta.decidir, caso.acesso\_negado. \\
+\nometeste{caso_id} & texto(32) & sim &  & ID do caso afetado (aponta para casos, sem chave estrangeira); nulo em ações fora de caso, como login e logout. \\
+\nometeste{justificativa} & texto & sim &  & Justificativa informada na requisição; nula em ações sem justificativa, como login e logout. \\
+\nometeste{detalhes} & JSON & não &  & JSON com os dados da ação (inclui o perfil do usuário). Textos longos e objetos grandes são substituídos por tamanho e SHA-256. \\
+\nometeste{hash_anterior} & texto(64) & não &  & Hash da entrada anterior, em hexadecimal; a primeira entrada usa 64 zeros. \\
+\nometeste{hash} & texto(64) & não &  & HMAC-SHA256 do JSON canônico da entrada sem o hash, com chave fora do banco; o topo é copiado para uma âncora externa. \\
 \hline
 \end{longtable}
 \end{small}
@@ -30,17 +31,18 @@ hash & texto(64) & não &  & HMAC-SHA256 do JSON canônico da entrada sem o hash
 Caso de investigação: agrupa coletas, entidades, alertas e equipe, com finalidade declarada e prazo de retenção (RNF04).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador do caso, UUID4 em hexadecimal (32 caracteres), gerado pelo sistema. \\
-titulo & texto(300) & não &  & Título do caso, informado na criação. \\
-descricao & texto & não &  & Descrição livre do caso, informada na criação; pode ficar vazia. \\
-numero\_procedimento & texto(100) & não &  & Número do procedimento administrativo ou judicial, informado na criação; até 100 caracteres, pode ficar vazio. \\
-criado\_por & texto(100) & não &  & Login de quem criou o caso; na criação essa pessoa entra em caso\_membros como responsável. \\
-criado\_em & texto(40) & não &  & Data e hora de criação, ISO 8601 em UTC. \\
-finalidade & texto & não &  & Finalidade declarada do tratamento dos dados, obrigatória na criação; vazia em casos anteriores à coluna (RNF04). \\
-retencao\_ate & texto(10) & sim &  & Prazo de retenção, data AAAA-MM-DD inclusive. Depois dele o caso fica só leitura; nulo em casos anteriores à coluna. \\
+\nometeste{id} & texto(32) & não & PK & Identificador do caso, UUID4 em hexadecimal (32 caracteres), gerado pelo sistema. \\
+\nometeste{titulo} & texto(300) & não &  & Título do caso, informado na criação. \\
+\nometeste{descricao} & texto & não &  & Descrição livre do caso, informada na criação; pode ficar vazia. \\
+\nometeste{numero_procedimento} & texto(100) & não &  & Número do procedimento administrativo ou judicial, informado na criação; até 100 caracteres, pode ficar vazio. \\
+\nometeste{criado_por} & texto(100) & não &  & Login de quem criou o caso; na criação essa pessoa entra em caso\_membros como responsável. \\
+\nometeste{criado_em} & texto(40) & não &  & Data e hora de criação, ISO 8601 em UTC. \\
+\nometeste{finalidade} & texto & não &  & Finalidade declarada do tratamento dos dados, obrigatória na criação; vazia em casos anteriores à coluna (RNF04). \\
+\nometeste{retencao_ate} & texto(10) & sim &  & Prazo de retenção, data AAAA-MM-DD inclusive. Depois dele o caso fica só leitura; nulo em casos anteriores à coluna. \\
 \hline
 \end{longtable}
 \end{small}
@@ -49,24 +51,25 @@ retencao\_ate & texto(10) & sim &  & Prazo de retenção, data AAAA-MM-DD inclus
 Conta de usuário real do sistema, com senha em hash Argon2id, segundo fator TOTP cifrado e controle de bloqueio (RNF01).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da conta, UUID4 em hexadecimal, gerado pelo sistema. \\
-usuario & texto(100) & não & única & Login, único, em minúsculas; 3 a 64 caracteres entre letras, dígitos, ponto, hífen e sublinhado. \\
-nome & texto(200) & não &  & Nome da pessoa titular da conta; pode ficar vazio. \\
-perfil & texto(20) & não &  & Perfil de acesso global. Valores: analista, delegado, admin. \\
-senha\_hash & texto(300) & não &  & Hash Argon2id da senha (biblioteca argon2-cffi); a senha em claro não é guardada. \\
-ativo & lógico & não &  & Indica se a conta pode entrar no sistema; conta inativa tem as sessões encerradas. \\
-mfa\_segredo\_cifrado & texto & sim &  & Segredo TOTP cifrado com AES-256-GCM, em Base64, chave fora do banco; nulo até o cadastro ou após redefinição. \\
-mfa\_ativo & lógico & não &  & Indica se o segundo fator já foi confirmado; passa a verdadeiro no primeiro código TOTP aceito. \\
-mfa\_confirmado\_em & texto(40) & sim &  & Data e hora em que o segundo fator foi confirmado, ISO 8601 em UTC; nulo antes disso. \\
-mfa\_ultimo\_passo & inteiro & sim &  & Último passo de tempo TOTP aceito; impede reutilizar o mesmo código (RFC 6238, seção 5.2). \\
-falhas\_seguidas & inteiro & não &  & Contador de falhas de senha ou de código seguidas; zera no acerto ou ao atingir o limite e bloquear. \\
-bloqueado\_ate & texto(40) & sim &  & Data e hora até a qual a conta fica bloqueada após falhas seguidas, ISO 8601 em UTC; nulo sem bloqueio. \\
-criado\_por & texto(100) & não &  & Login de quem criou a conta; pode ficar vazio. \\
-criado\_em & texto(40) & não &  & Data e hora de criação da conta, ISO 8601 em UTC. \\
-senha\_alterada\_em & texto(40) & não &  & Data e hora da última definição da senha, ISO 8601 em UTC. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da conta, UUID4 em hexadecimal, gerado pelo sistema. \\
+\nometeste{usuario} & texto(100) & não & única & Login, único, em minúsculas; 3 a 64 caracteres entre letras, dígitos, ponto, hífen e sublinhado. \\
+\nometeste{nome} & texto(200) & não &  & Nome da pessoa titular da conta; pode ficar vazio. \\
+\nometeste{perfil} & texto(20) & não &  & Perfil de acesso global. Valores: analista, delegado, admin. \\
+\nometeste{senha_hash} & texto(300) & não &  & Hash Argon2id da senha (biblioteca argon2-cffi); a senha em claro não é guardada. \\
+\nometeste{ativo} & lógico & não &  & Indica se a conta pode entrar no sistema; conta inativa tem as sessões encerradas. \\
+\nometeste{mfa_segredo_cifrado} & texto & sim &  & Segredo TOTP cifrado com AES-256-GCM, em Base64, chave fora do banco; nulo até o cadastro ou após redefinição. \\
+\nometeste{mfa_ativo} & lógico & não &  & Indica se o segundo fator já foi confirmado; passa a verdadeiro no primeiro código TOTP aceito. \\
+\nometeste{mfa_confirmado_em} & texto(40) & sim &  & Data e hora em que o segundo fator foi confirmado, ISO 8601 em UTC; nulo antes disso. \\
+\nometeste{mfa_ultimo_passo} & inteiro & sim &  & Último passo de tempo TOTP aceito; impede reutilizar o mesmo código (RFC 6238, seção 5.2). \\
+\nometeste{falhas_seguidas} & inteiro & não &  & Contador de falhas de senha ou de código seguidas; zera no acerto ou ao atingir o limite e bloquear. \\
+\nometeste{bloqueado_ate} & texto(40) & sim &  & Data e hora até a qual a conta fica bloqueada após falhas seguidas, ISO 8601 em UTC; nulo sem bloqueio. \\
+\nometeste{criado_por} & texto(100) & não &  & Login de quem criou a conta; pode ficar vazio. \\
+\nometeste{criado_em} & texto(40) & não &  & Data e hora de criação da conta, ISO 8601 em UTC. \\
+\nometeste{senha_alterada_em} & texto(40) & não &  & Data e hora da última definição da senha, ISO 8601 em UTC. \\
 \hline
 \end{longtable}
 \end{small}
@@ -75,25 +78,26 @@ senha\_alterada\_em & texto(40) & não &  & Data e hora da última definição d
 Alerta gerado pelas tipologias sobre entidades do caso, com evidências, severidade e a última decisão do investigador (RF12, RF14).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador do alerta, UUID4 em hexadecimal; mantido quando a reexecução detecta o mesmo alerta. \\
-caso\_id & texto(32) & não & FK casos & Caso a que o alerta pertence (chave estrangeira para casos). \\
-tipologia & texto(5) & não &  & Código da tipologia que gerou o alerta. Valores: T1 a T10. \\
-titulo & texto(300) & não &  & Título do alerta, gerado pela regra da tipologia. \\
-motivo & texto & não &  & Explicação, gerada pela regra, de por que o alerta disparou. \\
-severidade & texto(10) & não &  & Severidade definida pela tipologia na tabela de políticas, não pelo alerta. Valores: alta, media, baixa. \\
-entidades & JSON & não &  & Lista JSON de IDs de entidades envolvidas (aponta para entidades, sem chave estrangeira). \\
-evidencias & JSON & não &  & Lista JSON de evidências: descrição, fonte, captura\_id, url\_ou\_arquivo e sha256 da captura citada (aponta para capturas, sem chave estrangeira). \\
-parametros & JSON & não &  & JSON com os valores observados pela regra e, em 'limiares', os limiares numéricos usados na execução. \\
-criado\_em & texto(40) & não &  & Data e hora em que o alerta foi criado, ISO 8601 em UTC. \\
-chave & texto(64) & não &  & SHA-256 de tipologia, IDs das entidades e discriminador; identidade estável do alerta entre execuções das tipologias. \\
-ativo & lógico & não &  & Falso quando a última execução não detectou mais o alerta, mas ele foi mantido por ter decisão registrada. \\
-situacao & texto(12) & não &  & Situação atual, cópia da última decisão. Valores: pendente, confirmado, descartado. \\
-decidido\_por & texto(100) & sim &  & Login de quem tomou a última decisão; nulo enquanto pendente. \\
-decidido\_em & texto(40) & sim &  & Data e hora da última decisão, ISO 8601 em UTC; nulo enquanto pendente. \\
-justificativa\_decisao & texto & sim &  & Justificativa da última decisão; o histórico completo fica em alerta\_decisoes. \\
+\nometeste{id} & texto(32) & não & PK & Identificador do alerta, UUID4 em hexadecimal; mantido quando a reexecução detecta o mesmo alerta. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso a que o alerta pertence (chave estrangeira para casos). \\
+\nometeste{tipologia} & texto(5) & não &  & Código da tipologia que gerou o alerta. Valores: T1 a T10. \\
+\nometeste{titulo} & texto(300) & não &  & Título do alerta, gerado pela regra da tipologia. \\
+\nometeste{motivo} & texto & não &  & Explicação, gerada pela regra, de por que o alerta disparou. \\
+\nometeste{severidade} & texto(10) & não &  & Severidade definida pela tipologia na tabela de políticas, não pelo alerta. Valores: alta, media, baixa. \\
+\nometeste{entidades} & JSON & não &  & Lista JSON de IDs de entidades envolvidas (aponta para entidades, sem chave estrangeira). \\
+\nometeste{evidencias} & JSON & não &  & Lista JSON de evidências: descrição, fonte, captura\_id, url\_ou\_arquivo e sha256 da captura citada (aponta para capturas, sem chave estrangeira). \\
+\nometeste{parametros} & JSON & não &  & JSON com os valores observados pela regra e, em 'limiares', os limiares numéricos usados na execução. \\
+\nometeste{criado_em} & texto(40) & não &  & Data e hora em que o alerta foi criado, ISO 8601 em UTC. \\
+\nometeste{chave} & texto(64) & não &  & SHA-256 de tipologia, IDs das entidades e discriminador; identidade estável do alerta entre execuções das tipologias. \\
+\nometeste{ativo} & lógico & não &  & Falso quando a última execução não detectou mais o alerta, mas ele foi mantido por ter decisão registrada. \\
+\nometeste{situacao} & texto(12) & não &  & Situação atual, cópia da última decisão. Valores: pendente, confirmado, descartado. \\
+\nometeste{decidido_por} & texto(100) & sim &  & Login de quem tomou a última decisão; nulo enquanto pendente. \\
+\nometeste{decidido_em} & texto(40) & sim &  & Data e hora da última decisão, ISO 8601 em UTC; nulo enquanto pendente. \\
+\nometeste{justificativa_decisao} & texto & sim &  & Justificativa da última decisão; o histórico completo fica em alerta\_decisoes. \\
 \hline
 \end{longtable}
 \end{small}
@@ -102,16 +106,17 @@ justificativa\_decisao & texto & sim &  & Justificativa da última decisão; o h
 Anotação de um membro sobre uma entidade ou um alerta do caso; só de acréscimo, protegida por gatilhos contra alteração e exclusão (RF08).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da anotação, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso a que a anotação pertence (chave estrangeira para casos). \\
-alvo\_tipo & texto(10) & não &  & Tipo do objeto anotado. Valores: entidade, alerta. \\
-alvo\_id & texto(32) & não &  & ID do objeto anotado; aponta para entidades ou alertas conforme alvo\_tipo, sem chave estrangeira. \\
-autor & texto(100) & não &  & Login de quem escreveu a anotação. \\
-criado\_em & texto(40) & não &  & Data e hora da anotação, ISO 8601 em UTC. \\
-texto & texto & não &  & Texto da anotação. Não se edita: corrigir é criar outra anotação. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da anotação, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso a que a anotação pertence (chave estrangeira para casos). \\
+\nometeste{alvo_tipo} & texto(10) & não &  & Tipo do objeto anotado. Valores: entidade, alerta. \\
+\nometeste{alvo_id} & texto(32) & não &  & ID do objeto anotado; aponta para entidades ou alertas conforme alvo\_tipo, sem chave estrangeira. \\
+\nometeste{autor} & texto(100) & não &  & Login de quem escreveu a anotação. \\
+\nometeste{criado_em} & texto(40) & não &  & Data e hora da anotação, ISO 8601 em UTC. \\
+\nometeste{texto} & texto & não &  & Texto da anotação. Não se edita: corrigir é criar outra anotação. \\
 \hline
 \end{longtable}
 \end{small}
@@ -120,15 +125,16 @@ texto & texto & não &  & Texto da anotação. Não se edita: corrigir é criar 
 Membros de cada caso e seu papel; controla quem pode ver e agir no caso (RNF01).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & inteiro & não & PK & Identificador numérico sequencial, gerado pelo banco. \\
-caso\_id & texto(32) & não & FK casos & Caso a que o membro pertence (chave estrangeira para casos). \\
-usuario & texto(100) & não &  & Login do membro, de conta real ou de token de desenvolvimento (TOKENS\_DEV); sem chave estrangeira para usuarios. \\
-papel & texto(15) & não &  & Papel no caso, em ordem crescente de permissão. Valores: leitor, investigador, responsavel. \\
-adicionado\_por & texto(100) & não &  & Login de quem incluiu o membro; 'migracao' para casos anteriores à tabela. \\
-adicionado\_em & texto(40) & não &  & Data e hora da inclusão, ISO 8601 em UTC. \\
+\nometeste{id} & inteiro & não & PK & Identificador numérico sequencial, gerado pelo banco. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso a que o membro pertence (chave estrangeira para casos). \\
+\nometeste{usuario} & texto(100) & não &  & Login do membro, de conta real ou de token de desenvolvimento (TOKENS\_DEV); sem chave estrangeira para usuarios. \\
+\nometeste{papel} & texto(15) & não &  & Papel no caso, em ordem crescente de permissão. Valores: leitor, investigador, responsavel. \\
+\nometeste{adicionado_por} & texto(100) & não &  & Login de quem incluiu o membro; 'migracao' para casos anteriores à tabela. \\
+\nometeste{adicionado_em} & texto(40) & não &  & Data e hora da inclusão, ISO 8601 em UTC. \\
 \hline
 \end{longtable}
 \end{small}
@@ -137,24 +143,25 @@ adicionado\_em & texto(40) & não &  & Data e hora da inclusão, ISO 8601 em UTC
 Registro de cada execução de coleta de uma fonte num caso, bem-sucedida ou não; recoletas apontam para a coleta repetida (RNF12, RF07).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da coleta, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso em que a coleta foi feita (chave estrangeira para casos). \\
-fonte & texto(50) & não &  & Fonte consultada. Valores aceitos pela API: cnpj\_arquivo, pncp, portal\_transparencia, pncp\_termos, tse\_arquivo, edital\_arquivo. \\
-parametros & JSON & não &  & JSON com os parâmetros da consulta enviados pelo usuário, validados por fonte antes da execução. \\
-conector\_nome & texto(50) & não &  & Nome do conector que executou a coleta; vazio se a coleta falhou antes de identificá-lo. \\
-conector\_versao & texto(20) & não &  & Versão do conector que executou a coleta; vazia se não identificada. \\
-situacao & texto(15) & não &  & Situação da coleta. Valores: em\_andamento, sucesso, falha, nao\_configurado. \\
-tentativas & inteiro & não &  & Maior número de tentativas que uma operação da coleta precisou; 0 quando nada foi tentado. \\
-motivo & texto & não &  & Mensagem de falha ou de fonte não configurada; vazio em caso de sucesso. \\
-registros & inteiro & não &  & Quantidade de registros devolvidos pelo conector. \\
-avisos & JSON & não &  & Lista JSON de avisos textuais do conector (até 50, de até 300 caracteres); em nao\_configurado, só o motivo. \\
-usuario & texto(100) & não &  & Login de quem pediu a coleta; 'agendador' nas recoletas automáticas do monitoramento. \\
-iniciado\_em & texto(40) & não &  & Data e hora de início, ISO 8601 em UTC; a linha é gravada antes de qualquer consulta externa. \\
-concluido\_em & texto(40) & sim &  & Data e hora de fechamento, ISO 8601 em UTC; nulo enquanto em andamento. \\
-recoleta\_de & texto(32) & sim & FK coletas & Coleta que esta repete, para comparação (chave estrangeira para coletas); nulo na coleta original. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da coleta, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso em que a coleta foi feita (chave estrangeira para casos). \\
+\nometeste{fonte} & texto(50) & não &  & Fonte consultada. Valores aceitos pela API: cnpj\_arquivo, pncp, portal\_transparencia, pncp\_termos, tse\_arquivo, edital\_arquivo. \\
+\nometeste{parametros} & JSON & não &  & JSON com os parâmetros da consulta enviados pelo usuário, validados por fonte antes da execução. \\
+\nometeste{conector_nome} & texto(50) & não &  & Nome do conector que executou a coleta; vazio se a coleta falhou antes de identificá-lo. \\
+\nometeste{conector_versao} & texto(20) & não &  & Versão do conector que executou a coleta; vazia se não identificada. \\
+\nometeste{situacao} & texto(15) & não &  & Situação da coleta. Valores: em\_andamento, sucesso, falha, nao\_configurado. \\
+\nometeste{tentativas} & inteiro & não &  & Maior número de tentativas que uma operação da coleta precisou; 0 quando nada foi tentado. \\
+\nometeste{motivo} & texto & não &  & Mensagem de falha ou de fonte não configurada; vazio em caso de sucesso. \\
+\nometeste{registros} & inteiro & não &  & Quantidade de registros devolvidos pelo conector. \\
+\nometeste{avisos} & JSON & não &  & Lista JSON de avisos textuais do conector (até 50, de até 300 caracteres); em nao\_configurado, só o motivo. \\
+\nometeste{usuario} & texto(100) & não &  & Login de quem pediu a coleta; 'agendador' nas recoletas automáticas do monitoramento. \\
+\nometeste{iniciado_em} & texto(40) & não &  & Data e hora de início, ISO 8601 em UTC; a linha é gravada antes de qualquer consulta externa. \\
+\nometeste{concluido_em} & texto(40) & sim &  & Data e hora de fechamento, ISO 8601 em UTC; nulo enquanto em andamento. \\
+\nometeste{recoleta_de} & texto(32) & sim & FK \nometeste{coletas} & Coleta que esta repete, para comparação (chave estrangeira para coletas); nulo na coleta original. \\
 \hline
 \end{longtable}
 \end{small}
@@ -163,18 +170,19 @@ recoleta\_de & texto(32) & sim & FK coletas & Coleta que esta repete, para compa
 Sessão de login de uma conta real, em etapas até o segundo fator; o token só fica como SHA-256 (RNF01).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da sessão, UUID4 em hexadecimal. \\
-token\_resumo & texto(64) & não & única & SHA-256 do token opaco entregue ao cliente; único. O token em claro não é guardado. \\
-conta\_id & texto(32) & não & FK usuarios & Conta dona da sessão (chave estrangeira para usuarios). \\
-etapa & texto(15) & não &  & Etapa da autenticação. Valores: mfa (falta o código), cadastro\_mfa (falta cadastrar o fator), ativa (única que dá acesso às rotas). \\
-criada\_em & texto(40) & não &  & Data e hora de abertura da sessão, ISO 8601 em UTC. \\
-expira\_em & texto(40) & não &  & Data e hora de expiração absoluta, ISO 8601 em UTC; definida pela duração configurada para a etapa. \\
-ultima\_atividade\_em & texto(40) & não &  & Última atividade registrada, ISO 8601 em UTC; usada para encerrar por inatividade. \\
-encerrada\_em & texto(40) & sim &  & Data e hora de encerramento, ISO 8601 em UTC; nulo enquanto a sessão está aberta. \\
-motivo\_encerramento & texto(40) & não &  & Motivo do encerramento; vazio com a sessão aberta. Valores: logout, expirada, inatividade, conta\_inativa, bloqueio, segundo\_fator\_confirmado, troca\_de\_senha, alteracao\_da\_conta. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da sessão, UUID4 em hexadecimal. \\
+\nometeste{token_resumo} & texto(64) & não & única & SHA-256 do token opaco entregue ao cliente; único. O token em claro não é guardado. \\
+\nometeste{conta_id} & texto(32) & não & FK \nometeste{usuarios} & Conta dona da sessão (chave estrangeira para usuarios). \\
+\nometeste{etapa} & texto(15) & não &  & Etapa da autenticação. Valores: mfa (falta o código), cadastro\_mfa (falta cadastrar o fator), ativa (única que dá acesso às rotas). \\
+\nometeste{criada_em} & texto(40) & não &  & Data e hora de abertura da sessão, ISO 8601 em UTC. \\
+\nometeste{expira_em} & texto(40) & não &  & Data e hora de expiração absoluta, ISO 8601 em UTC; definida pela duração configurada para a etapa. \\
+\nometeste{ultima_atividade_em} & texto(40) & não &  & Última atividade registrada, ISO 8601 em UTC; usada para encerrar por inatividade. \\
+\nometeste{encerrada_em} & texto(40) & sim &  & Data e hora de encerramento, ISO 8601 em UTC; nulo enquanto a sessão está aberta. \\
+\nometeste{motivo_encerramento} & texto(40) & não &  & Motivo do encerramento; vazio com a sessão aberta. Valores: logout, expirada, inatividade, conta\_inativa, bloqueio, segundo\_fator\_confirmado, troca\_de\_senha, alteracao\_da\_conta. \\
 \hline
 \end{longtable}
 \end{small}
@@ -183,19 +191,20 @@ motivo\_encerramento & texto(40) & não &  & Motivo do encerramento; vazio com a
 Tarefa atribuída dentro de um caso, com o estado atual; cada mudança fica em tarefa\_eventos (RF08).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da tarefa, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso a que a tarefa pertence (chave estrangeira para casos). \\
-titulo & texto(300) & não &  & Título da tarefa, informado pelo usuário. \\
-descricao & texto & não &  & Descrição da tarefa; pode ficar vazia. \\
-responsavel & texto(100) & sim &  & Login do membro do caso encarregado da tarefa, em minúsculas; nulo quando sem responsável. \\
-situacao & texto(15) & não &  & Situação da tarefa. Valores: aberta, em\_andamento, concluida, cancelada. \\
-prazo & texto(10) & sim &  & Prazo da tarefa, data AAAA-MM-DD; nulo quando sem prazo. \\
-criado\_por & texto(100) & não &  & Login de quem criou a tarefa. \\
-criado\_em & texto(40) & não &  & Data e hora de criação, ISO 8601 em UTC. \\
-atualizado\_em & texto(40) & não &  & Data e hora da última alteração, ISO 8601 em UTC. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da tarefa, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso a que a tarefa pertence (chave estrangeira para casos). \\
+\nometeste{titulo} & texto(300) & não &  & Título da tarefa, informado pelo usuário. \\
+\nometeste{descricao} & texto & não &  & Descrição da tarefa; pode ficar vazia. \\
+\nometeste{responsavel} & texto(100) & sim &  & Login do membro do caso encarregado da tarefa, em minúsculas; nulo quando sem responsável. \\
+\nometeste{situacao} & texto(15) & não &  & Situação da tarefa. Valores: aberta, em\_andamento, concluida, cancelada. \\
+\nometeste{prazo} & texto(10) & sim &  & Prazo da tarefa, data AAAA-MM-DD; nulo quando sem prazo. \\
+\nometeste{criado_por} & texto(100) & não &  & Login de quem criou a tarefa. \\
+\nometeste{criado_em} & texto(40) & não &  & Data e hora de criação, ISO 8601 em UTC. \\
+\nometeste{atualizado_em} & texto(40) & não &  & Data e hora da última alteração, ISO 8601 em UTC. \\
 \hline
 \end{longtable}
 \end{small}
@@ -204,17 +213,18 @@ atualizado\_em & texto(40) & não &  & Data e hora da última alteração, ISO 8
 Histórico das decisões sobre alertas, uma linha por decisão; só de acréscimo, protegido por gatilhos contra alteração e exclusão (RF12).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & inteiro & não & PK & Identificador numérico sequencial, gerado pelo banco. \\
-alerta\_id & texto(32) & não & FK alertas & Alerta decidido (chave estrangeira para alertas). \\
-caso\_id & texto(32) & não & FK casos & Caso do alerta (chave estrangeira para casos). \\
-decisao & texto(12) & não &  & Decisão tomada. Valores: confirmado, descartado. \\
-justificativa & texto & não &  & Justificativa da decisão, obrigatória, informada pelo investigador. \\
-usuario & texto(100) & não &  & Login de quem decidiu. \\
-perfil & texto(20) & não &  & Perfil de acesso de quem decidiu no momento da decisão (analista, delegado ou admin). \\
-decidido\_em & texto(40) & não &  & Data e hora da decisão, ISO 8601 em UTC. \\
+\nometeste{id} & inteiro & não & PK & Identificador numérico sequencial, gerado pelo banco. \\
+\nometeste{alerta_id} & texto(32) & não & FK \nometeste{alertas} & Alerta decidido (chave estrangeira para alertas). \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso do alerta (chave estrangeira para casos). \\
+\nometeste{decisao} & texto(12) & não &  & Decisão tomada. Valores: confirmado, descartado. \\
+\nometeste{justificativa} & texto & não &  & Justificativa da decisão, obrigatória, informada pelo investigador. \\
+\nometeste{usuario} & texto(100) & não &  & Login de quem decidiu. \\
+\nometeste{perfil} & texto(20) & não &  & Perfil de acesso de quem decidiu no momento da decisão (analista, delegado ou admin). \\
+\nometeste{decidido_em} & texto(40) & não &  & Data e hora da decisão, ISO 8601 em UTC. \\
 \hline
 \end{longtable}
 \end{small}
@@ -223,21 +233,22 @@ decidido\_em & texto(40) & não &  & Data e hora da decisão, ISO 8601 em UTC. \
 Registro de custódia de cada carga bruta coletada, com SHA-256, tamanho e local do arquivo; o papel da aplicação só insere e lê (RF07).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da captura, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso em que a carga foi coletada (chave estrangeira para casos). \\
-fonte & texto(50) & não &  & Nome do conector que gravou a carga, por exemplo pncp, cnpj\_arquivo, tse\_arquivo. \\
-url\_ou\_arquivo & texto & não &  & URL consultada ou nome do arquivo de origem; começa com simulado:// quando a carga é sintética. \\
-coletado\_em & texto(40) & não &  & Data e hora da coleta da carga, ISO 8601 em UTC. \\
-sha256 & texto(64) & não &  & SHA-256 do conteúdo original, calculado antes de cifrar; usado na verificação de integridade. \\
-tamanho\_bytes & inteiro & não &  & Tamanho do conteúdo original, em bytes. \\
-caminho\_relativo & texto(200) & não &  & Caminho na pasta de custódia: dois primeiros caracteres do SHA-256, barra, SHA-256; extensão .gcm quando cifrado com AES-256-GCM. \\
-metadados & JSON & não &  & JSON com metadados do conector; sempre traz 'simulado' e, se cifrado, 'cifra\_em\_repouso' com algoritmo e chave\_id. \\
-conector\_nome & texto(50) & não &  & Nome do conector que produziu a captura; vazio em capturas anteriores à coluna. \\
-conector\_versao & texto(20) & não &  & Versão do conector que produziu a captura; vazia em capturas anteriores à coluna. \\
-coleta\_id & texto(32) & sim & FK coletas & Coleta a que a captura pertence (chave estrangeira para coletas); nulo em capturas anteriores à coluna. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da captura, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso em que a carga foi coletada (chave estrangeira para casos). \\
+\nometeste{fonte} & texto(50) & não &  & Nome do conector que gravou a carga, por exemplo pncp, cnpj\_arquivo, tse\_arquivo. \\
+\nometeste{url_ou_arquivo} & texto & não &  & URL consultada ou nome do arquivo de origem; começa com simulado:// quando a carga é sintética. \\
+\nometeste{coletado_em} & texto(40) & não &  & Data e hora da coleta da carga, ISO 8601 em UTC. \\
+\nometeste{sha256} & texto(64) & não &  & SHA-256 do conteúdo original, calculado antes de cifrar; usado na verificação de integridade. \\
+\nometeste{tamanho_bytes} & inteiro & não &  & Tamanho do conteúdo original, em bytes. \\
+\nometeste{caminho_relativo} & texto(200) & não &  & Caminho na pasta de custódia: dois primeiros caracteres do SHA-256, barra, SHA-256; extensão .gcm quando cifrado com AES-256-GCM. \\
+\nometeste{metadados} & JSON & não &  & JSON com metadados do conector; sempre traz 'simulado' e, se cifrado, 'cifra\_em\_repouso' com algoritmo e chave\_id. \\
+\nometeste{conector_nome} & texto(50) & não &  & Nome do conector que produziu a captura; vazio em capturas anteriores à coluna. \\
+\nometeste{conector_versao} & texto(20) & não &  & Versão do conector que produziu a captura; vazia em capturas anteriores à coluna. \\
+\nometeste{coleta_id} & texto(32) & sim & FK \nometeste{coletas} & Coleta a que a captura pertence (chave estrangeira para coletas); nulo em capturas anteriores à coluna. \\
 \hline
 \end{longtable}
 \end{small}
@@ -246,15 +257,16 @@ coleta\_id & texto(32) & sim & FK coletas & Coleta a que a captura pertence (cha
 Histórico das tarefas, uma linha por criação ou alteração; só de acréscimo, protegido por gatilhos contra alteração e exclusão (RF08).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & inteiro & não & PK & Identificador numérico sequencial, gerado pelo banco. \\
-tarefa\_id & texto(32) & não & FK tarefas & Tarefa alterada (chave estrangeira para tarefas). \\
-caso\_id & texto(32) & não & FK casos & Caso da tarefa (chave estrangeira para casos). \\
-usuario & texto(100) & não &  & Login de quem criou ou alterou a tarefa. \\
-quando & texto(40) & não &  & Data e hora do evento, ISO 8601 em UTC. \\
-alteracoes & JSON & não &  & JSON {campo: {de, para}}. Na criação, 'de' é nulo e registra título, responsável, situação e prazo; mudança de descrição guarda só a contagem de caracteres. \\
+\nometeste{id} & inteiro & não & PK & Identificador numérico sequencial, gerado pelo banco. \\
+\nometeste{tarefa_id} & texto(32) & não & FK \nometeste{tarefas} & Tarefa alterada (chave estrangeira para tarefas). \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso da tarefa (chave estrangeira para casos). \\
+\nometeste{usuario} & texto(100) & não &  & Login de quem criou ou alterou a tarefa. \\
+\nometeste{quando} & texto(40) & não &  & Data e hora do evento, ISO 8601 em UTC. \\
+\nometeste{alteracoes} & JSON & não &  & JSON {campo: {de, para}}. Na criação, 'de' é nulo e registra título, responsável, situação e prazo; mudança de descrição guarda só a contagem de caracteres. \\
 \hline
 \end{longtable}
 \end{small}
@@ -263,17 +275,18 @@ alteracoes & JSON & não &  & JSON {campo: {de, para}}. Na criação, 'de' é nu
 Entidade resolvida a partir das capturas do caso (empresa, pessoa, órgão etc.), única por caso, tipo e chave de resolução (RF02).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da entidade, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso a que a entidade pertence (chave estrangeira para casos). \\
-tipo & texto(20) & não &  & Tipo da entidade. Valores: empresa, pessoa, orgao, contrato, sancao, candidato, edital. \\
-chave & texto(300) & não &  & Chave de resolução por tipo, por exemplo CNPJ básico para empresa, numeroControlePNCP para contrato; pessoa usa CPF descaracterizado e nome normalizado. \\
-rotulo & texto(300) & não &  & Nome de exibição da entidade, como razão social ou nome da pessoa. \\
-identificador & texto(100) & não &  & Identificador oficial exibido, como CNPJ, CPF descaracterizado ou número de controle; pode ficar vazio. \\
-atributos & JSON & não &  & JSON com os atributos vindos das fontes; 'origem\_atributos' indica a captura que forneceu cada valor. CPF só descaracterizado (seis dígitos centrais). \\
-captura\_id & texto(32) & não & FK capturas & Captura que originou a entidade (chave estrangeira para capturas); as demais ficam em entidade\_fontes. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da entidade, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso a que a entidade pertence (chave estrangeira para casos). \\
+\nometeste{tipo} & texto(20) & não &  & Tipo da entidade. Valores: empresa, pessoa, orgao, contrato, sancao, candidato, edital. \\
+\nometeste{chave} & texto(300) & não &  & Chave de resolução por tipo, por exemplo CNPJ básico para empresa, numeroControlePNCP para contrato; pessoa usa CPF descaracterizado e nome normalizado. \\
+\nometeste{rotulo} & texto(300) & não &  & Nome de exibição da entidade, como razão social ou nome da pessoa. \\
+\nometeste{identificador} & texto(100) & não &  & Identificador oficial exibido, como CNPJ, CPF descaracterizado ou número de controle; pode ficar vazio. \\
+\nometeste{atributos} & JSON & não &  & JSON com os atributos vindos das fontes; 'origem\_atributos' indica a captura que forneceu cada valor. CPF só descaracterizado (seis dígitos centrais). \\
+\nometeste{captura_id} & texto(32) & não & FK \nometeste{capturas} & Captura que originou a entidade (chave estrangeira para capturas); as demais ficam em entidade\_fontes. \\
 \hline
 \end{longtable}
 \end{small}
@@ -282,29 +295,30 @@ captura\_id & texto(32) & não & FK capturas & Captura que originou a entidade (
 Execução da extração assistida por IA sobre uma captura, com os dados para reconstituí-la e os itens recusados (RF13, RNF05).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da execução, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso da captura analisada (chave estrangeira para casos). \\
-captura\_id & texto(32) & não & FK capturas & Captura analisada (chave estrangeira para capturas). \\
-captura\_sha256 & texto(64) & não &  & SHA-256 da captura analisada, copiado no início da execução. \\
-provedor & texto(30) & não &  & Provedor de IA usado. Valores no código: ollama, falso (provedor de teste). \\
-modelo & texto(200) & não &  & Nome do modelo informado pelo provedor; vazio se a execução falhou antes de identificá-lo. \\
-modelo\_versao & texto(200) & não &  & Versão do modelo (resumo do modelo) informada pelo provedor. \\
-servidor\_versao & texto(50) & não &  & Versão do servidor do provedor, informada por ele. \\
-parametros & JSON & não &  & JSON com os parâmetros do provedor, tamanho do bloco, limite de caracteres, se o texto foi truncado e a codificação. \\
-prompt\_sha256 & texto(64) & não &  & SHA-256 das instruções enviadas ao modelo somadas ao esquema JSON da resposta; constante no código. \\
-situacao & texto(15) & não &  & Situação da execução. Valores: em\_andamento, sucesso, falha. \\
-motivo & texto & não &  & Motivo da falha, até 400 caracteres; vazio em caso de sucesso. \\
-blocos & inteiro & não &  & Número de blocos em que o texto da captura foi dividido. \\
-itens\_recebidos & inteiro & não &  & Quantidade de itens devolvidos pelo modelo. \\
-itens\_aceitos & inteiro & não &  & Quantidade de itens que passaram nas verificações e viraram sugestões em sugestoes\_ia. \\
-itens\_recusados & inteiro & não &  & Quantidade de itens recusados nas verificações. \\
-recusas & JSON & não &  & Lista JSON, até 200 itens, com o motivo da recusa (por exemplo trecho\_nao\_literal, valor\_fora\_do\_trecho) e resumo do item. \\
-usuario & texto(100) & não &  & Login de quem pediu a extração. \\
-iniciado\_em & texto(40) & não &  & Data e hora de início, ISO 8601 em UTC. \\
-concluido\_em & texto(40) & sim &  & Data e hora de término, ISO 8601 em UTC; nulo enquanto em andamento. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da execução, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso da captura analisada (chave estrangeira para casos). \\
+\nometeste{captura_id} & texto(32) & não & FK \nometeste{capturas} & Captura analisada (chave estrangeira para capturas). \\
+\nometeste{captura_sha256} & texto(64) & não &  & SHA-256 da captura analisada, copiado no início da execução. \\
+\nometeste{provedor} & texto(30) & não &  & Provedor de IA usado. Valores no código: ollama, falso (provedor de teste). \\
+\nometeste{modelo} & texto(200) & não &  & Nome do modelo informado pelo provedor; vazio se a execução falhou antes de identificá-lo. \\
+\nometeste{modelo_versao} & texto(200) & não &  & Versão do modelo (resumo do modelo) informada pelo provedor. \\
+\nometeste{servidor_versao} & texto(50) & não &  & Versão do servidor do provedor, informada por ele. \\
+\nometeste{parametros} & JSON & não &  & JSON com os parâmetros do provedor, tamanho do bloco, limite de caracteres, se o texto foi truncado e a codificação. \\
+\nometeste{prompt_sha256} & texto(64) & não &  & SHA-256 das instruções enviadas ao modelo somadas ao esquema JSON da resposta; constante no código. \\
+\nometeste{situacao} & texto(15) & não &  & Situação da execução. Valores: em\_andamento, sucesso, falha. \\
+\nometeste{motivo} & texto & não &  & Motivo da falha, até 400 caracteres; vazio em caso de sucesso. \\
+\nometeste{blocos} & inteiro & não &  & Número de blocos em que o texto da captura foi dividido. \\
+\nometeste{itens_recebidos} & inteiro & não &  & Quantidade de itens devolvidos pelo modelo. \\
+\nometeste{itens_aceitos} & inteiro & não &  & Quantidade de itens que passaram nas verificações e viraram sugestões em sugestoes\_ia. \\
+\nometeste{itens_recusados} & inteiro & não &  & Quantidade de itens recusados nas verificações. \\
+\nometeste{recusas} & JSON & não &  & Lista JSON, até 200 itens, com o motivo da recusa (por exemplo trecho\_nao\_literal, valor\_fora\_do\_trecho) e resumo do item. \\
+\nometeste{usuario} & texto(100) & não &  & Login de quem pediu a extração. \\
+\nometeste{iniciado_em} & texto(40) & não &  & Data e hora de início, ISO 8601 em UTC. \\
+\nometeste{concluido_em} & texto(40) & sim &  & Data e hora de término, ISO 8601 em UTC; nulo enquanto em andamento. \\
 \hline
 \end{longtable}
 \end{small}
@@ -313,17 +327,18 @@ concluido\_em & texto(40) & sim &  & Data e hora de término, ISO 8601 em UTC; n
 Vínculo dirigido entre duas entidades do caso, derivado das capturas; forma o grafo de relacionamentos (RF02).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da aresta, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso a que a aresta pertence (chave estrangeira para casos). \\
-origem\_id & texto(32) & não & FK entidades & Entidade de origem do vínculo (chave estrangeira para entidades). \\
-destino\_id & texto(32) & não & FK entidades & Entidade de destino do vínculo (chave estrangeira para entidades). \\
-tipo & texto(30) & não &  & Tipo do vínculo. Valores no código: socio\_de, contratado\_por, fornecedor\_de, contratante\_de, mesmo\_endereco, sancionada\_em, servidor\_de, doou\_para, edital\_de, citado\_em. \\
-chave & texto(200) & não &  & Discriminador do vínculo, como número de controle do contrato ou endereço normalizado; pode ficar vazio. \\
-atributos & JSON & não &  & JSON com dados do vínculo; em citado\_em, o trecho, a posição e a sugestão de IA de origem. \\
-captura\_id & texto(32) & não & FK capturas & Captura que fundamenta o vínculo (chave estrangeira para capturas). \\
+\nometeste{id} & texto(32) & não & PK & Identificador da aresta, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso a que a aresta pertence (chave estrangeira para casos). \\
+\nometeste{origem_id} & texto(32) & não & FK \nometeste{entidades} & Entidade de origem do vínculo (chave estrangeira para entidades). \\
+\nometeste{destino_id} & texto(32) & não & FK \nometeste{entidades} & Entidade de destino do vínculo (chave estrangeira para entidades). \\
+\nometeste{tipo} & texto(30) & não &  & Tipo do vínculo. Valores no código: socio\_de, contratado\_por, fornecedor\_de, contratante\_de, mesmo\_endereco, sancionada\_em, servidor\_de, doou\_para, edital\_de, citado\_em. \\
+\nometeste{chave} & texto(200) & não &  & Discriminador do vínculo, como número de controle do contrato ou endereço normalizado; pode ficar vazio. \\
+\nometeste{atributos} & JSON & não &  & JSON com dados do vínculo; em citado\_em, o trecho, a posição e a sugestão de IA de origem. \\
+\nometeste{captura_id} & texto(32) & não & FK \nometeste{capturas} & Captura que fundamenta o vínculo (chave estrangeira para capturas). \\
 \hline
 \end{longtable}
 \end{small}
@@ -332,13 +347,14 @@ captura\_id & texto(32) & não & FK capturas & Captura que fundamenta o vínculo
 Relação entre cada entidade e todas as capturas que contribuíram para ela; registra a proveniência dos dados da entidade (cadeia de custódia, RF07 no README).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & inteiro & não & PK & Identificador numérico sequencial, gerado pelo banco. \\
-entidade\_id & texto(32) & não & FK entidades & Entidade (chave estrangeira para entidades). \\
-captura\_id & texto(32) & não & FK capturas & Captura que contribuiu para a entidade (chave estrangeira para capturas). \\
-papel & texto(50) & não &  & Papel da captura em relação à entidade, definido pelo resolvedor, por exemplo orgaoEntidade, contrato, edital, orgao\_servidores, extracao\_ia. \\
+\nometeste{id} & inteiro & não & PK & Identificador numérico sequencial, gerado pelo banco. \\
+\nometeste{entidade_id} & texto(32) & não & FK \nometeste{entidades} & Entidade (chave estrangeira para entidades). \\
+\nometeste{captura_id} & texto(32) & não & FK \nometeste{capturas} & Captura que contribuiu para a entidade (chave estrangeira para capturas). \\
+\nometeste{papel} & texto(50) & não &  & Papel da captura em relação à entidade, definido pelo resolvedor, por exemplo orgaoEntidade, contrato, edital, orgao\_servidores, extracao\_ia. \\
 \hline
 \end{longtable}
 \end{small}
@@ -347,20 +363,21 @@ papel & texto(50) & não &  & Papel da captura em relação à entidade, definid
 Entidade marcada para acompanhamento contínuo; o agendador refaz as coletas de origem na periodicidade escolhida, no máximo um por entidade (RF06).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador do monitoramento, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso do monitoramento (chave estrangeira para casos). \\
-entidade\_id & texto(32) & não & FK entidades & Entidade monitorada (chave estrangeira para entidades). \\
-periodicidade\_horas & inteiro & não &  & Intervalo entre execuções, em horas; o mínimo vem da configuração (padrão 1 hora). \\
-ativo & lógico & não &  & Indica se o agendador deve executar o monitoramento. \\
-motivo\_inativo & texto & não &  & Por que foi desativado: pelo usuário ('Desativado por <login>.'), prazo de retenção vencido ou entidade inexistente; vazio quando ativo. \\
-justificativa & texto & não &  & Justificativa de quem marcou a entidade; acompanha cada execução automática na auditoria. \\
-criado\_por & texto(100) & não &  & Login de quem criou o monitoramento. \\
-criado\_em & texto(40) & não &  & Data e hora de criação, ISO 8601 em UTC. \\
-proxima\_execucao\_em & texto(40) & não &  & Data e hora da próxima execução prevista, ISO 8601 em UTC. \\
-ultima\_execucao\_em & texto(40) & sim &  & Data e hora do fim da última execução, ISO 8601 em UTC; nulo se nunca executou. \\
+\nometeste{id} & texto(32) & não & PK & Identificador do monitoramento, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso do monitoramento (chave estrangeira para casos). \\
+\nometeste{entidade_id} & texto(32) & não & FK \nometeste{entidades} & Entidade monitorada (chave estrangeira para entidades). \\
+\nometeste{periodicidade_horas} & inteiro & não &  & Intervalo entre execuções, em horas; o mínimo vem da configuração (padrão 1 hora). \\
+\nometeste{ativo} & lógico & não &  & Indica se o agendador deve executar o monitoramento. \\
+\nometeste{motivo_inativo} & texto & não &  & Por que foi desativado: pelo usuário ('Desativado por <login>.'), prazo de retenção vencido ou entidade inexistente; vazio quando ativo. \\
+\nometeste{justificativa} & texto & não &  & Justificativa de quem marcou a entidade; acompanha cada execução automática na auditoria. \\
+\nometeste{criado_por} & texto(100) & não &  & Login de quem criou o monitoramento. \\
+\nometeste{criado_em} & texto(40) & não &  & Data e hora de criação, ISO 8601 em UTC. \\
+\nometeste{proxima_execucao_em} & texto(40) & não &  & Data e hora da próxima execução prevista, ISO 8601 em UTC. \\
+\nometeste{ultima_execucao_em} & texto(40) & sim &  & Data e hora do fim da última execução, ISO 8601 em UTC; nulo se nunca executou. \\
 \hline
 \end{longtable}
 \end{small}
@@ -369,16 +386,17 @@ ultima\_execucao\_em & texto(40) & sim &  & Data e hora do fim da última execu�
 Sugestão de que duas entidades do caso podem ser a mesma pessoa (homônimos); o sistema nunca as funde automaticamente (RF02).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da sugestão, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso das entidades (chave estrangeira para casos). \\
-entidade\_id & texto(32) & não & FK entidades & Entidade de referência (chave estrangeira para entidades). \\
-candidata\_id & texto(32) & não & FK entidades & Entidade candidata a ser a mesma (chave estrangeira para entidades); cada par é gravado nos dois sentidos. \\
-score & real & não &  & Grau de semelhança. Valores no código: 0.9 (mesmo nome e mesmo CPF descaracterizado), 0.7 (CPF ausente em um), 0.5 (CPFs diferentes). \\
-motivo & texto & não &  & Texto gerado pelo resolvedor explicando a semelhança e pedindo confirmação antes de unificar. \\
-criado\_em & texto(40) & não &  & Data e hora da sugestão, ISO 8601 em UTC. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da sugestão, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso das entidades (chave estrangeira para casos). \\
+\nometeste{entidade_id} & texto(32) & não & FK \nometeste{entidades} & Entidade de referência (chave estrangeira para entidades). \\
+\nometeste{candidata_id} & texto(32) & não & FK \nometeste{entidades} & Entidade candidata a ser a mesma (chave estrangeira para entidades); cada par é gravado nos dois sentidos. \\
+\nometeste{score} & real & não &  & Grau de semelhança. Valores no código: 0.9 (mesmo nome e mesmo CPF descaracterizado), 0.7 (CPF ausente em um), 0.5 (CPFs diferentes). \\
+\nometeste{motivo} & texto & não &  & Texto gerado pelo resolvedor explicando a semelhança e pedindo confirmação antes de unificar. \\
+\nometeste{criado_em} & texto(40) & não &  & Data e hora da sugestão, ISO 8601 em UTC. \\
 \hline
 \end{longtable}
 \end{small}
@@ -387,25 +405,26 @@ criado\_em & texto(40) & não &  & Data e hora da sugestão, ISO 8601 em UTC. \\
 Item extraído pela IA à espera da decisão do investigador; só vira entidade se aceito (RF13, RNF05).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da sugestão, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso da captura (chave estrangeira para casos). \\
-extracao\_id & texto(32) & não & FK extracoes\_ia & Execução que gerou a sugestão (chave estrangeira para extracoes\_ia). \\
-captura\_id & texto(32) & não & FK capturas & Captura de onde o item foi extraído (chave estrangeira para capturas). \\
-tipo & texto(20) & não &  & Tipo do item. Valores: empresa, orgao, pessoa, valor, data, objeto. \\
-valor & texto(500) & não &  & Valor extraído, como escrito no documento, até 500 caracteres. \\
-campos & JSON & não &  & JSON com campos opcionais cnpj, cpf e papel; o CPF é gravado descaracterizado. \\
-trecho & texto & não &  & Citação literal do texto da captura que contém o valor; verificada por comparação exata. \\
-posicao\_inicio & inteiro & não &  & Posição inicial do trecho no texto da captura, em caracteres. \\
-posicao\_fim & inteiro & não &  & Posição final do trecho no texto da captura, em caracteres. \\
-confianca & real & sim &  & Confiança informada pelo modelo, entre 0 e 1; nula se o modelo não informou. \\
-situacao & texto(10) & não &  & Situação da sugestão. Valores: pendente, aceita, recusada. \\
-decidido\_por & texto(100) & sim &  & Login de quem decidiu; nulo enquanto pendente. \\
-decidido\_em & texto(40) & sim &  & Data e hora da decisão, ISO 8601 em UTC; nulo enquanto pendente. \\
-justificativa\_decisao & texto & sim &  & Justificativa da decisão; nula enquanto pendente. \\
-entidade\_id & texto(32) & sim & FK entidades & Entidade criada ou reaproveitada ao aceitar (chave estrangeira para entidades); nula se recusada ou se o tipo não gera entidade. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da sugestão, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso da captura (chave estrangeira para casos). \\
+\nometeste{extracao_id} & texto(32) & não & FK \nometeste{extracoes_ia} & Execução que gerou a sugestão (chave estrangeira para extracoes\_ia). \\
+\nometeste{captura_id} & texto(32) & não & FK \nometeste{capturas} & Captura de onde o item foi extraído (chave estrangeira para capturas). \\
+\nometeste{tipo} & texto(20) & não &  & Tipo do item. Valores: empresa, orgao, pessoa, valor, data, objeto. \\
+\nometeste{valor} & texto(500) & não &  & Valor extraído, como escrito no documento, até 500 caracteres. \\
+\nometeste{campos} & JSON & não &  & JSON com campos opcionais cnpj, cpf e papel; o CPF é gravado descaracterizado. \\
+\nometeste{trecho} & texto & não &  & Citação literal do texto da captura que contém o valor; verificada por comparação exata. \\
+\nometeste{posicao_inicio} & inteiro & não &  & Posição inicial do trecho no texto da captura, em caracteres. \\
+\nometeste{posicao_fim} & inteiro & não &  & Posição final do trecho no texto da captura, em caracteres. \\
+\nometeste{confianca} & real & sim &  & Confiança informada pelo modelo, entre 0 e 1; nula se o modelo não informou. \\
+\nometeste{situacao} & texto(10) & não &  & Situação da sugestão. Valores: pendente, aceita, recusada. \\
+\nometeste{decidido_por} & texto(100) & sim &  & Login de quem decidiu; nulo enquanto pendente. \\
+\nometeste{decidido_em} & texto(40) & sim &  & Data e hora da decisão, ISO 8601 em UTC; nulo enquanto pendente. \\
+\nometeste{justificativa_decisao} & texto & sim &  & Justificativa da decisão; nula enquanto pendente. \\
+\nometeste{entidade_id} & texto(32) & sim & FK \nometeste{entidades} & Entidade criada ou reaproveitada ao aceitar (chave estrangeira para entidades); nula se recusada ou se o tipo não gera entidade. \\
 \hline
 \end{longtable}
 \end{small}
@@ -414,20 +433,21 @@ entidade\_id & texto(32) & sim & FK entidades & Entidade criada ou reaproveitada
 Cada execução de um monitoramento, automática ou manual, com as recoletas feitas e a quantidade de avisos gerados (RF06).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador da execução, UUID4 em hexadecimal. \\
-monitoramento\_id & texto(32) & não & FK monitoramentos & Monitoramento executado (chave estrangeira para monitoramentos). \\
-caso\_id & texto(32) & não & FK casos & Caso do monitoramento (chave estrangeira para casos). \\
-origem & texto(12) & não &  & Quem disparou a execução. Valores: agendador, manual. \\
-usuario & texto(100) & não &  & Login de quem executou; 'agendador' nas execuções automáticas. \\
-iniciado\_em & texto(40) & não &  & Data e hora de início, ISO 8601 em UTC. \\
-concluido\_em & texto(40) & sim &  & Data e hora de término, ISO 8601 em UTC; nulo enquanto em andamento. \\
-situacao & texto(20) & não &  & Resultado da execução. Valores: em\_andamento, sucesso, parcial, falha, sem\_coletas, recusada\_retencao. \\
-coletas & JSON & não &  & Lista JSON, uma linha por recoleta: coleta\_id nova, recoleta\_de, fonte, situação, motivo e mesmo\_conteudo (IDs apontam para coletas, sem chave estrangeira). \\
-avisos\_gerados & inteiro & não &  & Quantidade de avisos criados nesta execução. \\
-motivo & texto & não &  & Explicação da situação quando não é sucesso; vazio em caso de sucesso. \\
+\nometeste{id} & texto(32) & não & PK & Identificador da execução, UUID4 em hexadecimal. \\
+\nometeste{monitoramento_id} & texto(32) & não & FK \nometeste{monitoramentos} & Monitoramento executado (chave estrangeira para monitoramentos). \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso do monitoramento (chave estrangeira para casos). \\
+\nometeste{origem} & texto(12) & não &  & Quem disparou a execução. Valores: agendador, manual. \\
+\nometeste{usuario} & texto(100) & não &  & Login de quem executou; 'agendador' nas execuções automáticas. \\
+\nometeste{iniciado_em} & texto(40) & não &  & Data e hora de início, ISO 8601 em UTC. \\
+\nometeste{concluido_em} & texto(40) & sim &  & Data e hora de término, ISO 8601 em UTC; nulo enquanto em andamento. \\
+\nometeste{situacao} & texto(20) & não &  & Resultado da execução. Valores: em\_andamento, sucesso, parcial, falha, sem\_coletas, recusada\_retencao. \\
+\nometeste{coletas} & JSON & não &  & Lista JSON, uma linha por recoleta: coleta\_id nova, recoleta\_de, fonte, situação, motivo e mesmo\_conteudo (IDs apontam para coletas, sem chave estrangeira). \\
+\nometeste{avisos_gerados} & inteiro & não &  & Quantidade de avisos criados nesta execução. \\
+\nometeste{motivo} & texto & não &  & Explicação da situação quando não é sucesso; vazio em caso de sucesso. \\
 \hline
 \end{longtable}
 \end{small}
@@ -436,22 +456,109 @@ motivo & texto & não &  & Explicação da situação quando não é sucesso; va
 Novidade detectada pelo monitoramento sobre uma entidade, como mudança de sócio, contrato, sanção ou termo, com controle de leitura (RF06).
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.9cm}p{0.8cm}p{1.6cm}p{6.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
 \hline
 \textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
-id & texto(32) & não & PK & Identificador do aviso, UUID4 em hexadecimal. \\
-caso\_id & texto(32) & não & FK casos & Caso do aviso (chave estrangeira para casos). \\
-monitoramento\_id & texto(32) & não & FK monitoramentos & Monitoramento que gerou o aviso (chave estrangeira para monitoramentos). \\
-execucao\_id & texto(32) & não & FK monitoramento\_execucoes & Execução em que a novidade foi detectada (chave estrangeira para monitoramento\_execucoes). \\
-entidade\_id & texto(32) & não & FK entidades & Entidade a que a novidade se refere (chave estrangeira para entidades). \\
-tipo & texto(30) & não &  & Tipo da novidade. Valores: quadro\_societario, contrato\_novo, sancao\_nova, termo\_novo. \\
-titulo & texto(300) & não &  & Título do aviso, gerado pelo monitoramento. \\
-descricao & texto & não &  & Descrição da novidade, gerada pelo monitoramento. \\
-detalhes & JSON & não &  & JSON com os dados da novidade, como o registro e o tipo de mudança. \\
-captura\_ids & JSON & não &  & Lista JSON de IDs das capturas em que a novidade aparece (aponta para capturas, sem chave estrangeira). \\
-criado\_em & texto(40) & não &  & Data e hora de criação do aviso, ISO 8601 em UTC. \\
-lido\_em & texto(40) & sim &  & Data e hora em que o aviso foi marcado como lido, ISO 8601 em UTC; nulo se não lido. \\
-lido\_por & texto(100) & sim &  & Login de quem marcou o aviso como lido; nulo se não lido. \\
+\nometeste{id} & texto(32) & não & PK & Identificador do aviso, UUID4 em hexadecimal. \\
+\nometeste{caso_id} & texto(32) & não & FK \nometeste{casos} & Caso do aviso (chave estrangeira para casos). \\
+\nometeste{monitoramento_id} & texto(32) & não & FK \nometeste{monitoramentos} & Monitoramento que gerou o aviso (chave estrangeira para monitoramentos). \\
+\nometeste{execucao_id} & texto(32) & não & FK \nometeste{monitoramento_execucoes} & Execução em que a novidade foi detectada (chave estrangeira para monitoramento\_execucoes). \\
+\nometeste{entidade_id} & texto(32) & não & FK \nometeste{entidades} & Entidade a que a novidade se refere (chave estrangeira para entidades). \\
+\nometeste{tipo} & texto(30) & não &  & Tipo da novidade. Valores: quadro\_societario, contrato\_novo, sancao\_nova, termo\_novo. \\
+\nometeste{titulo} & texto(300) & não &  & Título do aviso, gerado pelo monitoramento. \\
+\nometeste{descricao} & texto & não &  & Descrição da novidade, gerada pelo monitoramento. \\
+\nometeste{detalhes} & JSON & não &  & JSON com os dados da novidade, como o registro e o tipo de mudança. \\
+\nometeste{captura_ids} & JSON & não &  & Lista JSON de IDs das capturas em que a novidade aparece (aponta para capturas, sem chave estrangeira). \\
+\nometeste{criado_em} & texto(40) & não &  & Data e hora de criação do aviso, ISO 8601 em UTC. \\
+\nometeste{lido_em} & texto(40) & sim &  & Data e hora em que o aviso foi marcado como lido, ISO 8601 em UTC; nulo se não lido. \\
+\nometeste{lido_por} & texto(100) & sim &  & Login de quem marcou o aviso como lido; nulo se não lido. \\
+\hline
+\end{longtable}
+\end{small}
+
+\section*{ij\_decisoes}
+Decisão judicial que autoriza a importação de dado sob ordem judicial (RF10). Fica na base separada; sem ela, nada é importado.
+
+\begin{small}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
+\hline
+\textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
+\nometeste{id} & texto(32) & não & PK & Identificador da decisão, UUID4 em hexadecimal, gerado pelo sistema. \\
+\nometeste{caso_id} & texto(32) & não &  & Identificador do caso na base do dado aberto; sem chave estrangeira, porque as bases são diferentes. \\
+\nometeste{numero_processo} & texto(100) & não &  & Número do processo judicial, informado no registro. \\
+\nometeste{numero_decisao} & texto(100) & não &  & Número ou identificação da decisão, informado no registro. \\
+\nometeste{juizo} & texto(200) & não &  & Juízo que proferiu a decisão. \\
+\nometeste{data_decisao} & texto(10) & não &  & Data da decisão (AAAA-MM-DD). \\
+\nometeste{periodo_inicio} & texto(10) & não &  & Início do período autorizado (AAAA-MM-DD). \\
+\nometeste{periodo_fim} & texto(10) & não &  & Fim do período autorizado (AAAA-MM-DD). \\
+\nometeste{escopo_cifrado} & binário & não &  & Escopo da decisão (contas, investigados e descrição), cifrado com a chave própria do módulo. \\
+\nometeste{registrado_por} & texto(100) & não &  & Login de quem registrou a decisão. \\
+\nometeste{registrado_em} & texto(40) & não &  & Momento do registro, em UTC (ISO 8601). \\
+\hline
+\end{longtable}
+\end{small}
+
+\section*{ij\_importacoes}
+Importação de uma pasta de arquivos sob uma decisão judicial (RF10).
+
+\begin{small}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
+\hline
+\textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
+\nometeste{id} & texto(32) & não & PK & Identificador da importação, UUID4 em hexadecimal. \\
+\nometeste{decisao_id} & texto(32) & não & FK \nometeste{ij_decisoes} & Decisão judicial que autoriza a importação. \\
+\nometeste{caso_id} & texto(32) & não &  & Identificador do caso na base do dado aberto, sem chave estrangeira. \\
+\nometeste{origem} & texto(10) & não &  & Canal de recebimento: simba, ofício ou mídia. \\
+\nometeste{descricao_origem} & texto & não &  & Descrição livre do recebimento; pode ficar vazia. \\
+\nometeste{importado_por} & texto(100) & não &  & Login de quem fez a importação. \\
+\nometeste{importado_em} & texto(40) & não &  & Momento da importação, em UTC (ISO 8601). \\
+\hline
+\end{longtable}
+\end{small}
+
+\section*{ij\_arquivos}
+Custódia de cada arquivo recebido: SHA-256, tamanho e contagens da validação. Os bytes ficam cifrados em disco, fora da custódia do dado aberto.
+
+\begin{small}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
+\hline
+\textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
+\nometeste{id} & texto(32) & não & PK & Identificador do arquivo, UUID4 em hexadecimal. \\
+\nometeste{importacao_id} & texto(32) & não & FK \nometeste{ij_importacoes} & Importação a que o arquivo pertence. \\
+\nometeste{tipo} & texto(20) & não &  & Tipo do arquivo no leiaute da IN BCB 636/2025 (agências, contas, titulares, extrato ou origem-destino). \\
+\nometeste{nome_arquivo} & texto(200) & não &  & Nome do arquivo recebido. \\
+\nometeste{sha256} & texto(64) & não &  & Resumo SHA-256 do arquivo recebido. \\
+\nometeste{tamanho_bytes} & inteiro & não &  & Tamanho do arquivo em bytes. \\
+\nometeste{linhas} & inteiro & não &  & Número de linhas lidas. \\
+\nometeste{aceitas} & inteiro & não &  & Linhas aceitas pela validação do leiaute. \\
+\nometeste{rejeitadas} & inteiro & não &  & Linhas rejeitadas por estarem fora do leiaute. \\
+\nometeste{em_quarentena} & inteiro & não &  & Linhas aceitas no leiaute, mas fora do escopo da decisão. \\
+\nometeste{rejeicoes_cifradas} & binário & não &  & Relatório das rejeições (linha, campo e motivo, nunca o conteúdo), cifrado. \\
+\hline
+\end{longtable}
+\end{small}
+
+\section*{ij\_registros}
+Linha aceita de um arquivo. Os campos ficam cifrados; em claro, só o necessário para filtrar.
+
+\begin{small}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{3.4cm}p{1.8cm}p{1.0cm}p{3.0cm}p{5.4cm}@{}}
+\hline
+\textbf{Coluna} & \textbf{Tipo} & \textbf{Nulo} & \textbf{Chave} & \textbf{Descrição} \\ \hline\endhead
+\nometeste{id} & texto(32) & não & PK & Identificador do registro, UUID4 em hexadecimal. \\
+\nometeste{importacao_id} & texto(32) & não & FK \nometeste{ij_importacoes} & Importação de origem. \\
+\nometeste{decisao_id} & texto(32) & não & FK \nometeste{ij_decisoes} & Decisão judicial que autorizou a importação. \\
+\nometeste{caso_id} & texto(32) & não &  & Identificador do caso na base do dado aberto, sem chave estrangeira. \\
+\nometeste{tipo} & texto(20) & não &  & Tipo do arquivo de origem no leiaute. \\
+\nometeste{linha} & inteiro & não &  & Número da linha no arquivo de origem. \\
+\nometeste{quarentena} & lógico & não &  & Verdadeiro se a linha está fora do escopo da decisão. \\
+\nometeste{motivo_quarentena} & texto(200) & não &  & Motivo da quarentena; vazio quando não há. \\
+\nometeste{campos_cifrados} & binário & não &  & Campos da linha, cifrados com a chave própria do módulo. \\
 \hline
 \end{longtable}
 \end{small}

@@ -29,3 +29,6 @@ docs/
 # Arquivos locais
 .DS_Store
 .claude/
+
+# Nova monografia (rascunho com notas internas) fica fora do git até R1 liberar
+latex/nova/

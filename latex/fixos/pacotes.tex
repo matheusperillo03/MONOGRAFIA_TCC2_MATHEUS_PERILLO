@@ -24,4 +24,6 @@
 
 % Nome de teste em fonte monoespaçada que pode quebrar no sublinhado.
 \usepackage{url}
-\DeclareUrlCommand\nometeste{\urlstyle{tt}\def\UrlBreaks{\do\_}}
+\DeclareUrlCommand\nometeste{\urlstyle{tt}\def\UrlLeft{}\def\UrlRight{}\def\UrlBreaks{\do\_}}
+% Caminho de rota da API em fonte monoespaçada que pode quebrar em / _ - e chaves.
+\DeclareUrlCommand\caminhoapi{\urlstyle{tt}\def\UrlLeft{}\def\UrlRight{}\def\UrlBreaks{\do\/\do\_\do\-\do\}}}

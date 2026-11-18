@@ -1,58 +1,66 @@
 % Gerado por docs/sistema/gera_modelo_tex.py a partir de docs/sistema/modelo.json. Não editar à mão.
 
 \begin{small}
-\begin{longtable}{p{2.6cm}p{3.2cm}p{2.2cm}p{1.5cm}p{0.8cm}p{3.6cm}}
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{2.9cm}p{3.5cm}p{2.9cm}p{1.5cm}p{1.0cm}p{3.0cm}@{}}
 \caption{Relações do modelo de dados e suas cardinalidades}\rotulounico{tab:relacoes}\\
 \hline
 \textbf{Tabela ``1''} & \textbf{Tabela relacionada} & \textbf{Coluna} & \textbf{Multipl.} & \textbf{Card.} & \textbf{Tipo} \\ \hline\endhead
-alertas & alerta\_decisoes & alerta\_id & 1 : 0..* & 1:N & chave estrangeira \\
-capturas & arestas & captura\_id & 1 : 0..* & 1:N & chave estrangeira \\
-capturas & entidade\_fontes & captura\_id & 1 : 0..* & 1:N & chave estrangeira \\
-capturas & entidades & captura\_id & 1 : 0..* & 1:N & chave estrangeira \\
-capturas & extracoes\_ia & captura\_id & 1 : 0..* & 1:N & chave estrangeira \\
-capturas & sugestoes\_ia & captura\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & alerta\_decisoes & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & alertas & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & anotacoes & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & arestas & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & avisos & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & capturas & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & caso\_membros & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & coletas & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & entidades & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & extracoes\_ia & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & monitoramento\_execucoes & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & monitoramentos & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & sugestoes & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & sugestoes\_ia & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & tarefa\_eventos & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-casos & tarefas & caso\_id & 1 : 0..* & 1:N & chave estrangeira \\
-coletas & capturas & coleta\_id & 0..1 : 0..* & 1:N & chave estrangeira \\
-coletas & coletas & recoleta\_de & 0..1 : 0..* & 1:N & chave estrangeira \\
-entidades & arestas & destino\_id & 1 : 0..* & 1:N & chave estrangeira \\
-entidades & arestas & origem\_id & 1 : 0..* & 1:N & chave estrangeira \\
-entidades & avisos & entidade\_id & 1 : 0..* & 1:N & chave estrangeira \\
-entidades & entidade\_fontes & entidade\_id & 1 : 0..* & 1:N & chave estrangeira \\
-entidades & monitoramentos & entidade\_id & 1 : 0..* & 1:N & chave estrangeira \\
-entidades & sugestoes & candidata\_id & 1 : 0..* & 1:N & chave estrangeira \\
-entidades & sugestoes & entidade\_id & 1 : 0..* & 1:N & chave estrangeira \\
-entidades & sugestoes\_ia & entidade\_id & 0..1 : 0..* & 1:N & chave estrangeira \\
-extracoes\_ia & sugestoes\_ia & extracao\_id & 1 : 0..* & 1:N & chave estrangeira \\
-monitoramento\_execucoes & avisos & execucao\_id & 1 : 0..* & 1:N & chave estrangeira \\
-monitoramentos & avisos & monitoramento\_id & 1 : 0..* & 1:N & chave estrangeira \\
-monitoramentos & monitoramento\_execucoes & monitoramento\_id & 1 : 0..* & 1:N & chave estrangeira \\
-tarefas & tarefa\_eventos & tarefa\_id & 1 : 0..* & 1:N & chave estrangeira \\
-usuarios & sessoes & conta\_id & 1 : 0..* & 1:N & chave estrangeira \\
-entidades & alertas & entidades & -- & N:N & lista JSON de IDs de entidades \\
-capturas & alertas & evidencias & -- & N:N & lista JSON de evidências com o ID da captura \\
-capturas & avisos & captura\_ids & -- & N:N & lista JSON de IDs de capturas \\
-coletas & monitoramento\_execucoes & coletas & -- & N:N & lista JSON com as recoletas feitas \\
-entidades & anotacoes & alvo\_id & -- & 1:N & alvo polimórfico (alvo\_tipo = entidade) \\
-alertas & anotacoes & alvo\_id & -- & 1:N & alvo polimórfico (alvo\_tipo = alerta) \\
-usuarios & caso\_membros & usuario & -- & 1:N & login; o usuário de token de desenvolvimento não tem linha \\
-usuarios & tarefas & responsavel & -- & 1:N & login do responsável, opcional \\
-casos & auditoria & caso\_id & -- & 1:N & sem chave estrangeira: a trilha só de acréscimo não depende do caso \\
+\nometeste{alertas} & \nometeste{alerta_decisoes} & \nometeste{alerta_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{capturas} & \nometeste{arestas} & \nometeste{captura_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{capturas} & \nometeste{entidade_fontes} & \nometeste{captura_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{capturas} & \nometeste{entidades} & \nometeste{captura_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{capturas} & \nometeste{extracoes_ia} & \nometeste{captura_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{capturas} & \nometeste{sugestoes_ia} & \nometeste{captura_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{alerta_decisoes} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{alertas} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{anotacoes} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{arestas} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{avisos} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{capturas} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{caso_membros} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{coletas} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{entidades} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{extracoes_ia} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{monitoramento_execucoes} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{monitoramentos} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{sugestoes} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{sugestoes_ia} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{tarefa_eventos} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{casos} & \nometeste{tarefas} & \nometeste{caso_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{coletas} & \nometeste{capturas} & \nometeste{coleta_id} & 0..1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{coletas} & \nometeste{coletas} & \nometeste{recoleta_de} & 0..1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{arestas} & \nometeste{destino_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{arestas} & \nometeste{origem_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{avisos} & \nometeste{entidade_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{entidade_fontes} & \nometeste{entidade_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{monitoramentos} & \nometeste{entidade_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{sugestoes} & \nometeste{candidata_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{sugestoes} & \nometeste{entidade_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{sugestoes_ia} & \nometeste{entidade_id} & 0..1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{extracoes_ia} & \nometeste{sugestoes_ia} & \nometeste{extracao_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{ij_decisoes} & \nometeste{ij_importacoes} & \nometeste{decisao_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{ij_decisoes} & \nometeste{ij_registros} & \nometeste{decisao_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{ij_importacoes} & \nometeste{ij_arquivos} & \nometeste{importacao_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{ij_importacoes} & \nometeste{ij_registros} & \nometeste{importacao_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{monitoramento_execucoes} & \nometeste{avisos} & \nometeste{execucao_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{monitoramentos} & \nometeste{avisos} & \nometeste{monitoramento_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{monitoramentos} & \nometeste{monitoramento_execucoes} & \nometeste{monitoramento_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{tarefas} & \nometeste{tarefa_eventos} & \nometeste{tarefa_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{usuarios} & \nometeste{sessoes} & \nometeste{conta_id} & 1 : 0..* & 1:N & chave estrangeira \\
+\nometeste{entidades} & \nometeste{alertas} & \nometeste{entidades} & -- & N:N & lista JSON de IDs de entidades \\
+\nometeste{capturas} & \nometeste{alertas} & \nometeste{evidencias} & -- & N:N & lista JSON de evidências com o ID da captura \\
+\nometeste{capturas} & \nometeste{avisos} & \nometeste{captura_ids} & -- & N:N & lista JSON de IDs de capturas \\
+\nometeste{coletas} & \nometeste{monitoramento_execucoes} & \nometeste{coletas} & -- & N:N & lista JSON com as recoletas feitas \\
+\nometeste{entidades} & \nometeste{anotacoes} & \nometeste{alvo_id} & -- & 1:N & alvo polimórfico (alvo\_tipo = entidade) \\
+\nometeste{alertas} & \nometeste{anotacoes} & \nometeste{alvo_id} & -- & 1:N & alvo polimórfico (alvo\_tipo = alerta) \\
+\nometeste{usuarios} & \nometeste{caso_membros} & \nometeste{usuario} & -- & 1:N & login; o usuário de token de desenvolvimento não tem linha \\
+\nometeste{usuarios} & \nometeste{tarefas} & \nometeste{responsavel} & -- & 1:N & login do responsável, opcional \\
+\nometeste{casos} & \nometeste{auditoria} & \nometeste{caso_id} & -- & 1:N & sem chave estrangeira: a trilha só de acréscimo não depende do caso \\
+\nometeste{casos} & \nometeste{ij_decisoes} & \nometeste{caso_id} & -- & 1:N & sem chave estrangeira: base separada (RF10) \\
+\nometeste{casos} & \nometeste{ij_importacoes} & \nometeste{caso_id} & -- & 1:N & sem chave estrangeira: base separada (RF10) \\
+\nometeste{casos} & \nometeste{ij_registros} & \nometeste{caso_id} & -- & 1:N & sem chave estrangeira: base separada (RF10) \\
 \hline
-\multicolumn{6}{p{14cm}}{\footnotesize Fonte: gerada pelo autor a partir de \texttt{buscador/modelos.py}. Multiplicidade ``1 : 0..*'' significa que cada linha da tabela relacionada aponta para exatamente uma linha da tabela ``1'', que pode ter nenhuma ou várias. Referências sem chave estrangeira foram conferidas no código.}\\
+\multicolumn{6}{p{15cm}}{\footnotesize Fonte: gerada pelo autor a partir de \texttt{buscador/modelos.py}. Multiplicidade ``1 : 0..*'' significa que cada linha da tabela relacionada aponta para exatamente uma linha da tabela ``1'', que pode ter nenhuma ou várias. Referências sem chave estrangeira foram conferidas no código.}\\
 \end{longtable}
 \end{small}

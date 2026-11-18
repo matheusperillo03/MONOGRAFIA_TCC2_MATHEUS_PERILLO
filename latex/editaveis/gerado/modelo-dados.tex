@@ -90,3 +90,23 @@ fk/.style={-, thick}, logica/.style={-, dashed}, mult/.style={font=\scriptsize, 
 \end{tikzpicture}}
 \fonte{Gerada pelo autor a partir do modelo SQLAlchemy do back-end (\texttt{buscador/modelos.py}). PK: chave primária; FK: chave estrangeira; ``?'': aceita nulo. Linha cheia: chave estrangeira; linha tracejada: referência sem chave estrangeira. Multiplicidade junto de cada ponta. Tabelas mostradas só com as chaves: colunas completas no Apêndice~\ref{ap:dicionario}.}
 \end{figure}
+
+\begin{figure}[p]
+\centering
+\caption{Modelo de dados: Importação sob ordem judicial (base separada)}
+\label{fig:modelo-judicial}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tikzpicture}[
+tabela/.style={rectangle split, rectangle split parts=2, draw, rounded corners=1pt, font=\footnotesize, align=left, inner sep=3pt, anchor=north, fill=white},
+fk/.style={-, thick}, logica/.style={-, dashed}, mult/.style={font=\scriptsize, fill=white, inner sep=1pt}]
+\node[tabela] (ijdecisoes) at (-6.0,0) {\textbf{ij\_decisoes}\nodepart{second}\begin{tabular}{@{}l@{\hspace{4pt}}l@{}}{\scriptsize PK }\underline{id} & {\scriptsize texto(32)} \\ {\scriptsize }caso\_id & {\scriptsize texto(32)} \\ {\scriptsize }numero\_processo & {\scriptsize texto(100)} \\ {\scriptsize }numero\_decisao & {\scriptsize texto(100)} \\ {\scriptsize }juizo & {\scriptsize texto(200)} \\ {\scriptsize }data\_decisao & {\scriptsize texto(10)} \\ {\scriptsize }periodo\_inicio & {\scriptsize texto(10)} \\ {\scriptsize }periodo\_fim & {\scriptsize texto(10)} \\ {\scriptsize }escopo\_cifrado & {\scriptsize binário} \\ {\scriptsize }registrado\_por & {\scriptsize texto(100)} \\ {\scriptsize }registrado\_em & {\scriptsize texto(40)}\end{tabular}};
+\node[tabela] (ijimportacoes) at (6.0,0) {\textbf{ij\_importacoes}\nodepart{second}\begin{tabular}{@{}l@{\hspace{4pt}}l@{}}{\scriptsize PK }\underline{id} & {\scriptsize texto(32)} \\ {\scriptsize FK }decisao\_id & {\scriptsize texto(32)} \\ {\scriptsize }caso\_id & {\scriptsize texto(32)} \\ {\scriptsize }origem & {\scriptsize texto(10)} \\ {\scriptsize }descricao\_origem & {\scriptsize texto} \\ {\scriptsize }importado\_por & {\scriptsize texto(100)} \\ {\scriptsize }importado\_em & {\scriptsize texto(40)}\end{tabular}};
+\node[tabela] (ijarquivos) at (6.0,-9.0) {\textbf{ij\_arquivos}\nodepart{second}\begin{tabular}{@{}l@{\hspace{4pt}}l@{}}{\scriptsize PK }\underline{id} & {\scriptsize texto(32)} \\ {\scriptsize FK }importacao\_id & {\scriptsize texto(32)} \\ {\scriptsize }tipo & {\scriptsize texto(20)} \\ {\scriptsize }nome\_arquivo & {\scriptsize texto(200)} \\ {\scriptsize }sha256 & {\scriptsize texto(64)} \\ {\scriptsize }tamanho\_bytes & {\scriptsize inteiro} \\ {\scriptsize }linhas & {\scriptsize inteiro} \\ {\scriptsize }aceitas & {\scriptsize inteiro} \\ {\scriptsize }rejeitadas & {\scriptsize inteiro} \\ {\scriptsize }em\_quarentena & {\scriptsize inteiro} \\ {\scriptsize }rejeicoes\_cifradas & {\scriptsize binário}\end{tabular}};
+\node[tabela] (ijregistros) at (-6.0,-11.0) {\textbf{ij\_registros}\nodepart{second}\begin{tabular}{@{}l@{\hspace{4pt}}l@{}}{\scriptsize PK }\underline{id} & {\scriptsize texto(32)} \\ {\scriptsize FK }importacao\_id & {\scriptsize texto(32)} \\ {\scriptsize FK }decisao\_id & {\scriptsize texto(32)} \\ {\scriptsize }caso\_id & {\scriptsize texto(32)} \\ {\scriptsize }tipo & {\scriptsize texto(20)} \\ {\scriptsize }linha & {\scriptsize inteiro} \\ {\scriptsize }quarentena & {\scriptsize lógico} \\ {\scriptsize }motivo\_quarentena & {\scriptsize texto(200)} \\ {\scriptsize }campos\_cifrados & {\scriptsize binário}\end{tabular}};
+\draw[fk] (ijimportacoes) to[] node[mult,pos=0.2]{0..*} node[mult,pos=0.8]{1} (ijdecisoes);
+\draw[fk] (ijarquivos) to[] node[mult,pos=0.2]{0..*} node[mult,pos=0.8]{1} (ijimportacoes);
+\draw[fk] (ijregistros) to[] node[mult,pos=0.2]{0..*} node[mult,pos=0.8]{1} (ijimportacoes);
+\draw[fk] (ijregistros) to[] node[mult,pos=0.2]{0..*} node[mult,pos=0.8]{1} (ijdecisoes);
+\end{tikzpicture}}
+\fonte{Gerada pelo autor a partir do modelo SQLAlchemy do back-end (\texttt{buscador/importacao\_judicial/modelos.py}). PK: chave primária; FK: chave estrangeira; ``?'': aceita nulo. Linha cheia: chave estrangeira; linha tracejada: referência sem chave estrangeira. Multiplicidade junto de cada ponta. Tabelas mostradas só com as chaves: colunas completas no Apêndice~\ref{ap:dicionario}. Estas tabelas ficam numa base de dados separada da base do dado aberto; a ligação com \texttt{casos} é só lógica, pela coluna \texttt{caso\_id}.}
+\end{figure}

@@ -110,10 +110,13 @@ administrador, e a recoleta exige o papel de investigador no caso.
 \section{Modelo de dados}
 \label{sec:desenv-dados}
 
-O banco tem 21 tabelas. As Figuras~\ref{fig:modelo-coleta},
-\ref{fig:modelo-analise} e~\ref{fig:modelo-acesso} mostram o modelo em três
-áreas, com as multiplicidades de cada relação. A Tabela~\ref{tab:relacoes}
-lista as 38 chaves estrangeiras e as 9 referências sem chave estrangeira, com
+O banco do dado aberto tem 21 tabelas, e o módulo de importação sob ordem
+judicial (RF10) tem outras 4, numa base separada. As
+Figuras~\ref{fig:modelo-coleta}, \ref{fig:modelo-analise},
+\ref{fig:modelo-acesso} e~\ref{fig:modelo-judicial} mostram o modelo em
+quatro áreas, com as multiplicidades de cada relação. A
+Tabela~\ref{tab:relacoes} lista as 42 chaves estrangeiras e as 12 referências
+sem chave estrangeira, com
 a cardinalidade de cada uma. O Apêndice~\ref{ap:dicionario} traz o dicionário
 de dados, com a descrição de cada coluna. As figuras e as tabelas são geradas
 a partir do modelo do próprio código, para não divergirem do sistema.
@@ -291,16 +294,12 @@ inferência do autor, pelos nomes dos arquivos, e não foi conferido.
 e a combinação. Cada cartão de alerta traz o aviso ``Pista, não
 conclusão'', e o caso ganhou uma aba de ordem judicial para o RF10. A tela
 nova não foi conferida em navegador nem contra a API real.
-% PENDENTE: as tabelas geradas da interface de programação e do modelo de
-% dados (docs/sistema/extrai_api.py e extrai_modelo.py) e os diagramas de
-% componentes e de casos de uso ainda não incluem o módulo de importação
-% judicial e as rotas novas; regenerar a partir do back-end atual.
 
 % ===========================================================================
 \section{Interface de programação}
 \label{sec:desenv-api}
 
-A Tabela~\ref{tab:api} lista os 53 \textit{endpoints} da API, extraídos da
+A Tabela~\ref{tab:api} lista os 59 \textit{endpoints} da API, extraídos da
 especificação OpenAPI gerada pelo próprio FastAPI. Toda rota de caso exige
 sessão (ou token de desenvolvimento, só no modo de desenvolvimento),
 justificativa no cabeçalho, ser membro do caso com o papel adequado e caso
@@ -356,7 +355,7 @@ ameaça tratada no protótipo ao controle implementado e ao teste automatizado
 que o verifica.
 
 \begin{small}
-\begin{longtable}{p{3.4cm}p{1.8cm}p{4.6cm}p{4.4cm}}
+\begin{longtable}{@{}p{3.3cm}p{2.1cm}p{4.4cm}p{4.5cm}@{}}
 \caption{Ameaças, controles e testes}\rotulounico{tab:ameacas}\\
 \hline
 \textbf{Ameaça} & \textbf{Alvo} & \textbf{Controle} & \textbf{Teste (back-end)} \\ \hline\endhead

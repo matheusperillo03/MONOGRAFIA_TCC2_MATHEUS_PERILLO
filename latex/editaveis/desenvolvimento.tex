@@ -205,7 +205,7 @@ L1 & Mesmo endereço normalizado, com o complemento, em 5 ou mais empresas com e
 L3 & Mesma pessoa provável na administração (como sócia ou representante legal) de 5 ou mais empresas do caso, 3 delas abertas em até 12 meses & GAFI/Egmont, anexo E, itens 4 e 10; BCB, art.~1º, III, h \\
 L4 & Empresa só com sócios pessoa jurídica no primeiro nível do quadro e com cadeia de 2 ou mais níveis de sócios pessoa jurídica; o alerta diz onde a cadeia termina (pessoa física, sócio estrangeiro ou empresa sem quadro nos dados) & GAFI/Egmont, anexo E, item 8; GAFI, §~47 \\
 L5 & Nível 1: empresa do caso com sócio estrangeiro. O país não é avaliado & GAFI/Egmont, anexo E, item 4 \\
-L6 & Soma dos contratos assinados no ano por MEI, microempresa ou empresa de pequeno porte acima do limite de receita do regime naquele ano & LC 123, arts.~3º e 18-A; LC 238, arts.~1º, 2º e 10; Velasco, seç.~3.2 \\
+L6 & Soma dos contratos assinados no ano por MEI, microempresa ou empresa de pequeno porte acima do limite de receita do regime naquele ano & LC 123, arts.~3º e 18-A; LC 139, art.~7º; LC 155, art.~11; LC 238, arts.~1º, 2º e 10; Velasco, seç.~3.2 \\
 L7 & Parte (a): nenhum sócio atual entrou até 30 dias depois do início da atividade, e há contrato até 12 meses depois da última entrada & GAFI/Egmont, anexo E, item 7 \\
 L8 & Contratada que dispara a T1 (aberta pouco antes do contrato) e a T7 (sócio que possivelmente é servidor) & COAF, tipologia 2.7 \\
 L10 & Contratada sem sanção própria que compartilha sócio-administrador provável ou endereço com empresa no CEIS ou no CNEP (sanção vigente na assinatura) ou no CEPIM; ou sócio de contratada ou de convenente que possivelmente coincide com pessoa do CEAF & GAFI/Egmont, anexo E, item 3; Lei 12.846, art.~5º, IV, e \\
@@ -218,28 +218,37 @@ COMB & Mesma empresa ou pessoa com 2 ou mais tipologias distintas e soma de peso
 \end{longtable}
 \end{small}
 
-\textbf{Limites legais da L6.} O MEI tem limite de R\$~81.000,00 por
-ano-calendário pela redação atual \cite[art.~18-A, § 1º]{brasil2006lcp123},
-de R\$~110.000,00 em 2027 \cite[art.~2º]{brasil2026lcp238} e de
-R\$~140.000,00 a partir de 2028 \cite[arts.~1º e 10, I]{brasil2026lcp238}. No
-ano de início, o limite do MEI é proporcional aos meses de atividade
-\cite[art.~18-A, § 2º]{brasil2006lcp123}. A microempresa vai até
+\textbf{Limites legais da L6.} A regra segue a lei, sem tolerância própria.
+O MEI tem limite de R\$~81.000,00 por ano-calendário pela redação atual
+\cite[art.~18-A, § 1º]{brasil2006lcp123}, de R\$~110.000,00 em 2027
+\cite[art.~2º]{brasil2026lcp238} e de R\$~140.000,00 a partir de 2028
+\cite[arts.~1º e 10, I]{brasil2026lcp238}. A microempresa vai até
 R\$~360.000,00 e a empresa de pequeno porte até R\$~4.800.000,00
-\cite[art.~3º, I e II]{brasil2006lcp123}. Quatro escolhas são decisão do
-autor:
+\cite[art.~3º, I e II]{brasil2006lcp123}. Esses valores de MEI e de empresa
+de pequeno porte valem desde 2018 \cite[art.~11, III]{brasil2016lcp155}; de
+2012 a 2017 valiam R\$~60.000,00 para o MEI e R\$~3.600.000,00 para a
+empresa de pequeno porte \cite[art.~7º]{brasil2011lcp139}. Anos anteriores a
+2012 não são avaliados, e o alerta diz isso.
+
+No ano de início de atividade, o limite é proporcional. Para o MEI, é o
+valor mensal da lei vezes os meses entre o início e o fim do ano, com a
+fração de mês contada como mês inteiro \cite[art.~18-A, § 2º]{brasil2006lcp123};
+a partir de 2027, os valores mensais mudam \cite[arts.~1º e 2º]{brasil2026lcp238}.
+Para a microempresa e a empresa de pequeno porte, o limite é proporcional
+aos meses de atividade, inclusive as frações \cite[art.~3º, § 2º]{brasil2006lcp123}.
+
+O alerta dispara com qualquer valor acima do limite; igual ao limite não
+dispara. Ele informa se o excesso fica até 20\% ou acima disso, porque a lei
+usa essa faixa para definir quando o desenquadramento produz efeitos
+\cite[art.~3º, §§ 9º-A e 12; art.~18-A, § 7º, III e IV]{brasil2006lcp123}.
+Duas escolhas são decisão do autor:
 \begin{itemize}
-	\item o valor é o inicial do contrato, ou o global quando não há outro,
-	somado no ano da assinatura;
+	\item a lei mede a receita bruta, que não é dado aberto; a regra usa a
+	soma dos contratos públicos assinados no ano (valor inicial, ou o global
+	quando não há outro) como indicador mínimo dessa receita;
 	\item o regime do MEI é o da tabela Simples do CNPJ na data de cada
 	assinatura, mas o porte da microempresa e da empresa de pequeno porte é
-	o do cadastro atual;
-	\item como o enquadramento no MEI mede a receita do ano-calendário
-	anterior \cite[art.~18-A, § 1º]{brasil2006lcp123}, a regra compara o valor
-	do ano com o maior entre o limite do ano e o do ano seguinte;
-	\item para a microempresa e a empresa de pequeno porte, a regra usa o
-	limite anual cheio também no ano de início, embora a lei o torne
-	proporcional nesse caso \cite[art.~3º, § 2º]{brasil2006lcp123}. Isso
-	reduz os alertas nesse ano.
+	o do cadastro atual.
 \end{itemize}
 
 \textbf{O que não entrou.} A L2 (contato compartilhado), o nível~2 da L5
@@ -609,13 +618,13 @@ A tabela mostra onde há teste, e não o quanto cada requisito foi verificado.
 \subsection{Execução e cobertura}
 \label{sec:desenv-testes-execucao}
 
-Na última rodada registrada no diário, em 17/11/2026, depois das
-tipologias de lavagem e do RF10, o \textit{back-end} tinha 464 testes
+Na última rodada registrada no diário, em 18/11/2026, depois das
+tipologias de lavagem, do RF10 e da revisão da L6, o \textit{back-end} tinha 502 testes
 coletados pelo \textit{pytest}, dos quais 8 são específicos de PostgreSQL.
-Com SQLite, 456 passaram e os 8 de PostgreSQL foram pulados; com um
-PostgreSQL descartável, os 464 passaram. A análise de estilo (ruff) e a
+Com SQLite, 494 passaram e os 8 de PostgreSQL foram pulados; com um
+PostgreSQL descartável, os 502 passaram. A análise de estilo (ruff) e a
 análise estática de segurança (Bandit) não apontaram problemas. O
-\textit{front-end} tinha 319 testes, em 28 arquivos. A contagem do
+\textit{front-end} tinha 323 testes, em 28 arquivos. A contagem do
 \textit{back-end} na Tabela~\ref{tab:rastreabilidade-testes} difere desses
 números porque conta funções, e não casos: um teste parametrizado é um
 só.
